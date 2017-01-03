@@ -1,0 +1,8 @@
+name = "Customs Settings"
+description = "Storing header and footer constant values as key, value pairs"
+core = 7.x
+package = "Mohamed Elsayed Drupal 7 Development"
+configure = admin/custom/custom_settings
+
+;version = "7.x-2.0″
+;datestamp = "1385568677″

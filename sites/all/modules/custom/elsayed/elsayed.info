@@ -1,0 +1,8 @@
+name = Elsayed
+description = A Mohamed Elsayed module.
+package = Mohamed Elsayed Drupal 7 Development
+core = 7.x
+files[] = elsayed.module
+
+;dependencies[] = autoload
+;php = 5.3

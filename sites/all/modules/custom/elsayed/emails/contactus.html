@@ -1,0 +1,82 @@
+<html>
+	<head></head>
+	<body>
+		<style type="text/css">
+			.element{
+				text-shadow:#000000;
+				font-size:16px;		
+				color: #000000;
+				font-family: Verdana, Arial, Helvetica, sans-serif; 		
+			}
+			.title{
+				font-family: Verdana, Arial, Helvetica, sans-serif;
+				text-shadow:#000000;
+				font-size:16px;
+				color:#FFFFFF;
+			}
+			.maintable{
+				border-bottom-color:#384270;
+				border-left-color: #384270;
+				border-right-color:#384270;
+				border-top-color:#384270;
+			}
+		</style>
+		<table style="direction: ltr;" class="maintable" width='500' cellspacing='0' cellpadding='2' bgcolor="#cdcbcc">
+			<tr bgcolor='#000000'>
+				<td height='30' colspan='2'>
+					<font class="title">
+						<strong>{{mailsubject}}</strong>
+					</font>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2' align='center' height="30"></td>
+			</tr>
+			<tr>
+				<td align='left' style='color:#FFFF00'>
+					<font class="element">Name:</font>
+				</td>
+				<td>
+					<font class="element">{{name}}</font>
+				</td>
+			</tr>
+			<tr>
+				<td align='left' style='color:#FFFF00'>
+					<font class="element">Email:</font>
+				</td>
+				<td>
+					<font class="element">{{email}}</font>
+				</td>
+			</tr>
+			<tr>
+				<td align='left' style='color:#FFFF00'>
+					<font class="element">Phone:</font>
+				</td>
+				<td>
+					<font class="element">{{phone}}</font>
+				</td>
+			</tr>
+			<tr>
+				<td align='left' style='color:#FFFF00'>
+					<font class="element">Subject:</font>
+				</td>
+				<td>
+					<font class="element">{{subject}}</font>
+				</td>
+			</tr>
+				<td align='left' style='color:#FFFF00'>
+					<font class="element">Message:</font>
+				</td>
+				<td>
+					<font class="element">{{message}}</font>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2' height="30"></td>
+			</tr>
+			<tr>
+				<td height='30' colspan='2' bgcolor='#000000'></td>
+			</tr>
+		</table>
+	</body>
+</html>

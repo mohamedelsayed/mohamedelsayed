@@ -1,0 +1,1402 @@
+<?php /**
+ * @author Author "Mohamed Elsayed"  
+ * @author Author Email "me@mohamedelsayed.net"
+ * @link http://www.mohamedelsayed.net
+ * @copyright Copyright (c) 2015 Programming by "http://www.mohamedelsayed.net"
+ */
+module_load_include('inc', 'content', 'includes/password');
+function elsayed_init(){
+    elsayed_update_node_language();
+    $GLOBALS['google_api_key'] = 'AIzaSyDGGlo0fNATzYKU761Fx-8VAIJDXu-b3QM';  
+    $GLOBALS['limit'] = 6;
+    $GLOBALS['default_image'] = $GLOBALS['base_url'].'/'.path_to_theme().'/img/blank.png';
+}
+function elsayed_menu() {
+    $items['page_not_found'] = array(
+        'title' => 'Page not found',
+        'page callback' => 'elsayed_page_not_found_page',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+	$items['access-denied'] = array(
+        'title' => 'Access Denied',
+        'page callback' => 'elsayed_access_denied',
+        'access arguments' => array('access content')
+    );
+    $items['contact-us-form'] = array(
+        'title' => t('Contact us'),
+        'page callback' => 'elsayed_contact_us_form',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['register-form'] = array(
+        'title' => t('Register'),
+        'page callback' => 'elsayed_register_form_custom',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['ajax_signup'] = array(
+        'title' => 'Ajax Signup',
+        'page callback' => 'elsayed_ajax_signup',
+        'page arguments' => array(1),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'delivery callback' => 'drupal_json_output',
+    );   
+    $items['products'] = array(
+        'title' => 'Products',
+        'page callback' => 'elsayed_products',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['add_to_cart'] = array(
+        'title' => 'Add to cart',
+        'page callback' => 'elsayed_add_to_cart',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'delivery callback' => 'drupal_json_output',
+    );   
+    $items['change_currency'] = array(
+        'title' => t('Change Currency'),
+        'page callback' => 'elsayed_change_currency',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['refresh_cart_info_text'] = array(
+        'title' => 'Refresh Cart Info Text',
+        'page callback' => 'elsayed_refresh_cart_info_text',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'delivery callback' => 'drupal_json_output',
+    );
+    $items['articles'] = array(
+        'title' => 'Articles',
+        'page callback' => 'elsayed_articles',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['cart'] = array(
+        'title' => 'Cart',
+        'page callback' => 'elsayed_cart',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['remove_from_cart/%'] = array(
+        'title' => 'Remove from cart',
+        'page callback' => 'elsayed_remove_from_cart',
+        'page arguments' => array(1),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['update_cart'] = array(
+        'title' => 'Update cart',
+        'page callback' => 'elsayed_update_cart',
+        'page arguments' => array(0),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    $items['checkout'] = array(
+        'title' => 'Checkout',
+        'page callback' => 'elsayed_checkout',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );    
+    $items['cancel_payment'] = array(
+        'title' => 'Cancel Payment',
+        'page callback' => 'elsayed_cancel_payment',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );        
+    $items['success_payment'] = array(
+        'title' => 'Success Payment',
+        'page callback' => 'elsayed_success_payment',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );           
+    $items['user/edit'] = array(
+        'title'            => 'Edit Profile',
+        'description'      => 'Edit own profile',
+        'page callback'    => 'elsayed_user_edit',
+        'access callback'  => 'elsayed_user_edit_access',
+        'type'             => MENU_LOCAL_TASK,
+        'file'             => 'user.pages.inc',
+        'file path'        => 'modules/user'
+    );
+	$items['search-results'] = array(
+        'title' => 'Search',
+        'page callback' => 'elsayed_search',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    return $items;
+}
+function elsayed_user_edit() {
+    global $user;
+    $account = user_load($user->uid);
+    return drupal_get_form('user_profile_form', $account);
+}
+function elsayed_user_edit_access(){
+    global $user;
+    return user_edit_access($user);
+}
+function elsayed_get_default_language(){
+    $default_language = 'ar';
+    return $default_language;       
+}
+function elsayed_get_http_string() {
+    $http_string = "http://";
+    if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+        $http_string = "https://";
+    }
+    return $http_string;
+}
+function elsayed_get_site_base_url() {
+	global $base_url;
+    return $base_url;
+}
+function elsayed_get_languages() {
+    $languages =  array('en' => 'English');  
+    return $languages;
+}
+function elsayed_get_language_from_url() {
+    $sitelang = elsayed_get_default_language(); 
+    $http_string = elsayed_get_http_string();
+    $url = "$http_string$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $base_url_without_lang = elsayed_get_site_base_url();
+    $min_url = str_replace($base_url_without_lang, "", $url);
+    $min_url = trim($min_url, '/');
+    $codes = explode('/', $min_url);
+    $languages = elsayed_get_languages();       
+    $flag = 0;
+    if (isset($codes[0])) {
+        if (array_key_exists($codes[0], $languages)) {
+            $sitelang = $codes[0];
+            $flag = 1;
+            $time = 0;
+            $host_names = explode(".", $_SERVER['HTTP_HOST']);
+            if (isset($host_names[count($host_names) - 2]) && isset($host_names[count($host_names) - 1])) {
+                $bottom_host_name = $host_names[count($host_names) - 2].".".$host_names[count($host_names) - 1];
+            } else {
+                $bottom_host_name = $_SERVER['HTTP_HOST'];
+            }
+            $domain = $bottom_host_name;
+            if ($domain == 'localhost') {
+                $domain = NULL;
+            }
+            $path = "/";
+            if (isset($_COOKIE['sitelang'])) {
+                if ($sitelang != $_COOKIE['sitelang']) {
+                    setcookie("sitelang", $time, $path, $domain);
+                }
+            } else {
+                setcookie("sitelang", $time, $path, $domain);
+            }
+        }
+    }
+    return $sitelang;
+}
+function elsayed_get_base_url_with_lang() {
+    $site_base_url = elsayed_get_site_base_url();
+    //$sitelang = elsayed_get_language_from_url();
+    $result = $site_base_url;
+    /*if ($sitelang != '') {
+        $result = $site_base_url.'/'.$sitelang;
+    }*/
+    return $result;
+}
+function elsayed_get_node_url_by_id($nid = 0) {
+    $node_url = '';
+    $base_url_with_lang = elsayed_get_base_url_with_lang();
+    if ($nid != 0) {
+        $alias = drupal_get_path_alias('node/'.$nid);        
+        $node_url = $base_url_with_lang.'/'.$alias;
+    }
+    return $node_url;
+}
+function pr($data, $flag = '') {
+    echo "<pre>\n";
+    if ($flag == '') {
+        print_r($data);
+    } else {
+        print_r($data, true);
+    }
+    echo "</pre>\n";
+}
+function elsayed_page_not_found_page(){
+    $output = '';
+    return $output;
+}
+function elsayed_get_slider_widget(){
+    $start = 0;
+    $limit = 10;
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'slider')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    $query->addMetaData('account', user_load(1));
+    $query->range($start, $limit); 
+    $result = $query->execute();
+    if (isset($result['node'])) {
+        $items_nids = array_keys($result['node']);
+        $items = entity_load('node', $items_nids);
+    }
+    return $items;	
+}
+function elsayed_contact_us_form(){
+    $base_url_with_lang = elsayed_get_base_url_with_lang();
+    if(isset($_POST)){
+        if(!empty($_POST)){
+            $name = '';
+            if(isset($_POST['name'])){
+                $name = $_POST['name'];                
+            }
+            $email = '';
+            if(isset($_POST['email'])){
+                $email = $_POST['email'];                
+            }
+            $subject = '';
+            if(isset($_POST['subject'])){
+                $subject = $_POST['subject'];                
+            }
+            $message = '';
+            if(isset($_POST['message'])){
+                $message = $_POST['message'];                
+            }
+            $phone = '';
+            if(isset($_POST['phone'])){
+                $phone = $_POST['phone'];                
+            }
+            $emailTo = '';
+            $mailsubject = '';
+            if(isset($_POST['nid'])){
+                $nid = $_POST['nid'];                
+                $node = node_load($nid);
+                if(isset($node->field_to_email[LANGUAGE_NONE][0]['email'])){
+                    $emailTo = $node->field_to_email[LANGUAGE_NONE][0]['email'];
+                    $mailsubject = $node->title;
+                }
+            }
+            $tpl = file_get_contents(drupal_get_path('module', 'elsayed').'/emails/contactus.html');
+            $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}', '{{phone}}'), 
+                                        array($mailsubject, $name, $email, $subject, $message, $phone), $tpl);            
+            $headers = "From: ".$name." <".$email.">"."\r\n";
+            $headers .= "Reply-To: ".strip_tags($email)."\r\n";
+            $headers .= "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+            if($emailTo != ''){
+                if(mail($emailTo, $subject, $html_message, $headers)){
+                    echo t('Thank you for your message. We will get back to you the soonest.');
+                }else{
+                    echo t('There was a problem sending the Email. Please try again.');
+                }
+            }
+       }
+    }	
+}
+function elsayed_update_node_language() {
+    db_query("UPDATE `node` SET `language` = '".LANGUAGE_NONE."' WHERE `node`.`language` != '".LANGUAGE_NONE."'");
+    db_query("UPDATE `url_alias` SET `language` = '".LANGUAGE_NONE."'  WHERE `url_alias`.`language` != '".LANGUAGE_NONE."'");
+}
+function elsayed_get_node_field_value($field = '', $node){
+    $languages = elsayed_get_languages();
+    $data = $node->$field;
+    if(isset($data[LANGUAGE_NONE][0]['value']) && trim($data[LANGUAGE_NONE][0]['value']) != ''){
+        return $data[LANGUAGE_NONE][0]['value'];        
+    }else{
+        foreach ($languages as $key => $language) {
+            if(isset($data[$key][0]['value']) && trim($data[$key][0]['value']) != ''){
+                return $data[$key][0]['value'];  
+            }
+        }
+    }
+    return '';
+}
+function elsayed_string_format_view($str = '', $val = 0){
+    $data = '';
+    $str_without_tags = strip_tags($str);
+    $strArr = explode(" ", $str_without_tags);
+    if(count($strArr) > $val){
+        for($index = 0; $index < $val; $index++){
+            $data .= $strArr[$index].' ';
+        }
+        $data .= '...';
+    }else{
+        $data .= $str;
+    }
+    return $data;  
+}
+function elsayed_form_alter(&$form, &$form_state, $form_id){
+    if(isset($form['#node']) && $form_id == 'page_node_form'){
+        $form['#validate'][] = 'elsayed_page_validate';
+    }
+    if(isset($form['#node']) && $form_id == 'contact_us_node_form'){
+        $form['#validate'][] = 'elsayed_contact_us_validate';
+    }
+    if(isset($form['#node']) && $form_id == 'currency_node_form'){
+        $form['actions']['submit']['#submit'][] = 'elsayed_submit_currency_node_form';
+    }    
+    $_SESSION['last_page'] = $_SERVER['HTTP_REFERER'];
+    if ($form_id == 'user_login') {
+        $form['#submit'][] = 'elsayed_user_login_form_submit';
+    }
+}
+function elsayed_form_node_delete_confirm_alter(&$form, $form_state) {
+    if(isset($form['nid']['#value'])){
+        $node = node_load($form['nid']['#value']);
+        if(isset($node->type)){
+            if($node->type ==  'page' || $node->type ==  'contact_us'){
+                drupal_set_message(t("You can't delete this content.")."\n", 'error');
+                $base_url_with_lang = elsayed_get_base_url_with_lang();
+                $redirect = $base_url_with_lang.'/admin/content';
+                drupal_goto("$redirect");            
+            }        
+        }
+    }
+}
+function elsayed_get_about_us(){
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'page')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('nid', 'ASC');
+    $query->addMetaData('account', user_load(1));     
+    $result = $query->execute();
+    if (isset($result['node'])) {
+        $items_nids = array_keys($result['node']);
+        $items = entity_load('node', $items_nids);
+    }
+    $item = array();
+    if(!empty($items)){
+        reset($items);
+        $first_key = key($items);
+        $item = $items[$first_key];
+    }
+    return $item;   
+}
+function elsayed_get_actual_link(){
+    $https_string = elsayed_get_http_string();
+    $actual_link = $https_string.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    return $actual_link;
+}
+function elsayed_get_contact_us(){    
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'contact_us')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('nid', 'ASC');
+    $query->addMetaData('account', user_load(1)); 
+    $result = $query->execute();
+    if (isset($result['node'])) {
+        $items_nids = array_keys($result['node']);
+        $items = entity_load('node', $items_nids);
+    }
+    $item = array();
+    if(!empty($items)){
+        reset($items);
+        $first_key = key($items);
+        $item = $items[$first_key];
+    }
+    return $item;   
+}
+function elsayed_page_validate(&$form, &$form_state){
+    $nid = 0;
+    if(isset($form_state['values']['nid'])){
+        if($form_state['values']['nid'] != ''){
+            $nid = $form_state['values']['nid'];
+        }
+    }    
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'page')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    if($nid != 0){
+        $query->propertyCondition('nid', $nid, '<>');        
+    }
+    $query->addMetaData('account', user_load(1)); 
+    $result = $query->execute();
+    if (isset($result['node'])) {
+        $items_nids = array_keys($result['node']);
+        $items = entity_load('node', $items_nids);
+    }
+    if(!empty($items)){
+        form_set_error('title', t("Content can't be added."));
+    }
+}
+function elsayed_contact_us_validate(&$form, &$form_state){
+    $nid = 0;
+    if(isset($form_state['values']['nid'])){
+        if($form_state['values']['nid'] != ''){
+            $nid = $form_state['values']['nid'];
+        }
+    }
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'contact_us')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    if($nid != 0){
+        $query->propertyCondition('nid', $nid, '<>');        
+    }
+    $query->addMetaData('account', user_load(1)); 
+    $result = $query->execute();
+    if (isset($result['node'])) {
+        $items_nids = array_keys($result['node']);
+        $items = entity_load('node', $items_nids);
+    }
+    if(!empty($items)){
+        form_set_error('title', t("Content can't be added."));
+    }
+}
+function elsayed_slugify($text) {
+    // replace non letter or digits by -
+    $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+    // trim
+    $text = trim($text, '-');
+    // transliterate
+    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    // lowercase
+    $text = strtolower($text);
+    // remove unwanted characters
+    $text = preg_replace('~[^-\w]+~', '', $text);
+    if (empty($text)) {
+        return 'n-a';
+    }
+    return $text;
+}
+function elsayed_ajax_signup(){
+    $name = $_POST['name'];
+    $mail = $_POST['mail'];
+    $pass1 = $_POST['pass1'];
+    $pass2 = $_POST['pass2'];
+    $field_first_name = $_POST['field_first_name'];
+    $field_last_name = $_POST['field_last_name'];
+    $return = elsayed_validate_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name);
+    $output = '';
+    $data = array();
+    $data['error'] = 1;
+    if($return['error'] == TRUE){
+        $output .= '<script type="text/javascript">
+        jQuery(document).ready(function() {';
+        if(isset($return['msg']['name'])){
+            $output .= 'jQuery(".validationuserregistername").html("'.$return['msg']['name'].'");';
+        }
+        if(isset($return['msg']['mail'])){
+            $output .= 'jQuery(".validationuserregistermail").html("'.$return['msg']['mail'].'");';
+        }
+        if(isset($return['msg']['pass'])){
+            $output .= 'jQuery(".validationuserregisterpass").html("'.$return['msg']['pass'].'");';
+        }
+        if(isset($return['msg']['field_first_name'])){
+            $output .= 'jQuery(".validationuserregisterfname").html("'.$return['msg']['field_first_name'].'");';
+        }
+        if(isset($return['msg']['field_last_name'])){
+            $output .= 'jQuery(".validationuserregisterlname").html("'.$return['msg']['field_last_name'].'");';
+        }           
+        $output .= '}); 
+        </script>'; 
+    }else{
+        //$return = elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name);
+        $data['error'] = 0;
+    }
+    $data['html'] = $output;    
+    return $data;
+}
+function elsayed_validate_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name) {
+    $output['error'] = FALSE;
+    $output['msg']['name'] = '';
+    $output['msg']['mail'] = '';
+    $output['msg']['pass'] = '';
+    $output['msg']['field_last_name'] = '';
+    $output['msg']['field_first_name'] = '';
+    $hasUpperCaseLetter = elsayed_hasUpperCaseLetter($name);
+    $mail_exist = db_query("SELECT COUNT(*) FROM {users} WHERE mail = :mail ", array(':mail' => $mail))->fetchField();
+    $name_mail_exist1 = db_query("SELECT COUNT(*) FROM {users} WHERE mail = :name ", array(':name' => $name))->fetchField();
+    $name_mail_exist2 = db_query("SELECT COUNT(*) FROM {users} WHERE name = :mail ", array(':mail' => $mail))->fetchField();
+    $name_arr = explode(' ', $name);
+    if (strpos($name, ' ') > 0 || $name_arr[0] == '' || $hasUpperCaseLetter) {
+        $output['error'] = TRUE;
+        $output['msg']['name'] = t('Usernames cannot contain spaces or capital letters.');
+        //t('Usernames cannot contain spaces or capital letters.');
+    }
+    $user = user_load_by_name($name);
+    if ($user) {
+        $output['error'] = TRUE;
+        $output['msg']['name'] = t('Username already exists.');
+        //t('Username already exists.');
+    }
+    if (strlen($name) < 1) {
+        $output['error'] = TRUE;
+        $output['msg']['name'] = t('Username is required.');
+        //t('Username is required.');
+    }
+    if ($mail_exist) {
+        $output['error'] = TRUE;
+        $output['msg']['mail'] = t('Email already exists.');
+        //t('Email already exists.');
+    }
+    if ($name_mail_exist1) {
+        $output['error'] = TRUE;
+        $output['msg']['name'] = t('Email or Username already exists.');
+        //t('Email already exists.');
+    }
+    if ($name_mail_exist2) {
+        $output['error'] = TRUE;
+        $output['msg']['mail'] = t('Email or Username already exists.');
+        //t('Email already exists.');
+    }
+    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+        $output['error'] = TRUE;
+        $output['msg']['mail'] = t('Email is not valid.');
+        //t('Email is not valid.');
+    }
+    if (strlen($pass1) < 6) {
+        $output['error'] = TRUE;
+        $output['msg']['pass'] = t('Password must be at least 6 characters.');
+        //t('Password must be at least 6 characters.');     
+    }
+    if ($pass1 != $pass2) {
+        $output['error'] = TRUE;
+        $output['msg']['pass'] = t("Passwords don't match.");
+        //t("Passwords don't match.");
+    }
+    if (strlen($field_first_name) < 1) {
+        $output['error'] = TRUE;
+        $output['msg']['field_first_name'] = t('First Name is required.');
+        //t('First Name is required.');
+    }
+    if (strlen($field_last_name) < 1) {
+        $output['error'] = TRUE;
+        $output['msg']['field_last_name'] = t('Last Name is required.');
+        //t('Last Name is required.');
+    }
+    if ($output['error'] == TRUE) {
+        return $output;
+    }
+}
+function elsayed_hasUpperCaseLetter($string) {
+    return strtolower($string) !== $string;
+}
+function elsayed_register_form_custom(){
+    $name = $_POST['name'];
+    $mail = $_POST['mail'];
+    $pass1 = $_POST['pass1'];
+    $pass2 = $_POST['pass2'];
+    $field_first_name = $_POST['field_first_name'];
+    $field_last_name = $_POST['field_last_name'];    
+    $return = elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name);
+}
+function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name, $send_mail = TRUE) {
+    $roles = array(2 => true);
+    // register a new user
+    /* $form_state = array();
+      $form_state['values']['name'] = $name;
+      $form_state['values']['mail'] = $mail;
+      //$form_state['values']['status'] = 0;
+      $form_state['values']['pass']['pass1'] = $pass1;
+      $form_state['values']['pass']['pass2'] = $pass2;
+      $form_state['values']['field_first_name'][LANGUAGE_NONE][0]['value'] = $field_first_name;
+      $form_state['values']['field_last_name'][LANGUAGE_NONE][0]['value'] = $field_last_name;
+      $form_state['values']['op'] = t('Create new account');
+      drupal_form_submit('user_register_form', $form_state); */
+    /* $new_user = array(
+      'name' => $name,
+      'pass' => $pass1,
+      'mail' => $mail,
+      'init' => $mail,
+      //'init' => $mail,
+      'field_first_name' => array(LANGUAGE_NONE => array(array('value' => $field_first_name))),
+      'field_last_name' => array(LANGUAGE_NONE => array(array('value' => $field_last_name))),
+      'status' => 0,
+      //'access' => REQUEST_TIME,
+      'roles' => $roles,
+      );
+      $account = user_save(null, $new_user);
+      $domaininsert = db_insert('domain_editor')->fields(array(
+      'uid' => $account->uid,
+      'domain_id' => $domain_id,
+      ))->execute();
+      return $account->name; */
+    // require_once DRUPAL_ROOT.'/'.variable_get('password_inc', 'includes/password.inc');
+    //get token to set to user
+    //$token = shiftee_generate_random_string();
+    $account = new StdClass();
+    $account->is_new = TRUE;
+    $account->status = TRUE;
+    $account->name = $name;
+    $account->pass = user_hash_password($pass1);
+    $account->mail = $mail;
+    $account->init = $mail;
+    $account->roles = $roles;
+    $account->field_first_name[LANGUAGE_NONE][0]['value'] = $field_first_name;
+    $account->field_last_name[LANGUAGE_NONE][0]['value'] = $field_last_name;
+    $new_account = user_save($account);
+    $uid = $account->uid;
+    //$fromserveremail = 'noreply@'.$_SERVER['HTTP_HOST'];  
+    if ($send_mail == TRUE) {
+        //shiftme_send_register_mail($account, $token);
+        /*$emailsubject = variable_get('site_name').' | Account details for '.$account->realname.' at '.variable_get('site_name');
+        $to = $mail;
+        $creative_url = '<a href="'.$GLOBALS['base_url'].'">'.variable_get('site_name').'</a>';
+        /*
+        $message = 'Thank you for registering at '.variable_get('site_name').'.Your username is:'.$account->name.'<p>
+        To protect our serious users from unwanted registrations, it is important that you validate your registration by visiting the following URL:</p>
+        <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>
+        Thank you for your understanding, and we look forward to seeing you on '.variable_get('site_name').'.';
+        */
+        /*$message = get_shift_languages_string('Thank you for registering at', $sitelang).' '.variable_get('site_name').'.'.get_shift_languages_string('Your username is', $sitelang).': '.$account->name.'<p>'.get_shift_languages_string('To protect our serious users from unwanted registrations, it is important that you validate your registration', $sitelang).' '.get_shift_languages_string('by visiting the following URL', $sitelang).': </p>
+        <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>'.get_shift_languages_string('Thank you for your understanding, and we look forward to seeing you on', $sitelang).' '.variable_get('site_name').'.';
+
+        $base_url = $GLOBALS['base_url'].'/'.path_to_theme();
+        $url_message = $GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token ;
+        $sender_image = "";
+        $content = mail_template($sender_image, $message, $sitelang);
+        if(isset($GLOBALS['mail_functions_old']) && $GLOBALS['mail_functions_old'] == 1){
+            sendByEmailTemplate($content, $to, $emailsubject, $url_message, $base_url, 'en', 3 ,"", 1);            
+        }else{
+            sendByEmailTemplate($name, $content, $to, $emailsubject, $url_message, $base_url, 'en', 3 , "", 1);
+        }*/
+    }
+    global $user;
+    $user_data = user_load($account->uid);
+    $user = $user_data;
+    drupal_session_regenerate();
+    $redirect = $GLOBALS['base_url'];
+    drupal_goto("$redirect");            
+}
+function elsayed_get_products($category = 0, $home = 0, $limit = 0, $page = 1, $category_type = 2){
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'product')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    $query->addMetaData('account', user_load(1)); 
+    if($category != 0){
+        $query->fieldCondition('field_category', 'target_id', $category, '=');
+    }
+    if($home != 0){
+        $query->fieldCondition('field_show_in_home', 'value', $home, '=');
+    }    
+    if($category == 0){
+        $categories = array();
+        if($category_type == 0 || $category_type == 1){
+            $categories_data = elsayed_get_categories_by_type($category_type);
+            $categories = array_keys($categories_data);                    
+        }
+        if(!empty($categories)){
+            $query->fieldCondition('field_category', 'target_id', $categories, 'IN');
+        }
+    }
+    $result = $query->execute();
+    $total_items_nids = array();
+    if (isset($result['node'])) {
+        $total_items_nids = array_keys($result['node']);
+    }
+    $return = array();
+    if($limit != 0) {
+        $start = ($page - 1) * $limit;       
+        $total_count = count($total_items_nids);
+        $items_nids = array_slice($total_items_nids, $start, $limit);
+        $items = entity_load('node', $items_nids);
+        $return['page_count'] = ceil($total_count / $limit);
+        $return['items'] = $items;
+    }else{
+        $items = entity_load('node', $total_items_nids);        
+        $return = $items;
+    }
+    return $return;  
+}
+function elsayed_products(){
+    $output = '';
+    return $output;	
+}
+function elsayed_articles(){
+    $output = '';
+    return $output; 	
+}
+function elsayed_draw_paging($page_count = 0, $page = 1){
+    $actual_link = elsayed_get_actual_link();
+    $rest_link = '';
+    if(strpos($actual_link, '?') !== FALSE){
+        if(strpos($actual_link, 'page=') !== FALSE){
+            $actual_link_exploded = explode('?', $actual_link);
+            if(isset($actual_link_exploded[1])){
+                $actual_link_exploded_exploded = explode('&', $actual_link_exploded[1]);
+                $actual_link = $actual_link_exploded[0].'?';
+                foreach ($actual_link_exploded_exploded as $key => $value) {
+                    if(strpos($value, 'page=') === FALSE){
+                        $actual_link .= $value.'&';
+                    }                    
+                }         
+                $actual_link = trim($actual_link, '&');   
+            }
+        }
+        $actual_link .= '&page=';
+    }else{
+        $actual_link .= '?page=';
+    }   
+    $return = '';
+    if($page_count > 1){
+        $return .= '<div class="pagination">
+                <div class="row">   
+                    <div class="col-md-12">
+                        <ul>';    
+        if($page > 1){
+            $prev = $page-1;
+            $class = '';
+            $a_begin = '<a href="'.$actual_link.$prev.'" title="Go to page '.$prev.'">';
+            $a_end = '</a>';
+            $return .= '<li class="'.$class.'">'.$a_begin.'Previous'.$a_end.'</li>';
+        }
+        $step = 10;
+        $start = $page - $step;                
+        $end = $start + 2 * $step;
+        if($end > $page_count){
+            $start = $page_count - 2 * $step;            
+        }
+        if($start < 1){
+            $start = 1;
+            $end = $start + 2 * $step;
+        }
+        for ($i=$start; $i <= $page_count; $i++) {
+            $class = '';
+            $a_begin = '<a href="'.$actual_link.$i.'" title="Go to page '.$i.'">';            
+            $a_end = '</a>';
+            if($i <= $end){                
+                if($i == $page){
+                    $class = 'pager-current';
+                    $a_begin = '<a title="page '.$i.'">';            
+                    $a_end = '</a>';
+                }                
+                $return .= '<li class="'.$class.'">'.$a_begin.$i.$a_end.'</li>';
+            }else{
+                break;
+            }          
+        }
+        if($page != $page_count){
+            $next = $page+1;
+            $class = '';
+            $a_begin = '<a href="'.$actual_link.$next.'" title="Go to page '.$next.'">';
+            $a_end = '</a>';
+            $return .= '<li class="'.$class.'">'.$a_begin.'Next'.$a_end.'</li>';
+        }
+        $return .= '</ul>
+                    </div>
+                </div>
+            </div>';
+    }
+    return $return; 
+}
+function elsayed_get_product_price($product, $symbol = 0){
+    $current_currency = elsayed_get_current_currency();
+    $field_value_versus_default = 0;    
+    if(isset($current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'])){
+        $field_value_versus_default = $current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'];
+    }
+    if(isset($current_currency->field_default[LANGUAGE_NONE][0]['value'])){
+        if($current_currency->field_default[LANGUAGE_NONE][0]['value'] == 1){
+            $field_value_versus_default = 1;
+        }
+    }
+    $field_price = '';
+    if(isset($product->field_price[LANGUAGE_NONE][0]['value'])){
+        $field_price = $product->field_price[LANGUAGE_NONE][0]['value'] * $field_value_versus_default;
+    }
+    if($symbol == 1){
+        if(isset($current_currency->field_symbol[LANGUAGE_NONE][0]['value'])){
+        $field_price .= $current_currency->field_symbol[LANGUAGE_NONE][0]['value'];
+        }        
+    }
+    return $field_price;
+}
+function elsayed_add_to_cart(){
+    if(user_is_logged_in()){
+        $nid = 0;
+        if(isset($_POST['nid'])){
+            $nid = $_POST['nid'];
+        }
+        $price = 0;
+        if(isset($_POST['price'])){
+            $price = $_POST['price'];
+        }
+        $quantity = 0;
+        if(isset($_POST['quantity'])){
+            $quantity = $_POST['quantity'];
+        }         
+        global $user;
+        $uid = $user->uid;  
+        if($nid > 0 && $quantity > 0){
+            $record = db_query('SELECT * FROM {orders_products} WHERE (nid = :nid) AND (uid = :uid) AND (order_id = 0)', 
+                                array(':nid' => $nid, ':uid' => $uid))->fetchObject();
+            if (empty($record)) {
+                $id = db_insert('orders_products')
+                        ->fields(array(
+                            'nid' => $nid,
+                            'price' => $price,
+                            'quantity' => $quantity,
+                            'order_id' => 0,
+                            'uid' => $uid,
+                        ))->execute();
+            } else {
+                $new_quantity = $record->quantity + $quantity;
+                    db_update('orders_products')
+                        ->fields(array(
+                            'price' => $price,
+                            'quantity' => $new_quantity,
+                        ))
+                        ->condition('id', $record->id, '=')->execute();
+            }
+        }
+        echo 'Added to cart.';
+    }else{
+        echo 'You must login!';
+    }
+}
+function elsayed_update_7100() {
+    $schema = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+            ),
+            'nid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => '0',
+            ),
+            'quantity' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => '0',
+            ),
+            'price' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => '0',
+            ),
+            'order_id' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => '0',
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+    db_create_table('orders_products', $schema);
+}
+function elsayed_submit_currency_node_form($form, &$form_state) {
+    $nid = 0;    
+    if (isset($form_state['values']['nid'])){
+        $nid = $form_state['values']['nid'];
+    }
+    if(isset($form_state['values']['field_default'][LANGUAGE_NONE][0]['value'])){
+        if($form_state['values']['field_default'][LANGUAGE_NONE][0]['value'] == 1){
+            $query = new EntityFieldQuery();
+            $query->entityCondition('entity_type', 'node')
+                    ->entityCondition('bundle', 'currency')
+                    ->propertyCondition('nid', $nid, '!=')
+                    ->propertyOrderBy('created', 'DESC');
+            $query->fieldCondition('field_default', 'value', 1, '=');
+            $query->addMetaData('account', user_load(1));
+            $result = $query->execute();
+            $items = array();
+            if (isset($result['node'])) {
+                $items_nids = array_keys($result['node']);
+                $items = entity_load('node', $items_nids);
+            }
+            if(!empty($items)){
+                foreach ($items as $key => $value) {
+                    $value->field_default[LANGUAGE_NONE][0]['value'] = 0;
+                    node_save($value);                    
+                }
+            }
+        }        
+    }
+}
+function elsayed_get_currencies(){
+    $currencies = array();
+    if(!isset($GLOBALS['currencies']) || empty($GLOBALS['currencies'])){
+        $currencies_nodes = db_query("SELECT n.nid
+                            FROM {node} n
+                            WHERE (n.status = 1) AND (n.type = 'currency')
+                            ORDER BY n.title ASC", 
+                            array())->fetchAll(); 
+        $items_nids =  array();
+        if(!empty($currencies_nodes)){
+            foreach ($currencies_nodes as $key => $value) {
+                $items_nids[] = $value->nid;
+            }
+        }        
+        if(!empty($items_nids)){
+            $currencies = entity_load('node', $items_nids);
+        }	
+        $GLOBALS['currencies'] = $currencies;
+    }else{
+        $currencies = $GLOBALS['currencies'];        
+    }
+    return $currencies;
+}
+function elsayed_get_current_currency(){
+    $default_currency = elsayed_get_default_currency();    
+    $current_currency = array();
+    if(!user_is_logged_in()){
+        //session_start();
+        if(isset($_SESSION['current_currency'])){            
+            $current_currency = node_load($_SESSION['current_currency']);
+        }else{
+            $current_currency = $default_currency;
+        }
+    }else{    
+        if(!isset($GLOBALS['current_currency']) || empty($GLOBALS['current_currency'])){
+            if(!isset($GLOBALS['user_data']) || empty($GLOBALS['user_data'])){
+                global $user;
+                $user_data = user_load($user->uid);
+                $GLOBALS['user_data'] = $user_data;             
+            }else{
+                $user_data = $GLOBALS['user_data'];                
+            }
+            if(isset($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'])){
+                if($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'] > 0){
+                    $current_currency = node_load($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id']);                    
+                }                
+            }
+            if(empty($current_currency)){
+                $current_currency = $default_currency;
+            }
+            $GLOBALS['current_currency'] = $current_currency;
+        }else{
+            $current_currency = $GLOBALS['current_currency'];        
+        }
+    }
+    return $current_currency;	
+}
+function elsayed_get_default_currency(){
+    $default_currency = array();    
+    if(!isset($GLOBALS['default_currency']) || empty($GLOBALS['default_currency'])){
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'node')
+                ->entityCondition('bundle', 'currency')
+                ->propertyCondition('status', 1)
+                ->propertyOrderBy('created', 'DESC');
+        $query->fieldCondition('field_default', 'value', 1, '=');
+        $query->addMetaData('account', user_load(1));
+        $result = $query->execute();
+        $items_nids = array();
+        if (isset($result['node'])) {
+            $items_nids = array_keys($result['node']);
+        }
+        if(isset($items_nids[0])){
+            $default_currency = node_load($items_nids[0]);
+        }	
+        $GLOBALS['default_currency'] = $default_currency;
+    }else{
+        $default_currency = $GLOBALS['default_currency'];        
+    }
+    return $default_currency;   
+}
+function elsayed_change_currency(){
+    $actual_link = $GLOBALS['base_url'];
+    if(isset($_POST['actual_link'])){
+        $actual_link = $_POST['actual_link'];
+    }    
+    if(isset($_POST['currency_select'])){
+        $currency_select = $_POST['currency_select'];
+    }else{
+        $default_currency = elsayed_get_default_currency();
+        $currency_select = $default_currency->nid;         
+    }
+    if(!user_is_logged_in()){
+        //session_start();
+        $_SESSION['current_currency'] = $currency_select;
+    }else{
+        global $user;
+        $user_data = user_load($user->uid);
+        $user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'] = $currency_select;
+        user_save($user_data);
+    }    
+    drupal_goto("$actual_link");   
+}
+function elsayed_update_7101(){
+    $uid = array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => '0',
+    );
+    db_add_field('orders_products', 'uid', $uid);
+}
+function elsayed_update_7102() {
+    $price = array(
+        'type' => 'float',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => '0',
+    );
+    db_change_field('orders_products', 'price', 'price', $price);
+}
+function elsayed_get_cart_query($uid = 0){
+    $records = array();
+    if($uid == 0){
+        global $user;
+        $uid = $user->uid;
+    }
+    if($uid != 0){
+        $records = db_query('SELECT *
+                        FROM {orders_products} WHERE(uid = :uid) AND (order_id = 0)', 
+                            array(':uid' => $uid))->fetchAll();	
+    }
+    return $records;
+}
+function elsayed_get_cart_summary(){
+    $quantity = 0;
+    $price = 0;
+    global $user;
+    $uid = $user->uid;
+    if(user_is_logged_in()){
+        $records = elsayed_get_cart_query($uid);
+        if(!empty($records)){
+            foreach ($records as $key => $record) {
+                $quantity += $record->quantity;
+                $price_in = $record->quantity * $record->price;
+                $price += $price_in;                
+            }
+        }
+    }
+    $data = array();
+    $data['quantity'] = $quantity;    
+    $current_currency = elsayed_get_current_currency();
+    $field_value_versus_default = 0;    
+    if(isset($current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'])){
+        $field_value_versus_default = $current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'];
+    }
+    if(isset($current_currency->field_default[LANGUAGE_NONE][0]['value'])){
+        if($current_currency->field_default[LANGUAGE_NONE][0]['value'] == 1){
+            $field_value_versus_default = 1;
+        }
+    }
+    $data['default_price'] = $price;
+    $price = $price * $field_value_versus_default;    
+    $price_with_symbol = '';
+    if(isset($current_currency->field_symbol[LANGUAGE_NONE][0]['value'])){
+        $price_with_symbol = $price.$current_currency->field_symbol[LANGUAGE_NONE][0]['value'];
+    }        
+    $data['price'] = $price;
+    $data['price_with_symbol'] = $price_with_symbol;
+    return $data;
+}
+function elsayed_get_cart_info_text(){
+    $cart_summary = elsayed_get_cart_summary();
+    $text = '<a href="'.$GLOBALS['base_url'].'/cart"><i class="fa fa-shopping-cart"></i>
+             ('.$cart_summary['quantity'].' '.t('items').'</a>) '.t('in your cart').' (<a href="'.$GLOBALS['base_url'].'/cart">'.
+             $cart_summary['price_with_symbol'].'</a>)';  	
+     return $text;
+}
+function elsayed_refresh_cart_info_text(){
+    echo elsayed_get_cart_info_text();	
+}
+function elsayed_get_news_home(){
+    $start = 0;
+    $limit = 10;
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'article')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    $query->fieldCondition('field_show_in_home', 'value', 1, '=');    
+    $query->addMetaData('account', user_load(1)); 
+    $query->range($start, $limit);   
+    $result = $query->execute();
+    if (isset($result['node'])) {
+        $items_nids = array_keys($result['node']);
+        $items = entity_load('node', $items_nids);
+    }
+    return $items;  
+}
+function elsayed_get_articles($limit = 0, $page = 1){
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'article')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    $query->addMetaData('account', user_load(1)); 
+    $result = $query->execute();
+    $total_items_nids = array();
+    if (isset($result['node'])) {
+        $total_items_nids = array_keys($result['node']);
+    }
+    $return = array();
+    if($limit != 0) {
+        $start = ($page - 1) * $limit;       
+        $total_count = count($total_items_nids);
+        $items_nids = array_slice($total_items_nids, $start, $limit);
+        $items = entity_load('node', $items_nids);
+        $return['page_count'] = ceil($total_count / $limit);
+        $return['items'] = $items;
+    }else{
+        $items = entity_load('node', $total_items_nids);        
+        $return = $items;
+    }
+    return $return;  
+}
+function elsayed_cart(){
+    if(!user_is_logged_in()){
+        $redirect = $GLOBALS['base_url'].'#sign-in';
+        drupal_goto("$redirect");
+    }
+    $output = '';
+    return $output; 	
+}
+function elsayed_get_cart(){
+    global $user;
+    $uid = $user->uid;
+    $records = array();
+    if(user_is_logged_in()){
+        $records = elsayed_get_cart_query($uid);
+    }
+    return $records;   
+}
+function elsayed_remove_from_cart(){
+    $arg1 = arg(1);
+    global $user;
+    $uid = $user->uid;
+    if(user_is_logged_in()){
+        $num_deleted = db_delete('orders_products')
+              ->condition('uid', $uid)
+              ->condition('order_id', 0)
+              ->condition('nid', $arg1)
+              ->execute();
+    }         
+    $redirect = $GLOBALS['base_url'].'/cart';
+    drupal_goto("$redirect");      
+}
+function elsayed_update_cart(){
+    $redirect = $GLOBALS['base_url'];
+    global $user;
+    $uid = $user->uid;
+    if(user_is_logged_in()){
+        if(!empty($_POST)){
+            foreach ($_POST as $key => $value) {
+                if(is_numeric($key)){
+                    if($value > 0){
+                        db_update('orders_products')
+                            ->fields(array(
+                                'quantity' => $value,
+                            ))
+                            ->condition('id', $key, '=')
+                            ->condition('uid', $uid, '=')
+                            ->execute();
+                    }
+                }            
+            }
+        }
+        if(isset($_POST['continue'])){
+            $redirect = $GLOBALS['base_url'];
+        }elseif(isset($_POST['checkout'])){
+            $redirect = $GLOBALS['base_url'].'/checkout';
+        }
+    }
+    drupal_goto("$redirect");  	
+}
+function elsayed_user_login_form_submit($form, &$form_state) {
+    drupal_goto($_SESSION['last_page']);
+}
+function elsayed_checkout(){
+    if(!user_is_logged_in()){
+        $redirect = $GLOBALS['base_url'].'#sign-in';
+        drupal_goto("$redirect");  
+    }
+    $output = '';
+    return $output;     
+}
+function elsayed_cancel_payment(){
+    $output = '';
+    return $output;	
+}
+function elsayed_success_payment(){
+    $output = '';
+    return $output; 	
+}
+function elsayed_ip_info($ip = NULL, $deep_detect = TRUE) {
+    $output = NULL;
+    if (filter_var($ip, FILTER_VALIDATE_IP) === FALSE) {
+        $ip = $_SERVER["REMOTE_ADDR"];
+        if ($deep_detect) {
+            if (filter_var(@$_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP))
+                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            if (filter_var(@$_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP))
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+        }
+    }
+    if($ip == '127.0.0.1'){
+        $output = 'EG';
+    }
+    if (filter_var($ip, FILTER_VALIDATE_IP)) {
+        $ipdat = @json_decode(file_get_contents("http://ipinfo.io/".$ip));
+        if(!empty($ipdat)){
+            if(isset($ipdat->country)){
+                $output = $ipdat->country;
+            }
+        }
+    }
+    return $output;
+}
+function elsayed_get_cart_json(){
+    $records = elsayed_get_cart();
+    $data = array();
+    if(!empty($records)){
+        foreach ($records as $key => $record) {
+            $quantity = $record->quantity;                 
+            $nid = $record->nid;	
+            $data[$nid] = $quantity;
+        }
+    }
+    return json_encode($data);
+}
+function elsayed_is_user_admin($uid = 0){
+    $is_admin = 0;
+    if ($uid == 0) {
+        global $user;
+        $userdata = $user;
+    } else {
+        $userdata = user_load($uid);
+    }   
+    if($user->uid == 1){
+        $is_admin = 1;        
+    }
+    if (in_array('administrator', $user->roles)) {
+        $is_admin = 1;
+    }
+    return $is_admin;
+}
+function elsayed_get_last_order_info($uid = 0){
+    $data = array();
+    $data['phone'] = '';
+    $data['address1'] = '';
+    $data['address2'] = '';
+    $data['country'] = '';
+    $data['zip'] = '';
+    $data['city'] = '';
+    if ($uid == 0) {
+        global $user;
+        $uid = $user->uid;
+    }	
+    $record = db_query('SELECT * FROM {orders} WHERE (uid = :uid)', 
+                                array(':uid' => $uid))->fetchObject();
+    if(!empty($record)){
+        $data['phone'] = $record->phone;
+        $data['address1'] = $record->address1;
+        $data['address2'] = $record->address2;
+        $data['country'] = $record->country;
+        $data['zip'] = $record->zip;
+        $data['city'] = $record->city;        
+    }
+    return $data;
+}
+function elsayed_search() {	
+	$output = '';
+    return $output;
+}
+function elsayed_get_categories_by_type($category_type = 1){
+	$categories = array();
+    $data = array();
+	if(!isset($GLOBALS['categories']) || empty($GLOBALS['categories'])){
+		$query = new EntityFieldQuery();
+	    $query->entityCondition('entity_type', 'node')
+	            ->entityCondition('bundle', 'category')
+	            ->propertyCondition('status', 1)
+	            ->propertyOrderBy('title', 'ASC');
+	        $query->fieldCondition('field_branding', 'value', 1, '=');
+	    $query->addMetaData('account', user_load(1));    
+	    $result = $query->execute();
+	    $brands_categories_data = array();
+	    $brands_nids = array();
+	    if (isset($result['node'])) {
+	        $brands_nids = array_keys($result['node']);
+	        $brands_categories_data = entity_load('node', $brands_nids);
+	    }
+	    //brands categories
+	    $brands_categories = array();
+	    if(!empty($brands_categories_data)) {
+	    	foreach ($brands_categories_data as $key => $category) {
+	    		$brands_categories[$key] = $category->title; 
+	    	}
+	    }
+	    //other categories
+	    $other_categories = array();
+	    $other_categories_data = array();
+        if(!empty($brands_nids)){
+	       $other_categories_data= db_query("SELECT nid,title  FROM {node} n  
+	    	WHERE (n.type = 'category') AND (n.nid NOT IN (:nids)) AND (n.status =1) ORDER BY title ASC ", array(':nids' => $brands_nids))->fetchALL();
+    	}else{
+    	    $other_categories_data= db_query("SELECT nid,title  FROM {node} n  
+            WHERE (n.type = 'category') AND (n.status =1) ORDER BY title ASC ", array())->fetchALL();
+    	}
+	    if(!empty($other_categories_data)) {
+	    	foreach ($other_categories_data as $key => $category) {
+	    		$other_categories [$category->nid] = $category->title;
+	    	}
+	    }
+        $data['brands_categories'] = $brands_categories;
+        $data['other_categories'] = $other_categories;
+	    $GLOBALS['categories'] = $data;
+	} else {
+		$data = $GLOBALS['categories'];
+	}
+	$categories = $data['brands_categories'];
+    if($category_type == 0) {
+        $categories = $data['other_categories'];
+    }
+	return $categories;
+}
+function elsayed_get_header_menu(){
+	global $base_url;
+	$items = array();	
+	$active_class = 'active';
+	$class = '';
+	$is_front_page = drupal_is_front_page();
+	if($is_front_page){
+		$class = $active_class;		
+	}
+	$items[] = array('title' => __('Home'), 'link' => $base_url, 'class' => $class);
+	$class = '';
+	$items[] = array('title' => __('About me'), 'link' => $base_url, 'class' => $class);
+	$class = '';
+	$items[] = array('title' => __('Projects'), 'link' => $base_url, 'class' => $class);
+	$class = '';
+	$items[] = array('title' => __('Contact Us'), 'link' => $base_url, 'class' => $class);	
+	return $items;
+}
+function __($text = ''){
+	return $text;	
+}
+function elsayed_access_denied(){
+	$output = '';
+    return $output;	
+}
