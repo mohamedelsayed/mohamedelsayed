@@ -2,7 +2,7 @@
  * @author Author "Mohamed Elsayed"  
  * @author Author Email "me@mohamedelsayed.net"
  * @link http://www.mohamedelsayed.net
- * @copyright Copyright (c) 2015 Programming by "http://www.mohamedelsayed.net"
+ * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
 module_load_include('inc', 'content', 'includes/password');
 function elsayed_init(){
@@ -1393,8 +1393,8 @@ function elsayed_get_header_menu(){
 	$items[] = array('title' => __('Contact Us'), 'link' => $base_url, 'class' => $class);	
 	return $items;
 }
-function __($text = ''){
-	return $text;	
+function __($string = '', $lang = ''){
+	return $string;	
 }
 function elsayed_access_denied(){
 	$output = '';
