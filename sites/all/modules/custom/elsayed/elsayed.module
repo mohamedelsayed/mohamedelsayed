@@ -141,6 +141,14 @@ function elsayed_menu() {
         'type' => MENU_CALLBACK,
         'access arguments' => array('access content'),
     );
+	$items['admin/custom/custom-settings'] = array(
+        'title' => 'Custom Settings',
+        'type' => MENU_NORMAL_ITEM,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('elsayed_custom_setting_form'),
+        'access arguments' => array('access adminstration page'),
+        'access callback' => true,
+    );
     return $items;
 }
 function elsayed_user_edit() {
@@ -1399,4 +1407,50 @@ function __($string = '', $lang = ''){
 function elsayed_access_denied(){
 	$output = '';
     return $output;	
+}
+function elsayed_custom_setting_form($form, &$form_state) {
+    $form['facebook_url'] = array(
+        '#title' => __('Facebook URL'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => false,
+        '#default_value' => variable_get('facebook_url', ''),
+    );
+	$form['twitter_url'] = array(
+        '#title' => __('Twitter URL'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => false,
+        '#default_value' => variable_get('twitter_url', ''),
+    );
+	$form['google_plus_url'] = array(
+        '#title' => __('Google Plus URL'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => false,
+        '#default_value' => variable_get('google_plus_url', ''),
+    );
+	$form['linkedin_url'] = array(
+        '#title' => __('Linkedin URL'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => false,
+        '#default_value' => variable_get('linkedin_url', ''),
+    );
+    $form['#validate'][] = 'elsayed_custom_setting_form_validation';
+    return system_settings_form($form);
+}
+function elsayed_custom_setting_form_validation($form, &$form_state) { 
+    /*$questions = $form_state['values']['qbank_num_questions'];
+    if (!is_numeric($questions)) {
+        form_set_error('qbank_num_questions', get_shift_languages_string('Number of questions must be numeric'));
+    } elseif ($questions <= 0) {
+        form_set_error('qbank_num_questions', get_shift_languages_string('Number of questions must be greater than 0'));
+    }
+    $days = $form_state['values']['qbank_question_days'];
+    if (!is_numeric($days)) {
+        form_set_error('qbank_question_days', get_shift_languages_string('Number of Days must be numeric'));
+    } elseif ($days <= 0) {
+        form_set_error('qbank_question_days', get_shift_languages_string('Number of Days must be greater than 0'));
+    }*/
 }
