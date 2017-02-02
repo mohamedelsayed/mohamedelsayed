@@ -28,6 +28,7 @@ function adminimal_preprocess_html(&$vars) {
   // Add default styles.
   drupal_add_css($adminimal_path . '/css/reset.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => -999));
   drupal_add_css($adminimal_path . '/css/style.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
+  drupal_add_css($adminimal_path . '/css/font-awesome.min.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
   // Add conditional CSS for IE8 and below.
   drupal_add_css($adminimal_path . '/css/ie.css', array('group' => CSS_THEME, 'browsers' => array('IE' => 'lte IE 8', '!IE' => FALSE), 'weight' => 999, 'preprocess' => TRUE));
@@ -106,6 +107,7 @@ function adminimal_preprocess_html(&$vars) {
   // Add responsive styles.
   drupal_add_css($adminimal_path . '/css/mobile.css', array('group' => CSS_THEME, 'media' => $media_query_mobile, 'weight' => 1000));
   drupal_add_css($adminimal_path . '/css/tablet.css', array('group' => CSS_THEME, 'media' => $media_query_tablet, 'weight' => 1000));
+  drupal_add_css($adminimal_path . '/css/font-awesome.min.css', array('group' => CSS_THEME, 'media' => $media_query_tablet, 'weight' => 1000));
 
   // Add custom CSS.
   $custom_css_path = 'public://adminimal-custom.css';

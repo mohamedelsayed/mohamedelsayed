@@ -5,11 +5,13 @@
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
 module_load_include('inc', 'content', 'includes/password');
+require "PHPMailer/PHPMailerAutoload.php";
 function elsayed_init(){
     elsayed_update_node_language();
     $GLOBALS['google_api_key'] = 'AIzaSyDGGlo0fNATzYKU761Fx-8VAIJDXu-b3QM';  
     $GLOBALS['limit'] = 6;
-    $GLOBALS['default_image'] = $GLOBALS['base_url'].'/'.path_to_theme().'/img/blank.png';
+    $GLOBALS['default_image'] = $GLOBALS['base_url'].'/'.path_to_theme().'/img/blank.png';	
+	elsayed_redirect_admin_to_dashboard();
 }
 function elsayed_menu() {
     $items['page_not_found'] = array(
@@ -25,14 +27,15 @@ function elsayed_menu() {
         'access arguments' => array('access content')
     );
     $items['contact-us-form'] = array(
-        'title' => t('Contact us'),
+        'title' => __('Contact us'),
         'page callback' => 'elsayed_contact_us_form',
         'page arguments' => array(),
         'type' => MENU_CALLBACK,
         'access arguments' => array('access content'),
+        'delivery callback' => 'drupal_json_output',
     );
     $items['register-form'] = array(
-        'title' => t('Register'),
+        'title' => __('Register'),
         'page callback' => 'elsayed_register_form_custom',
         'page arguments' => array(),
         'type' => MENU_CALLBACK,
@@ -62,7 +65,7 @@ function elsayed_menu() {
         'delivery callback' => 'drupal_json_output',
     );   
     $items['change_currency'] = array(
-        'title' => t('Change Currency'),
+        'title' => __('Change Currency'),
         'page callback' => 'elsayed_change_currency',
         'page arguments' => array(),
         'type' => MENU_CALLBACK,
@@ -148,6 +151,22 @@ function elsayed_menu() {
         'page arguments' => array('elsayed_custom_setting_form'),
         'access arguments' => array('access adminstration page'),
         'access callback' => true,
+    );
+	$items['admin/custom/content'] = array(
+    'title' => 'Content',
+    'description' => 'Find and manage content.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elsayed_node_admin_content'),
+    'access arguments' => array('access content overview'),
+    'weight' => -10,
+    'file' => 'node.admin.inc',
+  	);
+	$items['videos'] = array(
+        'title' => 'Videos',
+        'page callback' => 'elsayed_videos',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
     );
     return $items;
 }
@@ -266,7 +285,9 @@ function elsayed_get_slider_widget(){
     return $items;	
 }
 function elsayed_contact_us_form(){
-    $base_url_with_lang = elsayed_get_base_url_with_lang();
+	$data = array();
+	$data['error'] = 1;
+	$data['msg'] = '';
     if(isset($_POST)){
         if(!empty($_POST)){
             $name = '';
@@ -285,36 +306,46 @@ function elsayed_contact_us_form(){
             if(isset($_POST['message'])){
                 $message = $_POST['message'];                
             }
-            $phone = '';
-            if(isset($_POST['phone'])){
-                $phone = $_POST['phone'];                
-            }
-            $emailTo = '';
-            $mailsubject = '';
-            if(isset($_POST['nid'])){
-                $nid = $_POST['nid'];                
-                $node = node_load($nid);
-                if(isset($node->field_to_email[LANGUAGE_NONE][0]['email'])){
-                    $emailTo = $node->field_to_email[LANGUAGE_NONE][0]['email'];
-                    $mailsubject = $node->title;
-                }
-            }
+            $mailsubject = variable_get('site_name').' - '.'اتصل بنا';
+			$emailTo = variable_get('contact_mail');
             $tpl = file_get_contents(drupal_get_path('module', 'elsayed').'/emails/contactus.html');
-            $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}', '{{phone}}'), 
-                                        array($mailsubject, $name, $email, $subject, $message, $phone), $tpl);            
+            $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}'), 
+                                        array($mailsubject, $name, $email, $subject, $message), $tpl);            
             $headers = "From: ".$name." <".$email.">"."\r\n";
             $headers .= "Reply-To: ".strip_tags($email)."\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
             if($emailTo != ''){
-                if(mail($emailTo, $subject, $html_message, $headers)){
-                    echo t('Thank you for your message. We will get back to you the soonest.');
-                }else{
-                    echo t('There was a problem sending the Email. Please try again.');
+            	$mail = new PHPMailer();
+                $mail->IsSMTP();
+                $mail->SMTPAuth = true;
+                $mail->CharSet = "UTF-8";
+                //$mail->SMTPSecure = 'tls';
+                $mail->Host = 'mail.mohamedelsayed.net';
+                $mail->Port = 26;
+                $mail->Username = "elsakka@mohamedelsayed.net";
+                $mail->Password = "50NnPs0bHEy5";
+                $mail->From = $email;
+                $mail->FromName = $name;
+                $mail->addAddress($emailTo, variable_get('site_name'));
+				//$mail->addCC("cc@example.com");
+				//$mail->addBCC("cc@example.com");
+                $mail->isHTML(true);
+                $mail->Subject = $mailsubject;
+                $mail->Body = $html_message;
+                $mail->AltBody = "This is the plain text version of the email content";
+                if ($mail->send()) {
+                //if(mail($emailTo, $subject, $html_message, $headers)){
+                    $data['msg'] = __('Thank you for your message. We will get back to you the soonest.');
+                    $data['error'] = 0;
+                }else{                	
+                    $data['msg'] = __('There was a problem sending the Email. Please try again.');
+					$data['error'] = 1;
                 }
             }
        }
     }	
+	return $data;
 }
 function elsayed_update_node_language() {
     db_query("UPDATE `node` SET `language` = '".LANGUAGE_NONE."' WHERE `node`.`language` != '".LANGUAGE_NONE."'");
@@ -362,6 +393,31 @@ function elsayed_form_alter(&$form, &$form_state, $form_id){
     if ($form_id == 'user_login') {
         $form['#submit'][] = 'elsayed_user_login_form_submit';
     }
+	if(isset($form['#node']) && $form_id == 'widget_node_form'){		
+		$info = field_info_field('field_identifier');
+		$values = &$info['settings']['allowed_values'];
+		if(!isset($values['products'])){
+			$values['products'] = 'Products';
+			field_update_field($info);
+		}
+		if(!isset($values['home_video'])){
+			$values['home_video'] = 'Top Home Video';
+			field_update_field($info);
+		}
+		if(!isset($values['videos'])){
+			$values['videos'] = 'Videos';
+			field_update_field($info);
+		}
+		$arg1 = arg(1);
+		if($arg1 == 5){
+			$form['field_video_file'][LANGUAGE_NONE][0]['#required'] = 1;			
+		}else{
+			$form['field_video_file']['#access'] = 0;
+		}
+	}
+	if ($form_id == 'video_node_form') {
+		$form['#validate'][] = 'elsayed_video_node_form_form_validation';
+	}
 }
 function elsayed_form_node_delete_confirm_alter(&$form, $form_state) {
     if(isset($form['nid']['#value'])){
@@ -446,7 +502,7 @@ function elsayed_page_validate(&$form, &$form_state){
         $items = entity_load('node', $items_nids);
     }
     if(!empty($items)){
-        form_set_error('title', t("Content can't be added."));
+        form_set_error('title', __("Content can't be added."));
     }
 }
 function elsayed_contact_us_validate(&$form, &$form_state){
@@ -472,7 +528,7 @@ function elsayed_contact_us_validate(&$form, &$form_state){
         $items = entity_load('node', $items_nids);
     }
     if(!empty($items)){
-        form_set_error('title', t("Content can't be added."));
+        form_set_error('title', __("Content can't be added."));
     }
 }
 function elsayed_slugify($text) {
@@ -543,58 +599,58 @@ function elsayed_validate_register_new_user($name, $mail, $pass1, $pass2, $field
     $name_arr = explode(' ', $name);
     if (strpos($name, ' ') > 0 || $name_arr[0] == '' || $hasUpperCaseLetter) {
         $output['error'] = TRUE;
-        $output['msg']['name'] = t('Usernames cannot contain spaces or capital letters.');
+        $output['msg']['name'] = __('Usernames cannot contain spaces or capital letters.');
         //t('Usernames cannot contain spaces or capital letters.');
     }
     $user = user_load_by_name($name);
     if ($user) {
         $output['error'] = TRUE;
-        $output['msg']['name'] = t('Username already exists.');
+        $output['msg']['name'] = __('Username already exists.');
         //t('Username already exists.');
     }
     if (strlen($name) < 1) {
         $output['error'] = TRUE;
-        $output['msg']['name'] = t('Username is required.');
+        $output['msg']['name'] = __('Username is required.');
         //t('Username is required.');
     }
     if ($mail_exist) {
         $output['error'] = TRUE;
-        $output['msg']['mail'] = t('Email already exists.');
+        $output['msg']['mail'] = __('Email already exists.');
         //t('Email already exists.');
     }
     if ($name_mail_exist1) {
         $output['error'] = TRUE;
-        $output['msg']['name'] = t('Email or Username already exists.');
+        $output['msg']['name'] = __('Email or Username already exists.');
         //t('Email already exists.');
     }
     if ($name_mail_exist2) {
         $output['error'] = TRUE;
-        $output['msg']['mail'] = t('Email or Username already exists.');
+        $output['msg']['mail'] = __('Email or Username already exists.');
         //t('Email already exists.');
     }
     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
         $output['error'] = TRUE;
-        $output['msg']['mail'] = t('Email is not valid.');
+        $output['msg']['mail'] = __('Email is not valid.');
         //t('Email is not valid.');
     }
     if (strlen($pass1) < 6) {
         $output['error'] = TRUE;
-        $output['msg']['pass'] = t('Password must be at least 6 characters.');
+        $output['msg']['pass'] = __('Password must be at least 6 characters.');
         //t('Password must be at least 6 characters.');     
     }
     if ($pass1 != $pass2) {
         $output['error'] = TRUE;
-        $output['msg']['pass'] = t("Passwords don't match.");
+        $output['msg']['pass'] = __("Passwords don't match.");
         //t("Passwords don't match.");
     }
     if (strlen($field_first_name) < 1) {
         $output['error'] = TRUE;
-        $output['msg']['field_first_name'] = t('First Name is required.');
+        $output['msg']['field_first_name'] = __('First Name is required.');
         //t('First Name is required.');
     }
     if (strlen($field_last_name) < 1) {
         $output['error'] = TRUE;
-        $output['msg']['field_last_name'] = t('Last Name is required.');
+        $output['msg']['field_last_name'] = __('Last Name is required.');
         //t('Last Name is required.');
     }
     if ($output['error'] == TRUE) {
@@ -624,7 +680,7 @@ function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_na
       $form_state['values']['pass']['pass2'] = $pass2;
       $form_state['values']['field_first_name'][LANGUAGE_NONE][0]['value'] = $field_first_name;
       $form_state['values']['field_last_name'][LANGUAGE_NONE][0]['value'] = $field_last_name;
-      $form_state['values']['op'] = t('Create new account');
+      $form_state['values']['op'] = __('Create new account');
       drupal_form_submit('user_register_form', $form_state); */
     /* $new_user = array(
       'name' => $name,
@@ -671,8 +727,8 @@ function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_na
         <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>
         Thank you for your understanding, and we look forward to seeing you on '.variable_get('site_name').'.';
         */
-        /*$message = get_shift_languages_string('Thank you for registering at', $sitelang).' '.variable_get('site_name').'.'.get_shift_languages_string('Your username is', $sitelang).': '.$account->name.'<p>'.get_shift_languages_string('To protect our serious users from unwanted registrations, it is important that you validate your registration', $sitelang).' '.get_shift_languages_string('by visiting the following URL', $sitelang).': </p>
-        <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>'.get_shift_languages_string('Thank you for your understanding, and we look forward to seeing you on', $sitelang).' '.variable_get('site_name').'.';
+        /*$message = __('Thank you for registering at', $sitelang).' '.variable_get('site_name').'.'.__('Your username is', $sitelang).': '.$account->name.'<p>'.__('To protect our serious users from unwanted registrations, it is important that you validate your registration', $sitelang).' '.__('by visiting the following URL', $sitelang).': </p>
+        <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>'.__('Thank you for your understanding, and we look forward to seeing you on', $sitelang).' '.variable_get('site_name').'.';
 
         $base_url = $GLOBALS['base_url'].'/'.path_to_theme();
         $url_message = $GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token ;
@@ -691,7 +747,7 @@ function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_na
     $redirect = $GLOBALS['base_url'];
     drupal_goto("$redirect");            
 }
-function elsayed_get_products($category = 0, $home = 0, $limit = 0, $page = 1, $category_type = 2){
+function elsayed_get_products($category = 0, $home = 0, $limit = 0, $page = 1){
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -705,16 +761,6 @@ function elsayed_get_products($category = 0, $home = 0, $limit = 0, $page = 1, $
     if($home != 0){
         $query->fieldCondition('field_show_in_home', 'value', $home, '=');
     }    
-    if($category == 0){
-        $categories = array();
-        if($category_type == 0 || $category_type == 1){
-            $categories_data = elsayed_get_categories_by_type($category_type);
-            $categories = array_keys($categories_data);                    
-        }
-        if(!empty($categories)){
-            $query->fieldCondition('field_category', 'target_id', $categories, 'IN');
-        }
-    }
     $result = $query->execute();
     $total_items_nids = array();
     if (isset($result['node'])) {
@@ -737,6 +783,10 @@ function elsayed_get_products($category = 0, $home = 0, $limit = 0, $page = 1, $
 function elsayed_products(){
     $output = '';
     return $output;	
+}
+function elsayed_videos(){
+	$output = '';
+    return $output;		
 }
 function elsayed_articles(){
     $output = '';
@@ -767,14 +817,14 @@ function elsayed_draw_paging($page_count = 0, $page = 1){
     if($page_count > 1){
         $return .= '<div class="pagination">
                 <div class="row">   
-                    <div class="col-md-12">
-                        <ul>';    
+                    <div class="col-md-12" style="text-align:center">
+                        <ul class="pagination_in">';    
         if($page > 1){
             $prev = $page-1;
             $class = '';
-            $a_begin = '<a href="'.$actual_link.$prev.'" title="Go to page '.$prev.'">';
+            $a_begin = '<a href="'.$actual_link.$prev.'" title="'.__('إذهب إلى').' '.$prev.'">';
             $a_end = '</a>';
-            $return .= '<li class="'.$class.'">'.$a_begin.'Previous'.$a_end.'</li>';
+            $return .= '<li class="'.$class.'">'.$a_begin.__('السابق').$a_end.'</li>';
         }
         $step = 10;
         $start = $page - $step;                
@@ -788,11 +838,11 @@ function elsayed_draw_paging($page_count = 0, $page = 1){
         }
         for ($i=$start; $i <= $page_count; $i++) {
             $class = '';
-            $a_begin = '<a href="'.$actual_link.$i.'" title="Go to page '.$i.'">';            
+            $a_begin = '<a href="'.$actual_link.$i.'" title="'.__('إذهب إلى').' '.$i.'">';            
             $a_end = '</a>';
             if($i <= $end){                
                 if($i == $page){
-                    $class = 'pager-current';
+                    $class = 'active';
                     $a_begin = '<a title="page '.$i.'">';            
                     $a_end = '</a>';
                 }                
@@ -806,7 +856,7 @@ function elsayed_draw_paging($page_count = 0, $page = 1){
             $class = '';
             $a_begin = '<a href="'.$actual_link.$next.'" title="Go to page '.$next.'">';
             $a_end = '</a>';
-            $return .= '<li class="'.$class.'">'.$a_begin.'Next'.$a_end.'</li>';
+            $return .= '<li class="'.$class.'">'.$a_begin.__('التالي').$a_end.'</li>';
         }
         $return .= '</ul>
                     </div>
@@ -1409,6 +1459,20 @@ function elsayed_access_denied(){
     return $output;	
 }
 function elsayed_custom_setting_form($form, &$form_state) {
+	$form['site_name'] = array(
+        '#title' => __('Site Name'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => true,
+        '#default_value' => variable_get('site_name', ''),
+    );
+	$form['contact_mail'] = array(
+        '#title' => __('Contact Email'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => true,
+        '#default_value' => variable_get('contact_mail', ''),
+    );	
     $form['facebook_url'] = array(
         '#title' => __('Facebook URL'),
         '#discription' => __(''),
@@ -1437,20 +1501,134 @@ function elsayed_custom_setting_form($form, &$form_state) {
         '#required' => false,
         '#default_value' => variable_get('linkedin_url', ''),
     );
+	$form['google_analytics_propertyid'] = array(
+        '#title' => __('Google Analytics Property ID'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => false,
+        '#default_value' => variable_get('google_analytics_propertyid', ''),
+    );	
     $form['#validate'][] = 'elsayed_custom_setting_form_validation';
     return system_settings_form($form);
 }
 function elsayed_custom_setting_form_validation($form, &$form_state) { 
-    /*$questions = $form_state['values']['qbank_num_questions'];
-    if (!is_numeric($questions)) {
-        form_set_error('qbank_num_questions', get_shift_languages_string('Number of questions must be numeric'));
-    } elseif ($questions <= 0) {
-        form_set_error('qbank_num_questions', get_shift_languages_string('Number of questions must be greater than 0'));
+    $contact_mail = $form_state['values']['contact_mail'];
+	if(trim($contact_mail) != ''){
+		if (filter_var($contact_mail, FILTER_VALIDATE_EMAIL) === false) {
+			form_set_error('contact_mail', __('Email must be valid.'));
+		}
+	}    
+}
+function elsayed_get_home_widgets(){
+    $start = 0;
+    $limit = 10;
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'widget')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    $query->addMetaData('account', user_load(1));
+    $query->range($start, $limit); 
+    $result = $query->execute();
+    if (isset($result['node'])) {
+        $items_nids = array_keys($result['node']);
+        $items = entity_load('node', $items_nids);
     }
-    $days = $form_state['values']['qbank_question_days'];
-    if (!is_numeric($days)) {
-        form_set_error('qbank_question_days', get_shift_languages_string('Number of Days must be numeric'));
-    } elseif ($days <= 0) {
-        form_set_error('qbank_question_days', get_shift_languages_string('Number of Days must be greater than 0'));
-    }*/
+	$data = array();
+	if(!empty($items)){
+		foreach ($items as $key => $value) {
+			$data[$value->field_identifier[LANGUAGE_NONE][0]['value']] = $value;
+		}
+	}	
+    return $data;	
+}
+function elsayed_redirect_user_to_admin(){
+	$arg0 = arg(0);
+	if($arg0 == 'user'){
+		if(user_is_logged_in()){
+			if(elsayed_is_user_admin()){
+				global $base_url;
+				$redirect = $base_url.'/admin/dashboard';
+                drupal_goto("$redirect");  				
+			}
+		}		
+	}		
+}
+function elsayed_cut_string($str = '', $val = 0){
+	$return = '';
+	$str_without_tags = strip_tags($str);
+	$return = substr($str_without_tags, 0, $val);
+	/*$strArr = split(" ", $str_without_tags);
+	if(count($strArr) > $val){
+		for($index=0; $index<$val; $index++){
+			$return = $strArr[$index].' ';
+		}
+		$return .= '...';
+	}else {
+		$return = $str_without_tags;
+	}*/
+	return $return;
+}
+function elsayed_get_videos($category = 0, $home = 0, $limit = 0, $page = 1){
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'video')
+            ->propertyCondition('status', 1)
+            ->propertyOrderBy('created', 'DESC');
+    $query->addMetaData('account', user_load(1)); 
+    if($category != 0){
+        //$query->fieldCondition('field_category', 'target_id', $category, '=');
+    }
+    if($home != 0){
+        $query->fieldCondition('field_show_in_home', 'value', $home, '=');
+    }    
+    $result = $query->execute();
+    $total_items_nids = array();
+    if (isset($result['node'])) {
+        $total_items_nids = array_keys($result['node']);
+    }
+    $return = array();
+    if($limit != 0) {
+        $start = ($page - 1) * $limit;       
+        $total_count = count($total_items_nids);
+        $items_nids = array_slice($total_items_nids, $start, $limit);
+        $items = entity_load('node', $items_nids);
+        $return['page_count'] = ceil($total_count / $limit);
+        $return['items'] = $items;
+    }else{
+        $items = entity_load('node', $total_items_nids);        
+        $return = $items;
+    }
+    return $return;  
+}
+function elsayed_video_node_form_form_validation($form, &$form_state){
+	$field_youtube_link = '';
+	if(isset($form_state['values']['field_youtube_link'][LANGUAGE_NONE][0]['value'])){
+		$field_youtube_link = $form_state['values']['field_youtube_link'][LANGUAGE_NONE][0]['value'];
+	}
+	if(trim($field_youtube_link) != ''){
+		if (!(strpos($field_youtube_link, 'youtube') > 0)) {
+			form_set_error('field_youtube_link', __('Please enter valid Youtube link.'));
+		}
+	}	
+}
+function elsayed_get_admin_theme_path(){
+	global $admin_theme_path;
+	if($admin_theme_path == ''){
+		$admin_theme_path = drupal_get_path('theme', variable_get('admin_theme'));	
+	}
+	return $admin_theme_path;
+}
+function elsayed_redirect_admin_to_dashboard(){
+	global $base_url;
+	$redirect = $base_url.'/admin/dashboard';
+	$arg1 = arg(1);
+	$arg0 = arg(0);
+	if($arg0 == 'admin'){
+		if(trim($arg1) == ''){
+			drupal_goto("$redirect");
+		}
+	}	
 }

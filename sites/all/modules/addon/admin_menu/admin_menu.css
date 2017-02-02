@@ -14,6 +14,7 @@
   font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
   left: 0;
   position: absolute;
+  direction:ltr;
   text-align: left;
   top: 0;
   width: 100%;
@@ -112,7 +113,7 @@ body.admin-menu {
 #admin-menu .dropdown li ul {
   background: none;
   display: none;
-  left: -999em; /* LTR */
+  left: -0em; /* LTR */
   line-height: 1.2em;
   margin: 0;
   position: absolute;

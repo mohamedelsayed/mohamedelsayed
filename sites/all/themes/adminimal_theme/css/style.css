@@ -132,6 +132,47 @@ sub {
   line-height: normal;
 }
 
+.items{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.col-md-offset-1 {
+}
+.col-md-3{
+	width: 16%;
+	float: left;
+	text-align: center;
+}
+.content .item{
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+.item a{
+  display: block;
+  text-decoration: none;
+  color: #fff;
+}
+.item a:hover i{
+  color: #fff;
+}
+.item i{
+  font-size: 140px;
+  padding: 20px;
+  color: #f1f1f1;
+}
+.icon{
+}
+.item h3{
+  color: #e20511;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 0;
+    padding: 10px;
+}
+
 sup {
   vertical-align: super;
   font-size: smaller;
