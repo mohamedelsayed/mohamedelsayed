@@ -31,14 +31,13 @@ function front_theme() {
 function front_form_alter(&$form, &$form_state, $form_id) {
     //$sitelang = get_language_from_url();    
     if ($form_id == 'user_login') {
-        $form['name']['#attributes']["placeholder"] = t('Username');
+        $form['name']['#attributes']["placeholder"] = __('Username');
         $form['name']['#description'] = '';
-        $form['pass']['#attributes']["placeholder"] = t('Password');
+        $form['pass']['#attributes']["placeholder"] = __('Password');
         $form['pass']['#description'] = '';        
     }
     if($form_id == 'user_pass'){
-        $form['name']['#attributes']["placeholder"] = t('Username or e-mail address');
-        //pr($form);exit;        
+        $form['name']['#attributes']["placeholder"] = __('Username or e-mail address');
     }
 }
 function front_preprocess_page(&$vars) {
@@ -62,8 +61,7 @@ function front_page_alter($page) {
         '#tag' => 'meta',
         '#attributes' => array(
             'name' => 'viewport',
-            'content' => 'width=device-width')
-            ,
+            'content' => 'width=device-width'),
     );
     drupal_add_html_head($viewport, 'viewport');
 }
@@ -73,7 +71,6 @@ function front_node_preview($variables) {
     $elements = node_view($node, 'full');
     $full = drupal_render($elements);
     $output = '<div class="preview">';
-
     $output .= $full;
     $output .= "</div>\n";
     return $output;

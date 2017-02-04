@@ -15,19 +15,6 @@
 #Developer a:hover{
 	color: #404041;
 }
-#videoDiv {width: 100%; position: relative;overflow: hidden;min-height: 650px;}
-#videoBlock,#videoMessage {width: 100%; position: absolute; top: 0; left: 0;}
-#videoMessage *{padding:0.4em; margin:0}
-#videoMessage {text-shadow: 2px 2px 2px #000000; color:white;z-index:99 }
-#videoMessage h1{font-size: 3em;color:#ffffff;text-align:center;}
-#videoMessage h2{font-size: 2.5em;color:#ffffff;text-align:center;}
-#videoMessage h3{font-size: 2.0em;color:#ffffff;text-align:center;}
-.videoClick {text-align:center}
-.videoClick a{color:white;background-color:rgba(241, 241, 241, 0.25);font-size: 1.7em;cursor:pointer;cursor:hand}
-red{
-	color: #e20612;
-    font-weight: bold;	
-}
 .pagination{
 	width: 100%;
 	float: left;
@@ -332,11 +319,4 @@ ul.action-links a.active, ul.action-links a:hover{
     position: absolute;
     right: 10px;
     top: 10px;
-}
-.bx-wrapper img{
-	margin: auto;
-}
-.bx-wrapper{
-	border:none;
-	box-shadow: none;
 }

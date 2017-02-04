@@ -161,13 +161,6 @@ function elsayed_menu() {
     'weight' => -10,
     'file' => 'node.admin.inc',
   	);
-	$items['videos'] = array(
-        'title' => 'Videos',
-        'page callback' => 'elsayed_videos',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
     return $items;
 }
 function elsayed_user_edit() {
@@ -399,21 +392,13 @@ function elsayed_form_alter(&$form, &$form_state, $form_id){
 		if(!isset($values['products'])){
 			$values['products'] = 'Products';
 			field_update_field($info);
-		}
-		if(!isset($values['home_video'])){
-			$values['home_video'] = 'Top Home Video';
-			field_update_field($info);
-		}
-		if(!isset($values['videos'])){
-			$values['videos'] = 'Videos';
-			field_update_field($info);
-		}
-		$arg1 = arg(1);
+		}		
+		/*$arg1 = arg(1);
 		if($arg1 == 5){
 			$form['field_video_file'][LANGUAGE_NONE][0]['#required'] = 1;			
 		}else{
 			$form['field_video_file']['#access'] = 0;
-		}
+		}*/
 	}
 	if ($form_id == 'video_node_form') {
 		$form['#validate'][] = 'elsayed_video_node_form_form_validation';

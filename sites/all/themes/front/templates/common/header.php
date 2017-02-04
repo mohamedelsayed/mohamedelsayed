@@ -1,67 +1,58 @@
 <?php elsayed_redirect_user_to_admin();
-global $base_url;
-$arg0 = arg(0);
-$active_class = 'active';
-$menu_class1 = '';
-$menu_class2 = '';
-$menu_class3 = '';
-$menu_class4 = '';
-$menu_class5 = '';
-$is_front_page = drupal_is_front_page();
-if($is_front_page){
-	$link1 = '#videoDiv';
-	$link2 = '#about';
-	$link3 = '#portfolio';	
-	$link4 = '#service';
-	$link5 = '#contact';
-	$menu_class1 = $active_class;
-}else{
-	$link1 = $base_url.'#videoDiv';
-	$link2 = $base_url.'#about';
-	$link3 = $base_url.'/products';	
-	$link4 = $base_url.'/videos';
-	$link5 = $base_url.'#contact';
-	if($arg0 == 'products'){
-		$menu_class3 = $active_class;		
-	}elseif($arg0 == 'videos'){
-		$menu_class4 = $active_class;		
-	}
-}?>   
-<header>
-	<div class="center-container">
-		<nav class="navbar navbar-default">
+global $base_url;?>   
+<header id="home">
+	<section class="top-nav hidden-xs">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="top-left">
+						<ul>
+							<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="top-right">
+						<p>Location:<span>Main Street 2020, City 3000</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div id="main-nav" style="margin-bottom: 10px;">
+		<nav class="navbar">
 			<div class="container">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<a href="<?php echo $base_url;?>" class="navbar-brand" style="padding:0px;background-color:transparent;">
+						<img src="<?php echo $base_url.'/'.path_to_theme().'/images';?>/common/logo.png" />
+					</a>
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ftheme">
+						<span class="sr-only">Toggle</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a title="<?php echo variable_get('site_name');?>"  class="navbar-brand" href="<?php echo $base_url;?>">
-						<img alt="<?php echo variable_get('site_name');?>" src="<?php echo $base_url.'/'.path_to_theme();?>/img/logo.png" class="logo">
-					</a>
 				</div>
-				<div class="collapse navbar-collapse" id="myNavbar">
+				<div class="navbar-collapse collapse" id="ftheme">
 					<ul class="nav navbar-nav navbar-right">
-						<li class="<?php echo $menu_class1;?>">
-							<a href="<?php echo $link1;?>"><?php echo __('الرئيسية');?></a>
-						</li>
-						<li class="<?php echo $menu_class2;?>">
-							<a href="<?php echo $link2;?>"><?php echo __('عن الشركة');?></a>
-						</li>
-						<li class="<?php echo $menu_class3;?>">
-							<a href="<?php echo $link3;?>"><?php echo __('المنتجات');?></a>
-						</li>
-						<li class="<?php echo $menu_class4;?>">
-							<a href="<?php echo $link4;?>"><?php echo __('مكتبة الفيديو');?></a>
-						</li>
-						<li class="<?php echo $menu_class5;?>">
-							<a href="<?php echo $link5;?>"><?php echo __('اتصل بنا');?></a>
+						<li><a href="#home">home</a></li>
+						<li><a href="#about">About Me</a></li>
+						<li><a href="#service">services</a></li>
+						<li><a href="#portfolio">portfolio</a></li>
+						<li><a href="#contact">contact</a></li>
+						<li class="hidden-sm hidden-xs">
+							<a href="#" id="ss"><i class="fa fa-search" aria-hidden="true"></i></a>
 						</li>
 					</ul>
-					<a title="<?php echo variable_get('site_name');?>"  class="navbar-brand" href="<?php echo $base_url;?>">
-						<img  alt="<?php echo variable_get('site_name');?>"  src="<?php echo $base_url.'/'.path_to_theme();?>/img/logo2.png" class="logo2">
-					</a>
+				</div>
+				<div class="search-form">
+					<form>
+						<input type="text" id="s" size="40" placeholder="Search..." />
+					</form>
 				</div>
 			</div>
 		</nav>

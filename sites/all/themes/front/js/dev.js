@@ -4,7 +4,7 @@
  * @link http://www.mohamedelsayed.net
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
-jQuery(document).ready(function(){
+/*jQuery(document).ready(function(){
 	jQuery("form#contact-form").submit(function(e){
 		e.preventDefault();
 	});
@@ -121,4 +121,4 @@ function close_popup(){
 	jQuery("#mesagepopboxpopoup").hide(); 				
 	jQuery("#mesagepopboxpopoup").removeClass("alert");
 	jQuery('body').removeClass("mobile-menu-opend");          
-}
+}*/

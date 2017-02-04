@@ -18,10 +18,10 @@ if(!isset($GLOBALS['meta_keywords'])){
 $sitelang = elsayed_get_language_from_url();
 $base_url_with_lang = elsayed_get_base_url_with_lang();?>
 <!DOCTYPE html>
-<html lang="en" class=" js no-touch">
-	<head>
-        <!-- Basic Page Needs ================================================== -->
-        <meta charset="utf-8">
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title><?php echo $head_title;?></title>
         <meta property="og:image" content="<?php echo $GLOBALS['social_image']; ?>">
         <meta name="twitter:image" content="<?php echo $GLOBALS['social_image']; ?>">
@@ -34,6 +34,8 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();?>
             var base_url = '<?php echo $GLOBALS['base_url'];?>';
         </script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans|Raleway" rel="stylesheet">
+        <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
         <?php print $styles;?>
         <?php print $scripts;?>       
     </head>    
@@ -42,7 +44,7 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();?>
 	if($is_admin){
 		//$additional_body_classes .= ' admin ';
 	}?>
-    <body class="<?php print $classes.$additional_body_classes;?>" <?php print $attributes; ?>>       
+	<body id="top" data-spy="scroll" class="<?php print $classes.$additional_body_classes;?>" <?php print $attributes; ?>>
         <?php print $page_top; ?>
         <?php print $page; ?>
         <?php print $page_bottom;?>          

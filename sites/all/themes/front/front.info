@@ -5,29 +5,17 @@ engine = phptemplate
 
 ; STYLESHEETS
 ;----------------------------------------------------
+stylesheets[all][] = css/flexslider.css
 stylesheets[all][] = css/bootstrap.min.css
 stylesheets[all][] = css/font-awesome.min.css
-stylesheets[all][] = css/slick-team-slider.css
 stylesheets[all][] = css/style.css
-stylesheets[all][] = css/jplayer.blue.monday.min.css
-stylesheets[all][] = css/jquery.bxslider.css
 stylesheets[all][] = css/dev.css
 ; SCRIPTS
 ;----------------------------------------------------
 scripts[] = js/bootstrap.min.js
-scripts[] = js/jquery.jplayer.min.js
-scripts[] = js/jquery.easing.min.js
-scripts[] = js/jquery.mixitup.js
-scripts[] = js/slick.min.js
-scripts[] = js/move-top.js
-scripts[] = js/custom.js
-scripts[] = js/easyResponsiveTabs.js
-scripts[] = js/jquery.swipebox.min.js
-;scripts[] = js/contactform.js
-;scripts[] = js/jquery.vide.min.js
-scripts[] = js/lsb.min.js
-scripts[] = js/classie.js
-scripts[] = js/jquery.bxslider.js
+scripts[] = js/jquery.flexslider.js
+scripts[] = js/jquery.inview.js
+scripts[] = js/script.js
 scripts[] = js/dev.js
 
 ; REGIONS
