@@ -9,55 +9,47 @@
 					</div>
 				</div>   	
 	    	</div>
-
 			<!--services wrapper-->
     <section class="services-style-one">
-    	<div class="outer-box clearfix">
-    		
+    	<div class="outer-box clearfix">    		
             <div class="services-column">
             	<div class="content-outer">
-                	<div class="row clearfix">
-                    	
+                	<div class="row clearfix">                    	
                         <div class="service-block col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         	<div class="inner-box">
                             	<div class="icon-box"><i class="fa fa-briefcase" aria-hidden="true"></i></div>
                                 <h4>FINANCIAL PLANNING</h4>
                                 <div class="text">Leverage agile frameworks to provide a robust synopsis for high level overviews. </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                         <div class="service-block col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         	<div class="inner-box">
                             	<div class="icon-box"><i class="fa fa-bar-chart" aria-hidden="true"></i></div>
                                 <h4>BUSINESS PLANNING</h4>
                                 <div class="text">Leverage agile frameworks to provide a robust synopsis for high level overviews. </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                         <div class="service-block col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         	<div class="inner-box">
                             	<div class="icon-box"><i class="fa fa-trophy" aria-hidden="true"></i></div>
                                 <h4>WORK &amp; REDUNDANCY</h4>
                                 <div class="text">Leverage agile frameworks to provide a robust synopsis for high level overviews. </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                         <div class="service-block col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         	<div class="inner-box">
                             	<div class="icon-box"><i class="fa fa-bullhorn" aria-hidden="true"></i></div>
                                 <h4>MORTGAGE ADVISOR</h4>
                                 <div class="text">Leverage agile frameworks to provide a robust synopsis for high level overviews. </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                         <div class="service-block col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         	<div class="inner-box">
                             	<div class="icon-box"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
                                 <h4>RETIREMENT PLANNING</h4>
                                 <div class="text">Leverage agile frameworks to provide a robust synopsis for high level overviews. </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                         <div class="service-block col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         	<div class="inner-box">
                             	<div class="icon-box"><i class="fa fa-money" aria-hidden="true"></i></div>
@@ -68,7 +60,6 @@
                     </div>
                 </div>
             </div>
-
             <!--Content Column-->
             <div class="content-column clearfix">
                 <div class="content-box">
@@ -83,13 +74,8 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </section>
-
-
-
 			<!--service gapping-->
 			<div class="service-footer hidden-xs">
 				<div class="container">
