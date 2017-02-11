@@ -320,3 +320,9 @@ ul.action-links a.active, ul.action-links a:hover{
     right: 10px;
     top: 10px;
 }
+#portfolio{
+	margin-top: 0px;
+}
+#get-touch{
+	margin-bottom: 100px;
+}

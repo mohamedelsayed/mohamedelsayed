@@ -35,7 +35,6 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();?>
         </script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans|Raleway" rel="stylesheet">
-        <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
         <?php print $styles;?>
         <?php print $scripts;?>       
     </head>    

@@ -13,9 +13,9 @@
 				<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 					<div class="about-heading">
 						<h2><?php echo $title;?></h2> 
-						<p>
+						<div>
 							<?php echo $body;?>
-						</p>
+						</div>
 					</div>
 				</div>
 			</div>   	
