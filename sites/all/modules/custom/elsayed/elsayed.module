@@ -49,9 +49,9 @@ function elsayed_menu() {
         'access arguments' => array('access content'),
         'delivery callback' => 'drupal_json_output',
     );   
-    $items['products'] = array(
-        'title' => 'Products',
-        'page callback' => 'elsayed_products',
+    $items['projects'] = array(
+        'title' => 'Projects',
+        'page callback' => 'elsayed_projects',
         'page arguments' => array(),
         'type' => MENU_CALLBACK,
         'access arguments' => array('access content'),
@@ -389,10 +389,10 @@ function elsayed_form_alter(&$form, &$form_state, $form_id){
 	if(isset($form['#node']) && $form_id == 'widget_node_form'){		
 		$info = field_info_field('field_identifier');
 		$values = &$info['settings']['allowed_values'];
-		if(!isset($values['products'])){
-			$values['products'] = 'Products';
+		/*if(!isset($values['projects'])){
+			$values['projects'] = 'Projects';
 			field_update_field($info);
-		}		
+		}	*/	
 		/*$arg1 = arg(1);
 		if($arg1 == 5){
 			$form['field_video_file'][LANGUAGE_NONE][0]['#required'] = 1;			
@@ -732,17 +732,14 @@ function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_na
     $redirect = $GLOBALS['base_url'];
     drupal_goto("$redirect");            
 }
-function elsayed_get_products($category = 0, $home = 0, $limit = 0, $page = 1){
+function elsayed_get_projects($home = 0, $limit = 0, $page = 1){
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
-            ->entityCondition('bundle', 'product')
+            ->entityCondition('bundle', 'project')
             ->propertyCondition('status', 1)
             ->propertyOrderBy('created', 'DESC');
     $query->addMetaData('account', user_load(1)); 
-    if($category != 0){
-        $query->fieldCondition('field_category', 'target_id', $category, '=');
-    }
     if($home != 0){
         $query->fieldCondition('field_show_in_home', 'value', $home, '=');
     }    
@@ -765,7 +762,7 @@ function elsayed_get_products($category = 0, $home = 0, $limit = 0, $page = 1){
     }
     return $return;  
 }
-function elsayed_products(){
+function elsayed_projects(){
     $output = '';
     return $output;	
 }
@@ -807,9 +804,9 @@ function elsayed_draw_paging($page_count = 0, $page = 1){
         if($page > 1){
             $prev = $page-1;
             $class = '';
-            $a_begin = '<a href="'.$actual_link.$prev.'" title="'.__('إذهب إلى').' '.$prev.'">';
+            $a_begin = '<a href="'.$actual_link.$prev.'" title="'.__('Go to').' '.$prev.'">';
             $a_end = '</a>';
-            $return .= '<li class="'.$class.'">'.$a_begin.__('السابق').$a_end.'</li>';
+            $return .= '<li class="'.$class.'">'.$a_begin.__('Previous').$a_end.'</li>';
         }
         $step = 10;
         $start = $page - $step;                
@@ -823,7 +820,7 @@ function elsayed_draw_paging($page_count = 0, $page = 1){
         }
         for ($i=$start; $i <= $page_count; $i++) {
             $class = '';
-            $a_begin = '<a href="'.$actual_link.$i.'" title="'.__('إذهب إلى').' '.$i.'">';            
+            $a_begin = '<a href="'.$actual_link.$i.'" title="'.__('Go to').' '.$i.'">';            
             $a_end = '</a>';
             if($i <= $end){                
                 if($i == $page){
@@ -841,7 +838,7 @@ function elsayed_draw_paging($page_count = 0, $page = 1){
             $class = '';
             $a_begin = '<a href="'.$actual_link.$next.'" title="Go to page '.$next.'">';
             $a_end = '</a>';
-            $return .= '<li class="'.$class.'">'.$a_begin.__('التالي').$a_end.'</li>';
+            $return .= '<li class="'.$class.'">'.$a_begin.__('Next').$a_end.'</li>';
         }
         $return .= '</ul>
                     </div>
