@@ -4,7 +4,7 @@
  * @link http://www.mohamedelsayed.net
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
-/*jQuery(document).ready(function(){
+jQuery(document).ready(function(){
 	jQuery("form#contact-form").submit(function(e){
 		e.preventDefault();
 	});
@@ -14,9 +14,9 @@
 	jQuery("#mesagepopboxpopoup").on("click",".closepopoup", function(){
 		close_popup();            
 	});
-	jQuery('.mesage-pop-bg').click(function(){
+	/*jQuery('.mesage-pop-bg').click(function(){
 		close_popup();
-	});
+	});*/
 });
 function validate_contact_us_form(){
 	var custom_form_error = 0;
@@ -90,7 +90,7 @@ function isValidEmailAddress(emailAddress){
 function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
-function init() {
+/*function init() {
     window.addEventListener('scroll', function(e){
         var distanceY = window.pageYOffset || document.documentElement.scrollTop,
             shrinkOn = 70,

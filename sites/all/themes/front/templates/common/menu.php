@@ -16,28 +16,50 @@ if($is_front_page){
 	$menu_class1 = $active_class;
 }else{
 	$link1 = $base_url.'#home';
-	$link2 = $base_url.'#about';
+	$link2 = $base_url.'/about-me';
 	$link3 = $base_url.'/services';
 	$link4 = $base_url.'#portfolio';
 	$link5 = $base_url.'#get-touch';
 	$uri = $_SERVER[REQUEST_URI];
 	if (strpos($uri, 'services') !== false) {
-	//if($arg0 == 'services'){		
 		$menu_class3 = $active_class;		
 	}
+	if (strpos($uri, 'about-me') !== false) {
+		$menu_class2 = $active_class;		
+	}
+}
+$home_widgets = $GLOBALS['home_widgets'];
+$about_title = '';$portfolio_title = '';$contact_title = '';
+if(isset($home_widgets['about']) && !empty($home_widgets['about'])){
+	$item = $home_widgets['about'];	
+	if(isset($item->title)){
+		$about_title = $item->title;
+	}		
+}
+if(isset($home_widgets['portfolio']) && !empty($home_widgets['portfolio'])){
+	$item = $home_widgets['portfolio'];	
+	if(isset($item->title)){
+		$portfolio_title = $item->title;
+	}		
+}
+if(isset($home_widgets['contact']) && !empty($home_widgets['contact'])){
+	$item = $home_widgets['contact'];	
+	if(isset($item->title)){
+		$contact_title = $item->title;
+	}		
 }?>
 <li class="<?php echo $menu_class1;?>">
 	<a href="<?php echo $link1;?>"><?php echo ucwords(__('home'));?></a>
 </li>
 <li class="<?php echo $menu_class2;?>">
-	<a href="<?php echo $link2;?>"><?php echo ucwords(__('about me'));?></a>
+	<a href="<?php echo $link2;?>"><?php echo ucwords(__($about_title));?></a>
 </li>
 <li class="<?php echo $menu_class3;?>">
 	<a href="<?php echo $link3;?>"><?php echo ucwords(__('services'));?></a>
 </li>
 <li class="<?php echo $menu_class4;?>">
-	<a href="<?php echo $link4;?>"><?php echo ucwords(__('portfolio'));?></a>
+	<a href="<?php echo $link4;?>"><?php echo ucwords(__($portfolio_title));?></a>
 </li>
 <li class="<?php echo $menu_class5;?>">
-	<a href="<?php echo $link5;?>"><?php echo ucwords(__('contact me'));?></a>
+	<a href="<?php echo $link5;?>"><?php echo ucwords(__($contact_title));?></a>
 </li>

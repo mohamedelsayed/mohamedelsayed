@@ -12,6 +12,8 @@ function elsayed_init(){
     $GLOBALS['limit'] = 6;
     $GLOBALS['default_image'] = $GLOBALS['base_url'].'/'.path_to_theme().'/img/blank.png';	
 	elsayed_redirect_admin_to_dashboard();
+	$home_widgets = elsayed_get_home_widgets();
+	$GLOBALS['home_widgets'] = $home_widgets;
 }
 function elsayed_menu() {
     $items['page_not_found'] = array(
@@ -299,7 +301,7 @@ function elsayed_contact_us_form(){
             if(isset($_POST['message'])){
                 $message = $_POST['message'];                
             }
-            $mailsubject = variable_get('site_name').' - '.'اتصل بنا';
+            $mailsubject = variable_get('site_name').' - '.'Contact Me';
 			$emailTo = variable_get('contact_mail');
             $tpl = file_get_contents(drupal_get_path('module', 'elsayed').'/emails/contactus.html');
             $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}'), 
@@ -316,8 +318,8 @@ function elsayed_contact_us_form(){
                 //$mail->SMTPSecure = 'tls';
                 $mail->Host = 'mail.mohamedelsayed.net';
                 $mail->Port = 26;
-                $mail->Username = "elsakka@mohamedelsayed.net";
-                $mail->Password = "50NnPs0bHEy5";
+                $mail->Username = "noreply@mohamedelsayed.net";
+                $mail->Password = "lavQUPSvFiaa";
                 $mail->From = $email;
                 $mail->FromName = $name;
                 $mail->addAddress($emailTo, variable_get('site_name'));
@@ -374,7 +376,7 @@ function elsayed_string_format_view($str = '', $val = 0){
 }
 function elsayed_form_alter(&$form, &$form_state, $form_id){
     if(isset($form['#node']) && $form_id == 'page_node_form'){
-        $form['#validate'][] = 'elsayed_page_validate';
+        //$form['#validate'][] = 'elsayed_page_validate';
     }
     if(isset($form['#node']) && $form_id == 'contact_us_node_form'){
         $form['#validate'][] = 'elsayed_contact_us_validate';
@@ -389,10 +391,14 @@ function elsayed_form_alter(&$form, &$form_state, $form_id){
 	if(isset($form['#node']) && $form_id == 'widget_node_form'){		
 		$info = field_info_field('field_identifier');
 		$values = &$info['settings']['allowed_values'];
-		/*if(!isset($values['projects'])){
-			$values['projects'] = 'Projects';
+		if(!isset($values['portfolio'])){
+			$values['portfolio'] = 'Portfolio';
 			field_update_field($info);
-		}	*/	
+		}
+		if(!isset($values['contact'])){
+			$values['contact'] = 'Contact me';
+			field_update_field($info);
+		}
 		/*$arg1 = arg(1);
 		if($arg1 == 5){
 			$form['field_video_file'][LANGUAGE_NONE][0]['#required'] = 1;			
@@ -1482,6 +1488,13 @@ function elsayed_custom_setting_form($form, &$form_state) {
         '#type' => 'textfield',
         '#required' => false,
         '#default_value' => variable_get('linkedin_url', ''),
+    );
+	$form['codecademy_url'] = array(
+        '#title' => __('Codecademy URL'),
+        '#discription' => __(''),
+        '#type' => 'textfield',
+        '#required' => false,
+        '#default_value' => variable_get('codecademy_url', ''),
     );
 	$form['google_analytics_propertyid'] = array(
         '#title' => __('Google Analytics Property ID'),

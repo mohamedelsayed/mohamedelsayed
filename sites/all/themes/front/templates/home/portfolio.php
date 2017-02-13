@@ -1,13 +1,25 @@
 <?php global $base_url;$home = 1;$limit = 8;$page = 1;
 $return = elsayed_get_projects($home, $limit, $page);
-$projects = $return['items'];?>
+$projects = $return['items'];
+$title = __('portfolio');
+$body = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent metus magna,malesuada porta elementum vitae.';
+if(isset($home_widgets['portfolio']) && !empty($home_widgets['portfolio'])){
+	$item = $home_widgets['portfolio'];
+	$title = '';$body = '';
+	if(isset($item->title)){
+		$title = $item->title;
+	}	
+	if(isset($item->body[LANGUAGE_NONE][0]['value'])){
+		$body = $item->body[LANGUAGE_NONE][0]['value'];
+	}
+}?>
 <div id="portfolio">
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 				<div class="portfolio-heading">
-					<h2><?php echo __('portfolio');?></h2> 
-					<?php /*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent metus magna,malesuada porta elementum vitae.</p>*/?>
+					<h2><?php echo $title;?></h2> 
+					<div><?php echo $body;?></div>
 				</div>
 			</div>
 
