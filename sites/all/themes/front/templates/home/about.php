@@ -18,6 +18,9 @@
 						</div>
 					</div>
 				</div>
+				<div class="view_more">
+                    <a href="<?php echo $base_url.'/about-me';?>" class="btn btn-default view_more_btn" ><?php echo __('View More');?></a>
+                </div>
 			</div>   	
     	</div>
     	<?php /*<div class="container">

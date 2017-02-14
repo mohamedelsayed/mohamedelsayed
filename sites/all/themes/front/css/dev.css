@@ -326,3 +326,11 @@ ul.action-links a.active, ul.action-links a:hover{
 #get-touch{
 	margin-bottom: 100px;
 }
+.codecademy_icon{
+	width: 16px;
+    height:16px;
+    background-image: url('../img/codecademy.jpg');
+    background-repeat: no-repeat;	
+    float: left;
+    background-size: contain;
+}

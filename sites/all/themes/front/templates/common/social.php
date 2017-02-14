@@ -19,6 +19,13 @@
 		</a>
 	</li>
 <?php }?>
+<?php if(variable_get('codecademy_url') != ''){?>
+	<li>
+		<a target="_blank" href="<?php echo variable_get('codecademy_url');?>">
+			<i class="codecademy_icon" ></i>
+		</a>
+	</li>
+<?php }?>
 <?php /*if(variable_get('linkedin_url') != ''){?>
 	<li>
 		<a target="_blank" href="<?php echo variable_get('linkedin_url');?>">

@@ -35,16 +35,16 @@ global $base_url;?>
 				<div class="navbar-collapse collapse" id="ftheme">
 					<ul class="nav navbar-nav navbar-right">
 						<?php include 'menu.php';?>
-						<li class="hidden-sm hidden-xs">
+						<?php /*<li class="hidden-sm hidden-xs">
 							<a href="#" id="ss"><i class="fa fa-search" aria-hidden="true"></i></a>
-						</li>
+						</li>*/?>
 					</ul>
 				</div>
-				<div class="search-form">
+				<?php /*<div class="search-form">
 					<form>
 						<input type="text" id="s" size="40" placeholder="<?php echo __('Search');?>..." />
 					</form>
-				</div>
+				</div>*/?>
 			</div>
 		</nav>
 	</div>
