@@ -44,27 +44,27 @@
 		    	</a>
 	    	</div>
 	    	<div class="item col-md-3 col-md-offset-1">
-	    		<a href="<?php echo $base_url.'/admin/custom/content/category';?>">
+	    		<a href="<?php echo $base_url.'/admin/custom/content/slider';?>">
 		    		<div class="icon">
 		    			<img src="<?php echo $base_url.'/'.elsayed_get_admin_theme_path();?>/images/pic3.png">
 		    		</div>
-		    		<h3><?php echo __('Categories');?></h3>
+		    		<h3><?php echo __('Sliders');?></h3>
 		    	</a>
 	    	</div>
 	    	<div class="item col-md-3 col-md-offset-1">
-	    		<a href="<?php echo $base_url.'/admin/custom/content/product';?>">
+	    		<a href="<?php echo $base_url.'/admin/custom/content/project';?>">
 		    		<div class="icon">
 		    			<img src="<?php echo $base_url.'/'.elsayed_get_admin_theme_path();?>/images/pic4.png">
 		    		</div>
-		    		<h3><?php echo __('Products');?></h3>
+		    		<h3><?php echo __('Projects');?></h3>
 		    	</a>
 	    	</div>
 	    	<div class="item col-md-3 col-md-offset-1">
-	    		<a href="<?php echo $base_url.'/admin/custom/content/video';?>">
+	    		<a href="<?php echo $base_url.'/admin/custom/content/page';?>">
 		    		<div class="icon">
 		    			<img src="<?php echo $base_url.'/'.elsayed_get_admin_theme_path();?>/images/pic5.png">
 		    		</div>
-		    		<h3><?php echo __('Videos');?></h3>
+		    		<h3><?php echo __('Pages');?></h3>
 		    	</a>
 	    	</div>
 	    	<div class="item col-md-3 col-md-offset-1">

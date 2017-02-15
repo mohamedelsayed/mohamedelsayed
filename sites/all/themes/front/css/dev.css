@@ -334,3 +334,11 @@ ul.action-links a.active, ul.action-links a:hover{
     float: left;
     background-size: contain;
 }
+.mostaql_icon{
+	width: 16px;
+    height:16px;
+    background-image: url('../img/mostaql-icon.png');
+    background-repeat: no-repeat;	
+    float: left;
+    background-size: contain;
+}

@@ -26,6 +26,13 @@
 		</a>
 	</li>
 <?php }?>
+<?php if(variable_get('mostaql_url') != ''){?>
+	<li>
+		<a target="_blank" href="<?php echo variable_get('mostaql_url');?>">
+			<i class="mostaql_icon" ></i>
+		</a>
+	</li>
+<?php }?>
 <?php /*if(variable_get('linkedin_url') != ''){?>
 	<li>
 		<a target="_blank" href="<?php echo variable_get('linkedin_url');?>">
