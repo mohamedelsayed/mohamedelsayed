@@ -342,3 +342,15 @@ ul.action-links a.active, ul.action-links a:hover{
     float: left;
     background-size: contain;
 }
+
+.maintenancelogo {
+	margin-top: 25px;
+	margin-bottom: 25px;
+	text-align: center;
+}
+.maintenancetext {
+	font-size: 18px;
+	text-decoration: none;
+	color: #404041;
+	text-align: center;
+}
