@@ -12,6 +12,7 @@ if(isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on'){
 	$http_string = "https://";
 }
 $conf['site_offline'] = 0;
+$conf['maintenance_mode'] = 1;
 $http_host = $_SERVER['HTTP_HOST'];
 $base_url = $http_string . $http_host;
 if ($dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '\/')) {
@@ -36,6 +37,7 @@ if (strpos($http_host, 'mohamedelsayed.net') !== FALSE) {
         $conf['error_level'] = 2;
     }else{
         $password = '';    
+		$conf['maintenance_mode'] = 0;
     }
 }
 $databases = array (
