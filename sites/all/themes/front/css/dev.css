@@ -354,3 +354,7 @@ ul.action-links a.active, ul.action-links a:hover{
 	color: #404041;
 	text-align: center;
 }
+#about .about-heading p{
+	margin: 0;
+	margin-bottom: 5px;
+}
