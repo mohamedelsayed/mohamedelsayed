@@ -334,6 +334,13 @@ ul.action-links a.active, ul.action-links a:hover{
     float: left;
     background-size: contain;
 }
+.codecademy_icon:hover{
+	width: 16px;
+    height:16px;
+    background-image: url('../img/codecademy_hover.jpg');
+    background-repeat: no-repeat;	
+    background-size: contain;
+}
 .mostaql_icon{
 	width: 16px;
     height:16px;
@@ -342,7 +349,12 @@ ul.action-links a.active, ul.action-links a:hover{
     float: left;
     background-size: contain;
 }
-
+.mostaql_icon:hover{
+	width: 16px;
+    height:16px;
+    background-image: url('../img/mostaql-icon_hover.png');
+	background-size: contain;
+}
 .maintenancelogo {
 	margin-top: 25px;
 	margin-bottom: 25px;
