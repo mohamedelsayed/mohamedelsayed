@@ -177,8 +177,10 @@ textarea:focus {
 }
 
 #main-nav .navbar-header a {
-	background-color: #01b1d7;
 	color: #01b1d7;
+}
+#main-nav .navbar-header a img{
+	width: 240px;
 }
 /*Toggle Menu*/
 #main-nav .navbar-toggle {
