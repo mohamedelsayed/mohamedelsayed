@@ -744,12 +744,12 @@ function elsayed_get_projects($home = 0, $limit = 0, $page = 1){
     $query->entityCondition('entity_type', 'node')
             ->entityCondition('bundle', 'project')
             ->propertyCondition('status', 1);
-            //->propertyOrderBy('created', 'DESC');
-    $query->addMetaData('account', user_load(1)); 
+            //->propertyOrderBy('created', 'DESC');     
     if($home != 0){
         $query->fieldCondition('field_show_in_home', 'value', $home, '=');
     }
 	$query->fieldOrderBy('field_weight', 'value', 'ASC');
+	$query->addMetaData('account', user_load(1));
     $result = $query->execute();
     $total_items_nids = array();
     if (isset($result['node'])) {
@@ -767,7 +767,6 @@ function elsayed_get_projects($home = 0, $limit = 0, $page = 1){
         $items = entity_load('node', $total_items_nids);        
         $return = $items;
     }
-	//pr($return);
     return $return;  
 }
 function elsayed_projects(){

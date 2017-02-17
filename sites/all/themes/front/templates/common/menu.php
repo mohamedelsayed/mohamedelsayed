@@ -18,7 +18,7 @@ if($is_front_page){
 	$link1 = $base_url.'#home';
 	$link2 = $base_url.'/about-me';
 	$link3 = $base_url.'/services';
-	$link4 = $base_url.'#portfolio';
+	$link4 = $base_url.'/projects';
 	$link5 = $base_url.'#get-touch';
 	$uri = $_SERVER['REQUEST_URI'];
 	if (strpos($uri, 'services') !== false) {
@@ -26,6 +26,20 @@ if($is_front_page){
 	}
 	if (strpos($uri, 'about-me') !== false) {
 		$menu_class2 = $active_class;		
+	}
+	if (strpos($uri, 'projects') !== false) {
+		$menu_class4 = $active_class;		
+	}
+	$arg1 = arg(1);
+	if(is_numeric($arg1)){
+		$node = node_load($arg1);
+		if(!empty($node)){
+			if(isset($node->type)){
+				if($node->type == 'project'){
+					$menu_class4 = $active_class;
+				}
+			}
+		}
 	}
 }
 $home_widgets = $GLOBALS['home_widgets'];
