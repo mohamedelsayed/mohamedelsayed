@@ -1417,5 +1417,5 @@ textarea:focus {
 	padding-top: 7px;
 }
 .error{
-	border: 1px solid #F00;
+	border: 1px solid #F00 !important;
 }
