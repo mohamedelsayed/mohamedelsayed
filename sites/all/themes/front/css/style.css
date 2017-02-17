@@ -1170,7 +1170,7 @@ textarea:focus {
 
 /*Get In Touch*/
 #get-touch {
-	margin-top: 50px;
+	margin-top: 10px;
 }
 
 #get-touch .get-touch-heading {
@@ -1384,10 +1384,11 @@ textarea:focus {
 	border: 2px solid #01b1d7;
     border-radius: 15px;
     float: left;
+	color: #01b1d7;
     margin-bottom: 20px;
     margin-left: 15px;
     margin-top: 6px;
-    padding: 10px 20px;
+    padding: 10px 0 10px 20px;
 }
 .link_project:hover{
 	border: 2px solid #01b1d7;
@@ -1396,6 +1397,7 @@ textarea:focus {
 }
 .link_project a{
     color: #01b1d7;
+	padding: 10px 20px;
     padding-left: 5px;
 }
 .link_project a:hover{
