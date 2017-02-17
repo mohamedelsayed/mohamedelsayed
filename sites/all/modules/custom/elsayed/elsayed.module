@@ -767,6 +767,7 @@ function elsayed_get_projects($home = 0, $limit = 0, $page = 1){
         $items = entity_load('node', $total_items_nids);        
         $return = $items;
     }
+//pr($return);
     return $return;  
 }
 function elsayed_projects(){

@@ -23,7 +23,10 @@ global $base_url;?>
 		<nav class="navbar">
 			<div class="container">
 				<div class="navbar-header">
-                <a class="link link--kumya" href="<?php echo $base_url;?>"><span data-letters="[ Mohamed ELsayed ]">[ Mohamed ELsayed ]</span></a>
+	                <a class="link link--kumya" href="<?php echo $base_url;?>">
+	                	<img src="<?php echo $base_url.'/'.path_to_theme().'/images/common/logo.png';?>" />
+	                	<?php /*<span data-letters="[ Mohamed ELsayed ]">[ Mohamed ELsayed ]</span>*/?>
+	            	</a>
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ftheme">
 						<span class="sr-only"><?php echo __('Toggle');?></span>
 						<span class="icon-bar"></span>
