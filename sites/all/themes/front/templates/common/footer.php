@@ -41,15 +41,13 @@
 <div id="bottom-footer" class="hidden-xs">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-5">
 				<div class="footer-left">
 					&copy; <?php echo date('Y').' '.__('All rights reserved').'.';?>
-                    <div class="credits">
-                    	<?php echo __('Developed by');?> <a href="http://www.mohamedelsayed.net" target="_blank"><?php echo __('Mohamed Elsayed');?></a>                    
-                    </div>
+                    	<?php echo __('Developed by');?> <a href="http://www.mohamedelsayed.net" target="_blank"><?php echo __('Mohamed Elsayed');?></a>
 				</div>
 			</div>
-			<div class="col-md-8">
+			<div class="col-md-7">
 				<div class="footer-right">
                     <ul class="list-unstyled list-inline pull-right">
                     	<?php include 'menu.php';?>

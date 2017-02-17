@@ -35,7 +35,10 @@ if(!empty($project)){
                         <?php echo $project_description;?>
                     </div>
                     <div class="col-md-12">
+                    <div class="link_project">
+                    	<i class="fa fa-link" aria-hidden="true"></i>
                     	<a target="_blank" href="<?php echo $project_link;?>"><?php echo __('Project Link');?></a>
+                    </div>
                     </div>
                 </div>
             </div>

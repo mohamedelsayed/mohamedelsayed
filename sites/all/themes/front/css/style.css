@@ -67,7 +67,7 @@ textarea:focus {
 	font-family: 'Raleway', sans-serif;
 	font-size: 14px;
 	font-weight: 600;
-	width: 120px;
+	width: 170px;
 	height: 40px;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
@@ -446,7 +446,7 @@ textarea:focus {
 
 /*About*/
 #about {
-	padding: 80px;
+	padding: 50px 0 20px;
 }
 
 #about .about-heading {
@@ -1168,7 +1168,7 @@ textarea:focus {
 
 /*Get In Touch*/
 #get-touch {
-	margin-top: 100px;
+	margin-top: 50px;
 }
 
 #get-touch .get-touch-heading {
@@ -1178,7 +1178,7 @@ textarea:focus {
 #get-touch .get-touch-heading h2 {
 	font-family: 'Josefin Sans', sans-serif;
 	font-weight: 700;
-	font-size: 36px;
+	font-size: 45px;
 	text-transform: uppercase;
 }
 
@@ -1190,7 +1190,7 @@ textarea:focus {
 }
 
 #get-touch .content {
-	margin-top: 50px;
+	
 }
 
 #get-touch .content .form input {
@@ -1378,20 +1378,28 @@ textarea:focus {
 #bottom-footer .footer-right ul > li > a:hover {
 	color: #01b1d7;
 }
-#project-post a{
+.link_project{
 	border: 2px solid #01b1d7;
     border-radius: 15px;
-    color: #01b1d7;
     float: left;
     margin-bottom: 20px;
+    margin-left: 15px;
+    margin-top: 6px;
     padding: 10px 20px;
 }
-#project-post a:hover{
+.link_project:hover{
 	border: 2px solid #01b1d7;
-    color: #ffffff;
+    color: #ffffff !important;
 	background-color:#01b1d7;
 }
-#node-22 h2{
+.link_project a{
+    color: #01b1d7;
+    padding-left: 5px;
+}
+.link_project a:hover{
+    color: #ffffff !important;
+}
+#block-system-main h2, #project-heading h2, #node-22 h2{
 	color: #28a9e1;
     font-size: 45px;
     font-weight: bold;
@@ -1405,5 +1413,4 @@ textarea:focus {
 	padding-top: 7px;
 }
 .field-items p {
-	padding-left: 30px;
 }

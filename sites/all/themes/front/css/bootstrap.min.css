@@ -1038,8 +1038,7 @@ a {
 	text-decoration: none
 }
 a:focus, a:hover {
-	color: #23527c;
-	text-decoration: underline
+	
 }
 a:focus {
 	outline: thin dotted;
@@ -1115,8 +1114,8 @@ cursor:pointer
 	color: #777
 }
 .h1, .h2, .h3, h1, h2, h3 {
-	margin-top: 20px;
-	margin-bottom: 30px
+	margin-top: 15px;
+	margin-bottom: 15px
 }
 .h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small {
 	font-size: 65%
