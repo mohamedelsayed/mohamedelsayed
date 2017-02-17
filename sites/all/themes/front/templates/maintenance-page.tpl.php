@@ -10,7 +10,7 @@
 		<div class="container">
 			<div class="maintenancelogo">
 				<a href="<?php echo $base_url;?>">
-					<img alt="<?php echo variable_get('site_name');?>" src="<?php echo $base_url.'/'.path_to_theme().'/images/common/logo.png';?>" />
+					<img style="max-width: 240px;" alt="<?php echo variable_get('site_name');?>" src="<?php echo $base_url.'/'.path_to_theme().'/images/common/logo.png';?>" />
 				</a>
 			</div>
 			<div class="maintenancelogo">
