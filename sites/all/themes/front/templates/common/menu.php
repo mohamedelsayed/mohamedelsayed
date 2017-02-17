@@ -20,7 +20,7 @@ if($is_front_page){
 	$link3 = $base_url.'/services';
 	$link4 = $base_url.'#portfolio';
 	$link5 = $base_url.'#get-touch';
-	$uri = $_SERVER[REQUEST_URI];
+	$uri = $_SERVER['REQUEST_URI'];
 	if (strpos($uri, 'services') !== false) {
 		$menu_class3 = $active_class;		
 	}

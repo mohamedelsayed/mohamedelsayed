@@ -743,12 +743,13 @@ function elsayed_get_projects($home = 0, $limit = 0, $page = 1){
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
             ->entityCondition('bundle', 'project')
-            ->propertyCondition('status', 1)
-            ->propertyOrderBy('created', 'DESC');
+            ->propertyCondition('status', 1);
+            //->propertyOrderBy('created', 'DESC');
     $query->addMetaData('account', user_load(1)); 
     if($home != 0){
         $query->fieldCondition('field_show_in_home', 'value', $home, '=');
-    }    
+    }
+	$query->fieldOrderBy('field_weight', 'value', 'ASC');
     $result = $query->execute();
     $total_items_nids = array();
     if (isset($result['node'])) {
