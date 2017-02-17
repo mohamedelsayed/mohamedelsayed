@@ -44,7 +44,7 @@
 			<div class="col-md-5">
 				<div class="footer-left">
 					&copy; <?php echo date('Y').' '.__('All rights reserved').'.';?>
-                    	<?php echo __('Developed by');?> <a href="http://www.mohamedelsayed.net" target="_blank"><?php echo __('Mohamed Elsayed');?></a>
+                	<?php echo __('Developed by');?> <a href="http://www.mohamedelsayed.net" target="_blank"><?php echo __('Mohamed Elsayed');?></a>
 				</div>
 			</div>
 			<div class="col-md-7">

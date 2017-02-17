@@ -17,6 +17,17 @@ jQuery(document).ready(function(){
 	/*jQuery('.mesage-pop-bg').click(function(){
 		close_popup();
 	});*/
+	jQuery('a').each(function() {
+		var a = new RegExp('/' + window.location.host + '/');
+		if(!a.test(this.href)) {
+			jQuery(this).attr('target', '_blank');
+			/*jQuery(this).click(function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				window.open(this.href, '_blank');
+			});*/
+		}
+	});
 });
 function validate_contact_us_form(){
 	var custom_form_error = 0;

@@ -5,7 +5,7 @@ if(!empty($slider_widget)){?>
 	    	<?php foreach ($slider_widget as $key => $slider) {
 	            $slider_image = $slider->field_image[LANGUAGE_NONE][0]['uri'];
 	            $image = image_style_url('large', $slider_image);
-	            $slider_title = $slider->title;
+	            $slider_title = trim($slider->title);
 				$slider_link = '';
 				if(isset($slider->field_link[LANGUAGE_NONE][0]['value'])){
 					$slider_link = $slider->field_link[LANGUAGE_NONE][0]['value'];
