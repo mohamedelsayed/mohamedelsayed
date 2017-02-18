@@ -44,16 +44,18 @@ if(isset($home_widgets['portfolio']) && !empty($home_widgets['portfolio'])){
 						if(isset($project->field_link[LANGUAGE_NONE][0]['value'])){
 							$project_link = $project->field_link[LANGUAGE_NONE][0]['value'];
 						}?>
-						<div class="col-xs-6 col-sm-3 col-md-3 view-eighth">
-							<div class="item">
-								<a href="<?php echo $project_url;?>">
+						<div class="view_1 view_1-eighth filimg col-xs-6 col-sm-3 col-md-3">
+							
+								<a class="b-link-stripe b-animate-go swipebox" href="<?php echo $project_url;?>">
 									<img src="<?php echo $image;?>" alt="<?php echo $project_title;?>">
-									<div class="caption">
+                                    
+                                    
+									<div class="mask">
 			                       		<i class="fa fa-search" aria-hidden="true"></i>
 			                       		<p><?php echo $project_title;?></p>
 			                    	</div>
-		                    	</a>
-							</div>
+		                    	
+							</a>
 						</div>
 					<?php }?>
 					<div class="view_more">
