@@ -1064,7 +1064,7 @@ textarea:focus {
 	color: #01b1d7;
 	background-color: #fff;
 	position: absolute;
-	top: 45%;
+	top: 40%;
 	left: 50%;
 	margin-top: -22px;
 	margin-left: -22px;
@@ -1083,8 +1083,8 @@ textarea:focus {
 	font-size: 17px;
 	text-transform: capitalize;
 	top: 55%;
-	left: 30%;
-	right: 30%;
+	left: 20%;
+	right: 20%;
 }
 
 /*Media*/
