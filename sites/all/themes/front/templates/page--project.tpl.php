@@ -28,8 +28,8 @@ if(!empty($project)){
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                	<div class="col-md-12" style="position: absolute;">
-	                    <div class="link_project" style="float: right;">
+                	<div class="" style="position: absolute;right: 0;">
+	                    <div class="link_project" style="float: right;margin-right: 15px;">
 	                    	<i class="fa fa-link" aria-hidden="true"></i>
 	                    	<a target="_blank" href="<?php echo $project_link;?>"><?php echo __('Project Link');?></a>
 	                    </div>
