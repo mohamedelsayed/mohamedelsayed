@@ -28,8 +28,8 @@ if (strpos($http_host, 'mohamedelsayed.net') !== FALSE) {
 	$conf['css_gzip_compression'] = TRUE;
  	$conf['js_gzip_compression'] = TRUE;
     $database = 'elsayed_mohamedelsayed';   
-    $username = 'elsayed_mohamedelsayed';
-    $password = '8TSb0q9Db8og';   
+    $username = 'elsayed_mohamede';
+    $password = 'vTJep5pfyesE';   
 }elseif (strpos($http_host, 'localhost') !== FALSE) {
 	$conf['css_gzip_compression'] = FALSE;
  	$conf['js_gzip_compression'] = FALSE;
