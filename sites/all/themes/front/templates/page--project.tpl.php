@@ -28,18 +28,18 @@ if(!empty($project)){
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
+                	<div class="col-md-12" style="position: absolute;">
+	                    <div class="link_project" style="float: right;">
+	                    	<i class="fa fa-link" aria-hidden="true"></i>
+	                    	<a target="_blank" href="<?php echo $project_link;?>"><?php echo __('Project Link');?></a>
+	                    </div>
+                    </div>
                     <div id="project-heading" style="padding: 0px;">
                         <h2><?php echo $project_title;?></h2>
                     </div>                   
                     <div class="col-md-12">
                         <?php echo $project_description;?>
-                    </div>
-                    <div class="col-md-12">
-                    <div class="link_project">
-                    	<i class="fa fa-link" aria-hidden="true"></i>
-                    	<a target="_blank" href="<?php echo $project_link;?>"><?php echo __('Project Link');?></a>
-                    </div>
-                    </div>
+                    </div>                    
                 </div>
             </div>
             <div class="row">
