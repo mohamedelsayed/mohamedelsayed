@@ -19,6 +19,7 @@ scripts[] = js/jquery.inview.js
 scripts[] = js/script.js
 scripts[] = js/jquery.bxslider.js
 scripts[] = js/dev.js
+scripts[] = js/move-top.js
 
 ; REGIONS
 ;----------------------------------------------------

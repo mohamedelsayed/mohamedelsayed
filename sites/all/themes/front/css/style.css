@@ -170,6 +170,7 @@ textarea:focus {
 	-webkit-box-shadow: 0 1px 2px #ebebeb;
 	box-shadow: 0 5px 5px rgba(0,0,0,.15);
     transition: all 0.3s;
+	margin-bottom: 200px !important;
 }
 
 .navbar {
@@ -193,7 +194,7 @@ textarea:focus {
 
 /*Main Menu*/
 #main-nav .navbar-right {
-	margin-top: 10px;
+	margin-top: 17px;
 }
 #main-nav .navbar-right li > a {
 	font-family: 'Raleway', sans-serif;
@@ -448,7 +449,7 @@ textarea:focus {
 
 /*About*/
 #about {
-	padding: 50px 0 20px;
+	padding: 90px 0 20px;
 }
 
 #about .about-heading {
@@ -1170,7 +1171,7 @@ textarea:focus {
 
 /*Get In Touch*/
 #get-touch {
-	margin-top: 10px;
+	margin-top: 100px;
 }
 
 #get-touch .get-touch-heading {
@@ -1418,4 +1419,195 @@ textarea:focus {
 }
 .error{
 	border: 1px solid #F00 !important;
+}
+.view_1 {
+    overflow: hidden;
+    position: relative;
+	float:right;
+}
+.view_1 .mask, .view_1 .content {
+    width: 97%;
+    position: absolute;
+    overflow: hidden;
+}
+.view_1 img {
+   display: block;
+   position: relative;
+}
+.view_1 h4 {
+    color: #fff;
+	text-decoration: none;
+    text-align: center;
+    position: relative;
+	cursor: pointer;
+    font-size: 23px;
+	padding: 1em 0 0;
+}
+.view_1 h4:hover {
+    color: #fff;
+	text-decoration: none !important;
+    text-align: center;
+    position: relative;
+    font-size: 23px;
+	padding: 1em 0 0;
+}
+.view_1 p {
+   font-size: 1em;
+   position: relative;
+   color: #fff !important;
+   padding: 0.5em 0;
+   text-decoration: none;
+   text-align: center;
+   text-decoration:none;
+   margin:0;
+}
+.title_product{
+    color: #fff;
+	text-decoration: none;
+    text-align: center;
+    position: relative;
+    font-size: 2em;
+	padding: 60px 0 0 0 !important;
+}
+.title_product:hover {
+    color: #fff;
+	text-decoration: none !important;
+    text-align: center;
+    position: relative;
+    font-size: 2em;
+	padding: 60px 0 0 0 !important;
+}
+.product_p{
+   font-size: 1em;
+   position: relative;
+   color: #fff !important;
+   padding: 0.5em 0;
+   line-height: 23px;
+   text-decoration: none;
+   text-align: center;
+   text-decoration:none;
+   margin:0;
+}
+.view_1-eighth .mask {
+   background-color:rgba(0, 0, 0, 0.67);
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+   filter: alpha(opacity=0);
+   opacity: 0;
+   text-decoration:none;
+   -webkit-transition: all 0.3s ease-out 0.5s;
+   -moz-transition: all 0.3s ease-out 0.5s;
+   transition: all 0.3s ease-out 0.5s;
+}
+.view_1-eighth h2 {
+   -webkit-transform: translateY(-200px);
+   text-decoration:none;
+   -moz-transform: translateY(-200px);
+   -o-transform: translateY(-200px);
+   -ms-transform: translateY(-200px);
+   transform: translateY(-200px);
+   -webkit-transition: all 0.2s ease-in-out 0.1s;
+   -moz-transition: all 0.2s ease-in-out 0.1s;
+   transition: all 0.2s ease-in-out 0.1s;
+}
+.view_1-eighth p {
+   color: #333;
+   padding: 0 5px;
+   -webkit-transform: translateY(-200px);
+   -moz-transform: translateY(-200px);
+   -o-transform: translateY(-200px);
+   -ms-transform: translateY(-200px);
+   transform: translateY(-200px);
+   text-decoration:none;
+   -webkit-transition: all 0.2s ease-in-out 0.2s;
+   -moz-transition: all 0.2s ease-in-out 0.2s;
+   -o-transition: all 0.2s ease-in-out 0.2s;
+   -ms-transition: all 0.2s ease-in-out 0.2s;
+   transition: all 0.2s ease-in-out 0.2s;
+}
+.view_1-eighth:hover .mask {
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+   filter: alpha(opacity=100);
+   opacity: 1;
+   top: 0px;
+   text-decoration:none;
+   -webkit-transition-delay: 0s;
+   text-decoration:none;
+   -moz-transition-delay: 0s;
+   transition-delay: 0s;
+   -webkit-animation: bounceY 0.9s linear;
+   -moz-animation: bounceY 0.9s linear;
+   -ms-animation: bounceY 0.9s linear;
+   animation: bounceY 0.9s linear;
+   height: 100%;
+}
+.view_1-eighth:hover h2 {
+   -webkit-transform: translateY(0px);
+   -moz-transform: translateY(0px);
+   text-decoration:none;
+   -o-transform: translateY(0px);
+   -ms-transform: translateY(0px);
+   text-decoration:none;
+   transform: translateY(0px);
+   -webkit-transition-delay: 0.4s;
+   -moz-transition-delay: 0.4s;
+   -o-transition-delay: 0.4s;
+   -ms-transition-delay: 0.4s;
+   transition-delay: 0.4s;
+}
+.view_1-eighth:hover p {
+   -webkit-transform: translateY(0px);
+   text-decoration:none;
+   -moz-transform: translateY(0px);
+   -o-transform: translateY(0px);
+   -ms-transform: translateY(0px);
+   text-decoration:none;
+   transform: translateY(0px);
+   -webkit-transition-delay: 0.2s;
+   -moz-transition-delay: 0.2s;
+   -o-transition-delay: 0.2s;
+   -ms-transition-delay: 0.2s;
+   transition-delay: 0.2s;
+}
+ul.pagination_in {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination_in li {display: inline;}
+
+ul.pagination_in li a {
+    color: black;
+    float: right;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+	color: #000000;
+}
+.resp-tabs-container{
+	margin-bottom: 25px ;
+}
+.region-content ,.custom_access_denied{
+	margin-top: 125px ;
+}
+.pagination_in li:first-child a {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.pagination_in li:last-child a {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+ul.pagination_in li.active a {
+    background-color: #44c5e1;
+    color: #ffffff;
+    border: 1px solid #44c5e1;
+}
+
+ul.pagination_in li a:hover:not(.active) {
+	background-color: #000;color: #ffffff;
+	border: 1px solid #000;
 }

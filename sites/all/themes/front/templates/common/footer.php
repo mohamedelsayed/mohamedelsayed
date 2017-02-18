@@ -60,3 +60,4 @@
 <div id="Developer">
     Developed by <a href="http://www.mohamedelsayed.net" target="_blank">Mohamed Elsayed</a>
 </div>
+<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
