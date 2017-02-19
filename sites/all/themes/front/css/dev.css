@@ -21,8 +21,8 @@
 }
 #sendmail_ajaxLoading{
     display:none;   
-    width: 130px;
-    height:15px;
+    width: 160px;
+    height:17px;
     background-image: url('../img/tloading.gif');
     background-repeat: no-repeat;
    float: none;

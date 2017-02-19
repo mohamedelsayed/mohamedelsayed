@@ -449,7 +449,7 @@ textarea:focus {
 
 /*About*/
 #about {
-	padding: 90px 0 20px;
+	padding-top: 100px;
 }
 
 #about .about-heading {
@@ -985,7 +985,7 @@ textarea:focus {
 
 /*Portfolio*/
 #portfolio {
-	margin-top: 100px;
+	padding-top: 100px;
 }
 
 #portfolio .portfolio-heading {
@@ -1171,7 +1171,7 @@ textarea:focus {
 
 /*Get In Touch*/
 #get-touch {
-	margin-top: 100px;
+	padding-top: 100px;
 }
 
 #get-touch .get-touch-heading {
@@ -1214,7 +1214,7 @@ textarea:focus {
 }
 
 #get-touch .content .form .submit .btn {
-	margin-top: 25px;
+	margin-top: 20px;
 	background-color: transparent;
 	color: #7e7e7e;
 	border-color: #01b1d7;
