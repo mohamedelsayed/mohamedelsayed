@@ -370,3 +370,6 @@ ul.action-links a.active, ul.action-links a:hover{
 .view_more{
 	margin-top: 20px;
 }
+ul.pagination_in li{
+	float: left;
+}
