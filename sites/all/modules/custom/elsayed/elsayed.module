@@ -9,7 +9,7 @@ require "PHPMailer/PHPMailerAutoload.php";
 function elsayed_init(){
     elsayed_update_node_language();
     $GLOBALS['google_api_key'] = 'AIzaSyDGGlo0fNATzYKU761Fx-8VAIJDXu-b3QM';  
-    $GLOBALS['limit'] = 8;
+    $GLOBALS['limit'] = 12;
     $GLOBALS['default_image'] = $GLOBALS['base_url'].'/'.path_to_theme().'/img/blank.png';	
 	elsayed_redirect_admin_to_dashboard();
 	$home_widgets = elsayed_get_home_widgets();
