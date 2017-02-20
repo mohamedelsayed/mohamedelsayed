@@ -320,9 +320,6 @@ ul.action-links a.active, ul.action-links a:hover{
     right: 10px;
     top: 10px;
 }
-#portfolio{
-	margin-top: 90px;
-}
 #get-touch{
 	margin-bottom: 50px;
 }
@@ -366,7 +363,10 @@ ul.action-links a.active, ul.action-links a:hover{
 	color: #404041;
 	text-align: center;
 }
-#about .about-heading p{
+.aboutme .about-heading p{
 	margin: 0;
 	margin-bottom: 5px;
+}
+.view_more{
+	margin-top: 20px;
 }

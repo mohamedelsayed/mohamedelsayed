@@ -455,34 +455,34 @@ textarea:focus {
 }
 
 /*About*/
-#about {
-	padding-top: 100px;
+.aboutme {
+	padding-top: 200px;
 }
 
-#about .about-heading {
+.aboutme .about-heading {
 	text-align: center;
 }
 
-#about .about-heading h2 {
+.aboutme .about-heading h2 {
 	font-family: 'Josefin Sans', sans-serif;
 	font-weight: 700;
 	font-size: 45px;
 	text-transform: uppercase;
 }
 
-#about .about-heading p {
+.aboutme .about-heading p {
 	margin-top: 20px;
 	line-height: 25px;
 	color: #8e8e8e;
 	margin-bottom: 50px;
 }
 
-#about .about-left {
+.aboutme .about-left {
 	position: relative;
     z-index: 2;
 }
 
-#about .about-right:before {
+.aboutme .about-right:before {
 	content: "";
     border: 8px solid #e5eef0;
 	width: 120%;
@@ -492,19 +492,19 @@ textarea:focus {
     top: 0;
 }
 
-#about .about-right {
+.aboutme .about-right {
 	position: relative;
 	padding: 0 80px 150px 80px;
 }
 
-#about .about-right-heading h1 {
+.aboutme .about-right-heading h1 {
 	font-family: 'Raleway', sans-serif;
 	font-weight: 700;
 	padding-top: 100px;
 	text-transform: uppercase;
 }
 
-#about .about-right-boot:before {
+.aboutme .about-right-boot:before {
 	content: "\f080";
 	font-family: 'FontAwesome';
 	font-size: 45px;
@@ -513,30 +513,30 @@ textarea:focus {
 	color: #01b1d7;
 }
 
-#about .about-right-wrapper {
+.aboutme .about-right-wrapper {
     padding-left: 0 0 50px 78px;
     position: relative;
 	left: 0;
 	top: 75px;
 }
 
-#about .about-right-wrapper a {
+.aboutme .about-right-wrapper a {
 	font-family: 'Raleway', sans-serif;
 	font-weight: 700;
 	color: #282828;
 }
 
-#about .about-right-wrapper a:hover {
+.aboutme .about-right-wrapper a:hover {
 	color: #01b1d7;
 }
 
-#about .about-right-wrapper p {
+.aboutme .about-right-wrapper p {
 	line-height: 28px;
 	margin-top: 20px;
 	color: #8e8e8e;
 }
 
-#about .about-right-best:before {
+.aboutme .about-right-best:before {
 	content: "\f201";
 	font-family: 'FontAwesome';
 	font-size: 45px;
@@ -545,7 +545,7 @@ textarea:focus {
 	color: #01b1d7;
 }
 
-#about .about-right-support:before {
+.aboutme .about-right-support:before {
 	content: "\f025";
 	font-family: 'FontAwesome';
 	font-size: 45px;
@@ -556,74 +556,74 @@ textarea:focus {
 
 /*Media*/
 @media screen and (min-width: 320px) and (max-width: 520px) {
-	#about {
+	.aboutme {
 		padding: 0;
 	}
 
-	#about .about-heading h2 {
+	.aboutme .about-heading h2 {
 		margin-top: 30px;
 		font-size: 27px;
 	}
 
-	#about .about-heading p {
+	.aboutme .about-heading p {
 		margin-top: 20px;
 		font-size: 12px;
 		line-height: 20px;
 	}
 
-	#about .about-right:before {
+	.aboutme .about-right:before {
 		content: "";
 	    border: 8px solid #e5eef0;
 		width: 100%;
 	    height: 100%;
 	}
 
-	#about .about-right {
+	.aboutme .about-right {
 		position: relative;
 		padding: 30px;
 		margin-top: 20px;
 	}
 
-	#about .about-right-heading h1 {
+	.aboutme .about-right-heading h1 {
 		padding-top: 20px;
 		font-size: 25px;
 		text-align: center;
 	}
 
-	#about .about-right-boot:before {
+	.aboutme .about-right-boot:before {
 		font-size: 30px;
 		padding: 20px 20px 0 0;
 	}
 
-	#about .about-right-wrapper {
+	.aboutme .about-right-wrapper {
 	    position: relative;
 		left: 0;
 		top: 35px;
 	}
 
-	#about .about-right-wrapper a > h3 {
+	.aboutme .about-right-wrapper a > h3 {
 		font-size: 20px;
 	}
 
-	#about .about-right-wrapper p {
+	.aboutme .about-right-wrapper p {
 		margin-top: 20px;
 		font-size: 13px;
 	}
 
-	#about .about-right-best {
+	.aboutme .about-right-best {
 		margin-top: 40px;
 	}
 
-	#about .about-right-best:before {
+	.aboutme .about-right-best:before {
 		font-size: 30px;
 		padding: 20px 20px 0 0;
 	}
 
-	#about .about-right-support {
+	.aboutme .about-right-support {
 		margin-top: 40px;
 	}
 
-	#about .about-right-support:before {
+	.aboutme .about-right-support:before {
 		font-size: 30px;
 		padding: 20px 20px 0 0;
 	}
@@ -631,74 +631,74 @@ textarea:focus {
 
 /*Media*/
 @media screen and (min-width: 521px) and (max-width: 980px) {
-	#about {
+	.aboutme {
 		margin-top: 50px;
 		padding: 0;
 	}
 
-	#about .about-heading h2 {
+	.aboutme .about-heading h2 {
 		margin-top: 30px;
 		font-size: 30px;
 	}
 
-	#about .about-heading p {
+	.aboutme .about-heading p {
 		margin-top: 20px;
 		line-height: 20px;
 	}
 
-	#about .about-right:before {
+	.aboutme .about-right:before {
 		content: "";
 	    border: 8px solid #e5eef0;
 		width: 100%;
 	    height: 100%;
 	}
 
-	#about .about-right {
+	.aboutme .about-right {
 		position: relative;
 		padding: 30px;
 		margin-top: 20px;
 	}
 
-	#about .about-right-heading h1 {
+	.aboutme .about-right-heading h1 {
 		padding-top: 20px;
 		font-size: 25px;
 		text-align: center;
 	}
 
-	#about .about-right-boot:before {
+	.aboutme .about-right-boot:before {
 		font-size: 30px;
 		padding: 20px 20px 0 0;
 	}
 
-	#about .about-right-wrapper {
+	.aboutme .about-right-wrapper {
 	    position: relative;
 		left: 0;
 		top: 35px;
 	}
 
-	#about .about-right-wrapper a > h3 {
+	.aboutme .about-right-wrapper a > h3 {
 		font-size: 20px;
 	}
 
-	#about .about-right-wrapper p {
+	.aboutme .about-right-wrapper p {
 		margin-top: 20px;
 		font-size: 13px;
 	}
 
-	#about .about-right-best {
+	.aboutme .about-right-best {
 		margin-top: 40px;
 	}
 
-	#about .about-right-best:before {
+	.aboutme .about-right-best:before {
 		font-size: 30px;
 		padding: 20px 20px 0 0;
 	}
 
-	#about .about-right-support {
+	.aboutme .about-right-support {
 		margin-top: 40px;
 	}
 
-	#about .about-right-support:before {
+	.aboutme .about-right-support:before {
 		font-size: 30px;
 		padding: 20px 20px 0 0;
 	}
@@ -706,7 +706,7 @@ textarea:focus {
 }
 
 /*About bg*/
-#about-bg {
+.aboutme-bg {
 	position: relative;
 	background-image: url(../images/about/about2.jpg);
     background-position: center;

@@ -9,7 +9,7 @@ $menu_class5 = '';
 $is_front_page = drupal_is_front_page();
 if($is_front_page){
 	$link1 = '#home';
-	$link2 = '#about';
+	$link2 = '#aboutme';
 	$link3 = $base_url.'/services';	
 	$link4 = '#portfolio';
 	$link5 = '#get-touch';
@@ -66,7 +66,7 @@ if(isset($home_widgets['contact']) && !empty($home_widgets['contact'])){
 	<a href="<?php echo $link1;?>"><?php echo ucwords(__('home'));?></a>
 </li>
 <li class="<?php echo $menu_class2;?>">
-	<a href="<?php echo $link2;?>"><?php echo ucwords(__($about_title));?></a>
+	<a class="aboutme_btn" href="<?php echo $link2;?>"><?php echo ucwords(__($about_title));?></a>
 </li>
 <li class="<?php echo $menu_class3;?>">
 	<a href="<?php echo $link3;?>"><?php echo ucwords(__('services'));?></a>

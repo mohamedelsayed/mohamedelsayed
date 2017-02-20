@@ -11,23 +11,19 @@ jQuery(document).ready(function(){
 	jQuery("#contact-form input, #contact-form textarea").on("change paste keyup", function() {
 		validate_required_input(jQuery(this));
 	});
-	jQuery("#mesagepopboxpopoup").on("click",".closepopoup", function(){
+	/*jQuery("#mesagepopboxpopoup").on("click",".closepopoup", function(){
 		close_popup();            
-	});
+	});*/
 	/*jQuery('.mesage-pop-bg').click(function(){
 		close_popup();
 	});*/
 	jQuery('a').each(function() {
 		var a = new RegExp('/' + window.location.host + '/');
 		if(!a.test(this.href)) {
-			jQuery(this).attr('target', '_blank');
-			/*jQuery(this).click(function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-				window.open(this.href, '_blank');
-			});*/
+			jQuery(this).attr('target', '_blank');			
 		}
 	});
+	jQuery().UItoTop({ easingType: 'easeOutQuart' });
 });
 function validate_contact_us_form(){
 	var custom_form_error = 0;

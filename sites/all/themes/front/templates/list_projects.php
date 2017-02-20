@@ -10,7 +10,7 @@
         if(isset($project->field_images[LANGUAGE_NONE][0]['uri'])){
             $image = image_style_url('thumbnail', $project->field_images[LANGUAGE_NONE][0]['uri']);
         }?>        
-        <div class="view_1 view_1-eighth filimg col-md-3 col-sm-3 col-xs-12">
+        <div class="view_1 view_1-eighth filimg col-md-3 col-sm-3 col-xs-12" style="float: left;">
             <a class="b-link-stripe b-animate-go swipebox"  title="<?php echo $project_title;?>">
             	<img src="<?php echo $image;?>" alt="<?php echo $project_title;?>" class="img-responsive">
 				<div class="mask">
