@@ -38,7 +38,7 @@
 	</div>
 </div>*/?>
 <!--bottom footer-->
-<div id="bottom-footer" class="hidden-xs">
+<div id="bottom-footer">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-5">

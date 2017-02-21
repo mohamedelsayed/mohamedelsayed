@@ -52,9 +52,20 @@ textarea {
 	transition: border linear .3s;
 }
 button, html input[type="button"], input[type="reset"], input[type="submit"]{
-	background-color: #06C;
-	color: #FFF;
+	background-color: #06c;
+    border: medium none;
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px 50px;
 }
+button, html input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover{
+	background-color: #000;
+    border: medium none;
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px 50px;
+}
+
 
 textarea {
 	padding: 15px;
@@ -335,7 +346,7 @@ textarea:focus {
 }
 
 #slider .caption span {
-	padding: 0 10px;
+	padding: 0 10px 10px;
 	background-color: #01b1d7;
 	color: #fff;
 }
@@ -456,7 +467,12 @@ textarea:focus {
 
 /*About*/
 .aboutme {
-	padding-top: 200px;
+	background-image: url("../img/about.png");
+    background-position: center 61px;
+    background-repeat: no-repeat;
+    background-size: 560px auto;
+    padding-top: 200px;
+    position: relative;
 }
 
 .aboutme .about-heading {
@@ -632,8 +648,10 @@ textarea:focus {
 /*Media*/
 @media screen and (min-width: 521px) and (max-width: 980px) {
 	.aboutme {
-		margin-top: 50px;
 		padding: 0;
+		padding-top: 50px;
+		background:none;
+		
 	}
 
 	.aboutme .about-heading h2 {
@@ -764,6 +782,15 @@ textarea:focus {
 
 /*Media*/
 @media screen and (min-width: 320px) and (max-width: 520px) {
+	#portfolio{
+		margin: 0;
+	}
+	.aboutme {
+		padding: 0;
+		padding-top: 50px;
+		background:none;
+		
+	}
 	.about-bg-heading h1 {
 		font-size: 28px;
 	}
@@ -1097,7 +1124,7 @@ textarea:focus {
 /*Media*/
 @media screen and (min-width: 320px) and (max-width: 520px) {
 	#portfolio {
-		margin-top: 50px;
+		
 	}
 
 	#portfolio .portfolio-heading h2 {
@@ -1599,13 +1626,13 @@ ul.pagination_in li a {
 	
 }
 .pagination_in li:first-child a {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .pagination_in li:last-child a {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 ul.pagination_in li.active a {
@@ -1644,3 +1671,9 @@ ul.pagination_in li a:hover:not(.active) {
 	filter: alpha(opacity=0);
 }
 /*-- //to-top --*/
+.tittle{
+	color: #28a9e1;
+    font-size: 45px;
+    font-weight: bold;
+    text-align: center;
+}
