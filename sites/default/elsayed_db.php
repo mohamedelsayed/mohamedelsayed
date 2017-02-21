@@ -12,7 +12,7 @@ if(isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on'){
 	$http_string = "https://";
 }
 $conf['site_offline'] = 0;
-$conf['maintenance_mode'] = 1;
+$conf['maintenance_mode'] = 0;
 $http_host = $_SERVER['HTTP_HOST'];
 $base_url = $http_string . $http_host;
 if ($dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '\/')) {
