@@ -1677,10 +1677,6 @@ ul.pagination_in li a:hover:not(.active) {
     font-weight: bold;
     text-align: center;
 }
-.projects{
-	min-height: 400px;
-}
-#page‏{
-	min-height: 400px;
-	float:left;
+.projects, .page-div{
+	min-height: 440px;
 }
