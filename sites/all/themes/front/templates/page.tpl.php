@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2015 Programming by "http://www.mohamedelsayed.net"
  */?>
 <?php include_once 'common'.DS.'header.php';?>
-<div id="page">
+<div id="page" class="page">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
