@@ -1019,7 +1019,12 @@ textarea:focus {
 
 /*Portfolio*/
 #portfolio {
-	padding-top: 100px;
+    background-image: url("../img/about.png");
+    background-position: center 25px;
+    background-repeat: no-repeat;
+    background-size: 560px auto;
+    position: relative;
+	padding-top: 160px;
 }
 
 #portfolio .portfolio-heading {
@@ -1205,7 +1210,12 @@ textarea:focus {
 
 /*Get In Touch*/
 #get-touch {
-	padding-top: 100px;
+    background-image: url("../img/about.png");
+    background-position: center 25px;
+    background-repeat: no-repeat;
+    background-size: 560px auto;
+    position: relative;
+	padding-top: 160px;
 }
 
 #get-touch .get-touch-heading {
@@ -1239,6 +1249,7 @@ textarea:focus {
 #get-touch .content .form textarea {
 	width: 100%;
 	height: 180px;
+    border-radius: 10px;
 	border-color: #ebebeb;
 	margin-top: 20px;
 }
@@ -1301,32 +1312,6 @@ textarea:focus {
 	vertical-align: middle;
 }
 
-/*Media*/
-@media screen and (min-width: 320px) and (max-width: 520px) {
-	#contact {
-		margin-top: 50px;
-	}
-
-	#contact .contact-heading h2 {
-		font-size: 27px;
-	}
-
-	#contact .contact-heading p {
-		font-size: 13px;
-	}
-}
-
-/*Media*/
-@media screen and (min-width: 521px) and (max-width: 980px) {
-	#contact {
-		margin-top: 50px;
-	}
-
-	#contact .contact-heading h2 {
-		font-size: 30px;
-	}
-
-}
 
 /*Footer*/
 #footer {
@@ -1415,29 +1400,7 @@ textarea:focus {
 #bottom-footer .footer-right ul > li > a:hover {
 	color: #01b1d7;
 }
-.link_project{
-	border: 2px solid #01b1d7;
-    border-radius: 15px;
-    float: left;
-	color: #01b1d7;
-    margin-bottom: 20px;
-    margin-left: 15px;
-    margin-top: 6px;
-    padding: 10px 0 10px 20px;
-}
-.link_project:hover{
-	border: 2px solid #01b1d7;
-    color: #ffffff !important;
-	background-color:#01b1d7;
-}
-.link_project a{
-    color: #01b1d7;
-	padding: 10px 20px;
-    padding-left: 5px;
-}
-.link_project:hover a{
-    color: #ffffff !important;
-}
+
 #block-system-main h2, #project-heading h2, #node-22 h2{
 	color: #28a9e1;
     font-size: 45px;
@@ -1452,7 +1415,7 @@ textarea:focus {
 	padding-top: 7px;
 }
 .error{
-	border: 1px solid #F00 !important;
+	border: 2px solid #e20612 !important;
 }
 .view_1 {
     overflow: hidden;
@@ -1679,4 +1642,40 @@ ul.pagination_in li a:hover:not(.active) {
 }
 .projects, .page-div{
 	min-height: 440px;
+}
+.fa-link{
+	padding-right:  10px;
+}
+/*Media*/
+@media (max-width: 768px){
+	#project-heading h2{
+	text-align:left;
+	font-size: 25px;
+	}
+	#project-post .view_more{
+		margin-top: -40px;
+	}
+	#contact {
+		margin-top: 50px;
+	}
+
+	#contact .contact-heading h2 {
+		font-size: 27px;
+	}
+
+	#contact .contact-heading p {
+		font-size: 13px;
+	}
+}
+
+/*Media*/
+@media screen and (min-width: 521px) and (max-width: 980px) {
+	#contact {
+		margin-top: 50px;
+	}
+
+	#contact .contact-heading h2 {
+		font-size: 30px;
+	}
+
 }

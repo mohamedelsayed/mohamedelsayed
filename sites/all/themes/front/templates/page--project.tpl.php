@@ -29,9 +29,11 @@ if(!empty($project)){
             <div class="row">
                 <div class="col-md-12">
                 	<div class="" style="position: absolute;right: 0;">
-	                    <div class="link_project" style="float: right;margin-right: 15px;">
-	                    	<i class="fa fa-link" aria-hidden="true"></i>
-	                    	<a target="_blank" href="<?php echo $project_link;?>"><?php echo __('Project Link');?></a>
+	                    <div class="view_more" style="float: right;margin-right: 15px;">
+	                    	
+	                    	<a class="btn btn-default view_more_btn" target="_blank" href="<?php echo $project_link;?>">
+							<i class="fa fa-link" aria-hidden="true"></i>
+							<?php echo __('Project Link');?></a>
 	                    </div>
                     </div>
                     <div id="project-heading" style="padding: 0px;">
