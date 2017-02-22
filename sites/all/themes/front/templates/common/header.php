@@ -1,7 +1,7 @@
 <?php elsayed_redirect_user_to_admin();
 global $base_url;?>   
 <header id="home">
-	<section class="top-nav hidden-xs">
+	<section class="top-nav">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
