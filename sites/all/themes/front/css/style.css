@@ -487,10 +487,8 @@ textarea:focus {
 }
 
 .aboutme .about-heading p {
-	margin-top: 20px;
 	line-height: 25px;
 	color: #8e8e8e;
-	margin-bottom: 50px;
 }
 
 .aboutme .about-left {
@@ -1648,6 +1646,32 @@ ul.pagination_in li a:hover:not(.active) {
 }
 /*Media*/
 @media (max-width: 768px){
+	/*About*/
+.aboutme {
+	background-image: url("../img/about.png");
+    background-position: center 61px;
+    background-repeat: no-repeat;
+    background-size: 300px auto;
+    padding-top: 120px;
+    position: relative;
+}
+	/*Portfolio*/
+#portfolio {
+    background-image: url("../img/about.png");
+    background-position: center 25px;
+    background-repeat: no-repeat;
+    background-size: 300px auto;
+    position: relative;
+	padding-top: 120px;
+}
+#get-touch {
+    background-image: url("../img/about.png");
+    background-position: center 25px;
+    background-repeat: no-repeat;
+    background-size: 300px auto;
+    position: relative;
+	padding-top: 120px;
+}
 	#project-heading h2{
 	text-align:left;
 	font-size: 25px;

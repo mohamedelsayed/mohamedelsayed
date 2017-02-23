@@ -97,6 +97,11 @@ function isValidEmailAddress(emailAddress){
 function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
+jQuery(document).ready(function(){
+jQuery("header nav ul li").click(function(){
+    jQuery("#ftheme").toggle();
+});
+});
 /*function init() {
     window.addEventListener('scroll', function(e){
         var distanceY = window.pageYOffset || document.documentElement.scrollTop,
