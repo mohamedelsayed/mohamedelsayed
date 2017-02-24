@@ -12,13 +12,14 @@
         }?>        
         <div class="view_1 view_1-eighth filimg col-md-3 col-sm-4 col-xs-6" style="float: left;">
             <a class="b-link-stripe b-animate-go swipebox"  title="<?php echo $project_title;?>">
-            	<img src="<?php echo $image;?>" alt="<?php echo $project_title;?>" class="img-responsive">
-				<div class="mask">
-					<a href="<?php echo $project_url;?>" title="<?php echo $project_title;?>">
+            	<a class="b-link-stripe b-animate-go swipebox" href="<?php echo $project_url;?>">
+	            	<img src="<?php echo $image;?>" alt="<?php echo $project_title;?>" class="img-responsive">
+					<div class="mask">
 						<h4 class="title_project"><?php echo $project_title;?></h4>
 						<p class="project_p"><?php echo $project_description;?></p>
-					</a>
-				</div>
+						
+					</div>
+				</a>
             </a>
         </div>
     <?php }?>         
