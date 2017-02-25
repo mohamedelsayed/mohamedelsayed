@@ -56,15 +56,33 @@
 			</div>
 		</div>
 	</div>
+	<section class="bottom-nav">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="bottom-left">
+						<ul>
+							<?php include 'social.php';?>
+						</ul>
+					</div>
+				</div>
+				<?php /*<div class="col-md-6">
+					<div class="top-right">
+						<p>Location:<span>Main Street 2020, City 3000</span></p>
+					</div>
+				</div>*/?>
+			</div>
+		</div>
+	</section>
 </div>
 <div id="Developer">
     Developed by <a href="http://www.mohamedelsayed.net" target="_blank">Mohamed Elsayed</a>
 </div>
 <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
-<script>
+<script type="text/javascript">
 jQuery(document).ready(function(){
-jQuery(".active").click(function(){
-    jQuery(".collapse").toggle();
-});
+	jQuery(".active").click(function(){
+	    jQuery(".collapse").toggle();
+	});
 });
 </script>
