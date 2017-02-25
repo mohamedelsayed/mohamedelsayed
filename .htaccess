@@ -147,3 +147,9 @@ DirectoryIndex index.php index.html index.htm
   # Disable content sniffing, since it's an attack vector.
   Header always set X-Content-Type-Options nosniff
 </IfModule>
+
+# This to make the redirect from the NON-WWW to the WWW
+# it was added by "Mohamed Elsayed" - Email "me@mohamedelsayed.net"
+# RewriteEngine On
+# RewriteCond %{HTTP_HOST} !^www\.
+# RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
