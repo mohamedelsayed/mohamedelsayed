@@ -41,38 +41,32 @@
 <div id="bottom-footer">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-5">
+			<div class="col-md-5 col-xs-12 text-center">
 				<div class="footer-left">
 					&copy; <?php echo date('Y').' '.__('All rights reserved').'.';?>
                 	<?php echo __('Developed by');?> <a href="http://www.mohamedelsayed.net" target="_blank"><?php echo __('Mohamed Elsayed');?></a>
 				</div>
 			</div>
-			<div class="col-md-7">
+			<div class="col-md-7 col-xs-12 text-center">
 				<div class="footer-right">
-                    <ul class="list-unstyled list-inline pull-right">
+                    <ul class="list-unstyled list-inline pull-right text-center">
                     	<?php include 'menu.php';?>
                     </ul>
 				</div>
 			</div>
 		</div>
 	</div>
-	<section class="bottom-nav">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6">
+	<section class="bottom-nav visible-xs text-center">
 					<div class="bottom-left">
 						<ul>
 							<?php include 'social.php';?>
 						</ul>
 					</div>
-				</div>
 				<?php /*<div class="col-md-6">
 					<div class="top-right">
 						<p>Location:<span>Main Street 2020, City 3000</span></p>
 					</div>
 				</div>*/?>
-			</div>
-		</div>
 	</section>
 </div>
 <div id="Developer">

@@ -146,6 +146,24 @@ textarea:focus {
 	color: #01b1d7;
 }
 
+/*bottom left Menu*/
+.bottom-left {
+	background-color:  #ffffff;
+}
+
+.bottom-left ul >li {
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.bottom-left a {
+	font-size: 16px;
+	color: #333;
+}
+
+.bottom-left a:hover {
+	color: #01b1d7;
+}
 /*Top Right Menu*/
 .top-right {
 	float: right;
@@ -1119,9 +1137,9 @@ textarea:focus {
 	position: absolute;
 	font-size: 17px;
 	text-transform: capitalize;
-	top: 55%;
-	left: 20%;
-	right: 20%;
+	top: 28%;
+	left: 0%;
+	right: 0%;
 }
 
 /*Media*/
@@ -1435,16 +1453,15 @@ textarea:focus {
     text-align: center;
     position: relative;
 	cursor: pointer;
-    font-size: 23px;
-	padding: 1em 0 0;
+    font-size: 21px;
+	padding: 18px 0 0;
 }
 .view_1 h4:hover {
     color: #fff;
 	text-decoration: none !important;
     text-align: center;
     position: relative;
-    font-size: 23px;
-	padding: 1em 0 0;
+    font-size: 21px;
 }
 .view_1 p {
    font-size: 1em;
@@ -1646,6 +1663,12 @@ ul.pagination_in li a:hover:not(.active) {
 }
 /*Media*/
 @media (max-width: 768px){
+    .footer-left, .footer-right{
+      margin-bottom: 10px;  
+    }
+    .pull-right{
+        float: none !important;
+    }
 	/*About*/
 .aboutme {
 	background-image: url("../img/about.png");
@@ -1690,6 +1713,55 @@ ul.pagination_in li a:hover:not(.active) {
 	#contact .contact-heading p {
 		font-size: 13px;
 	}
+    #bottom-footer{
+        padding-bottom: 0;
+    }
+    .view_more .btn {
+	background-color: transparent;
+    border-color: #01b1d7;
+    color: #7e7e7e;
+    font-size: 15px;
+    line-height: 26px;
+    margin-top: 0px;
+}
+    .view_1 h4 {
+    color: #fff;
+	text-decoration: none;
+    text-align: center;
+    position: relative;
+	cursor: pointer;
+    font-size: 18px;
+	padding: 18px 0 0;
+}
+.view_1 h4:hover {
+    color: #fff;
+	text-decoration: none !important;
+    text-align: center;
+    position: relative;
+    font-size: 18px;
+}
+.view_1 p {
+   font-size: 16;
+   position: relative;
+   color: #fff !important;
+   padding: 0.5em 0;
+   text-decoration: none;
+   text-align: center;
+   text-decoration:none;
+   margin:0;
+}
+    #portfolio .mask p {
+	font-family: 'Raleway', sans-serif;
+	font-weight: 400;
+	text-align: center;
+	color: #fff;
+	position: absolute;
+	font-size: 13px;
+	text-transform: capitalize;
+	top: 28%;
+	left: 1%;
+	right: 1%;
+}
 }
 
 /*Media*/
