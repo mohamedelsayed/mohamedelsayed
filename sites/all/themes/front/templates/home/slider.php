@@ -26,9 +26,9 @@ if(!empty($slider_widget)){?>
 	        		<a <?php echo $href_code;?>>
 			        	<img alt="<?php echo $slider_title;?>" title="<?php echo $slider_title;?>" src="<?php echo $image;?>">
 						<div class="caption">
-							<h2><span style="padding-top: 10px;"><?php echo $slider_title;?></span></h2>
-							<?php /*<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-							<button class="btn">Read More</button>*/?>                 
+							<h2>
+								<?php echo $slider_title;?>
+							</h2>
 			        	</div>
 					</a>
 		        </li>
