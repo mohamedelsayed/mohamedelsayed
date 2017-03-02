@@ -357,9 +357,8 @@ textarea:focus {
 }
 
 #slider .caption h2 {
-	font-family: 'Josefin Sans', sans-serif;
+	font-family: "Raleway",sans-serif;
 	font-weight: 700;
-	font-size: 48px;
 	text-transform: uppercase;
 	line-height: normal;
 }
