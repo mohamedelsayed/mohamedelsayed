@@ -27,7 +27,9 @@ if(!empty($slider_widget)){?>
 			        	<img alt="<?php echo $slider_title;?>" title="<?php echo $slider_title;?>" src="<?php echo $image;?>">
 						<div class="caption">
 							<h2>
-								<?php echo $slider_title;?>
+								<span>
+									<?php echo $slider_title;?>
+								</span>
 							</h2>
 			        	</div>
 					</a>

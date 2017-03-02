@@ -367,6 +367,7 @@ textarea:focus {
 	padding: 0 10px 10px;
 	background-color: #01b1d7;
 	color: #fff;
+	padding:10px;
 }
 
 #slider .caption p {
