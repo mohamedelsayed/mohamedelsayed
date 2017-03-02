@@ -361,14 +361,13 @@ textarea:focus {
 	font-weight: 700;
 	font-size: 48px;
 	text-transform: uppercase;
+	line-height: normal;
 }
 
 #slider .caption span {
 	background-color: #01b1d7;
 	color: #fff;
 	padding:10px;
-	display: inline-block;
-	height: 58px;
 }
 
 #slider .caption p {
