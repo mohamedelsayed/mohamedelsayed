@@ -364,11 +364,11 @@ textarea:focus {
 }
 
 #slider .caption span {
-	padding: 0 10px 10px;
 	background-color: #01b1d7;
 	color: #fff;
 	padding:10px;
-	padding-bottom: 0px;
+	display: inline-block;
+	height: 58px;
 }
 
 #slider .caption p {
