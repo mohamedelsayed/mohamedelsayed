@@ -11,12 +11,6 @@ jQuery(document).ready(function(){
 	jQuery("#contact-form input, #contact-form textarea").on("change paste keyup", function() {
 		validate_required_input(jQuery(this));
 	});
-	/*jQuery("#mesagepopboxpopoup").on("click",".closepopoup", function(){
-		close_popup();            
-	});*/
-	/*jQuery('.mesage-pop-bg').click(function(){
-		close_popup();
-	});*/
 	jQuery('a').each(function() {
 		var a = new RegExp('/' + window.location.host + '/');
 		if(!a.test(this.href)) {
@@ -24,6 +18,9 @@ jQuery(document).ready(function(){
 		}
 	});
 	jQuery().UItoTop({ easingType: 'easeOutQuart' });
+	jQuery("header nav ul li a").click(function(){
+		jQuery("#ftheme").removeClass('in');
+	});
 });
 function validate_contact_us_form(){
 	var custom_form_error = 0;
@@ -97,40 +94,3 @@ function isValidEmailAddress(emailAddress){
 function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
-jQuery(document).ready(function(){
-jQuery("header nav ul li").click(function(){
-    jQuery("#ftheme").toggle();
-});
-});
-/*function init() {
-    window.addEventListener('scroll', function(e){
-        var distanceY = window.pageYOffset || document.documentElement.scrollTop,
-            shrinkOn = 70,
-            header = document.querySelector("header");
-        if (distanceY > shrinkOn) {
-            classie.add(header,"smaller");
-        } else {
-            if (classie.has(header,"smaller")) {
-                classie.remove(header,"smaller");
-            }
-        }
-    });
-}
-window.onload = init();
-function open_popup(content_class, vidoe_popup_title){
-	var content = jQuery('.'+content_class).html();
-	jQuery("#mesagepopboxpopoup #mesagecontent_in").html(content); 
-	jQuery('.vidoe_popup_title').html(vidoe_popup_title);
-	jQuery("#mesagepopboxpopoup").addClass("alert"); 
-	jQuery("#mesagepopboxpopoup").show();
-	jQuery('body').addClass("mobile-menu-opend");   
-	//jQuery('#mesagecontent').fadeIn();    
-}
-function close_popup(){
-	//jQuery('#mesagecontent').fadeOut();
-	jQuery("#mesagepopboxpopoup #mesagecontent_in").html('');
-	jQuery('.vidoe_popup_title').html('');
-	jQuery("#mesagepopboxpopoup").hide(); 				
-	jQuery("#mesagepopboxpopoup").removeClass("alert");
-	jQuery('body').removeClass("mobile-menu-opend");          
-}*/

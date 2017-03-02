@@ -1,7 +1,7 @@
 <?php elsayed_redirect_user_to_admin();
 global $base_url;?>   
 <header id="home">
-	<section class="top-nav">
+	<section class="top-nav hidden-xs">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
@@ -10,12 +10,7 @@ global $base_url;?>
 							<?php include 'social.php';?>
 						</ul>
 					</div>
-				</div>
-				<?php /*<div class="col-md-6">
-					<div class="top-right">
-						<p>Location:<span>Main Street 2020, City 3000</span></p>
-					</div>
-				</div>*/?>
+				</div>				
 			</div>
 		</div>
 	</section>
@@ -25,7 +20,6 @@ global $base_url;?>
 				<div class="navbar-header">
 	                <a class="link link--kumya" href="<?php echo $base_url;?>">
 	                	<img src="<?php echo $base_url.'/'.path_to_theme().'/images/common/logo1.png';?>" />
-	                	<?php /*<span data-letters="[ Mohamed ELsayed ]">[ Mohamed ELsayed ]</span>*/?>
 	            	</a>
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ftheme">
 						<span class="sr-only"><?php echo __('Toggle');?></span>
