@@ -4,6 +4,7 @@
  * @link http://www.mohamedelsayed.net
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
+var mohamedelsayedcontactformflag;
 jQuery(document).ready(function(){
 	jQuery("form#contact-form").submit(function(e){
 		e.preventDefault();
@@ -25,6 +26,7 @@ jQuery(document).ready(function(){
 function validate_contact_us_form(){
 	var custom_form_error = 0;
 	var focused = 0;
+	validateNotEmptyCaptcha(jQuery('#g-recaptcha-response'));
 	jQuery('#contact-form input, #contact-form textarea').each(function(){
 		validate_required_input(jQuery(this));
 	});
@@ -37,28 +39,32 @@ function validate_contact_us_form(){
 		    }
 		}
 	});
-	if(custom_form_error === 0){		
-		jQuery.ajax({
-			url: base_url+'/contact-us-form',
-            type: 'POST',
-            data: jQuery('form#contact-form').serialize(),
-            async: false,
-            beforeSend: function(){
-            	jQuery('#sendmessage').hide();
-            	jQuery('#errormessage').hide();  
-                jQuery('#sendmail_ajaxLoading').show(); 
-            },
-            success:function(result){
-            	error = result.error;
-            	jQuery('#sendmail_ajaxLoading').hide();
-            	if(error == 0){
-            		jQuery('#sendmessage').show();
-            	}else{
-            		jQuery('#errormessage').show();            		
-            	}            	
-            	jQuery("form#contact-form")[0].reset();
-            }
-		});                
+	if(mohamedelsayedcontactformflag == 1){
+		if(custom_form_error === 0){		
+			jQuery.ajax({
+				url: base_url+'/contact-us-form',
+	            type: 'POST',
+	            data: jQuery('form#contact-form').serialize(),
+	            async: false,
+	            beforeSend: function(){
+	            	jQuery('#sendmessage').hide();
+	            	jQuery('#errormessage').hide();  
+	                jQuery('#sendmail_ajaxLoading').show(); 
+	            },
+	            success:function(result){
+	            	error = result.error;
+	            	jQuery('#sendmail_ajaxLoading').hide();
+	            	if(error == 0){
+	            		jQuery('#sendmessage').show();
+	            	}else{
+	            		jQuery('#errormessage').show();            		
+	            	}            	
+	            	jQuery("form#contact-form")[0].reset();
+	            }
+			});                
+		}
+	}else{
+		return false;
 	}
 }
 function validate_required_input(obj){
@@ -93,4 +99,14 @@ function isValidEmailAddress(emailAddress){
 };
 function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+function validateNotEmptyCaptcha(obj){
+	var x = obj.val();
+    if(x == ''){
+    	jQuery('.g-recaptcha').addClass('me_error');     
+    	mohamedelsayedcontactformflag = 0;
+    }else{
+    	jQuery('.g-recaptcha').removeClass('me_error');
+    	mohamedelsayedcontactformflag = 1;
+    }
 }

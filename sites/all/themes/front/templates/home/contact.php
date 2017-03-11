@@ -50,7 +50,8 @@ if(isset($home_widgets['contact']) && !empty($home_widgets['contact'])){
 	                        <textarea class="form-control text-field-box" name="message" id="message" rows="5"  placeholder="<?php echo __('Message');?>"></textarea>
                             <div class="validation"></div>                               
                         </div>
-                        <div id="sendmail_ajaxLoading"></div> 
+                        <div class="g-recaptcha" data-sitekey="6Ldz9gATAAAAAG0aaBDQYGT_qhdmC3sdS0iI1BJq"></div>
+                        <div id="sendmail_ajaxLoading"></div>                         
                     </div>
                     <div class="submit">                    	 
                         <button class="btn btn-default" id="contact-submit" type="submit"><?php echo __('Send Now');?></button>
@@ -99,3 +100,10 @@ if(isset($home_widgets['contact']) && !empty($home_widgets['contact'])){
 		</div>
 	</div>
 </div>*/?>
+<style type="text/css">
+.g-recaptcha{
+	float: left;
+	width: 100%;
+	margin-bottom:10px;
+}
+</style>

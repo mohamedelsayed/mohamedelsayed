@@ -37,7 +37,8 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();?>
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans|Raleway" rel="stylesheet">
         <link href="<?php echo $base_url.'/'.path_to_theme();?>/img/favicon.png" type="image/x-icon" rel="icon">
         <?php print $styles;?>
-        <?php print $scripts;?>       
+        <?php print $scripts;?>     
+        <script src='https://www.google.com/recaptcha/api.js'></script>  
     </head>    
     <?php $additional_body_classes = '';
     $is_admin = elsayed_is_user_admin();

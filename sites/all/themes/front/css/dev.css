@@ -373,6 +373,6 @@ ul.action-links a.active, ul.action-links a:hover{
 ul.pagination_in li{
 	float: left;
 }
-.bottom-nav{
-	
+.me_error{
+	border: 2px solid #e20612 !important;
 }

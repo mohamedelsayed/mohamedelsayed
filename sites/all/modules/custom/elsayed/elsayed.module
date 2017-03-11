@@ -329,12 +329,38 @@ function elsayed_contact_us_form(){
                 $mail->Subject = $mailsubject;
                 $mail->Body = $html_message;
                 $mail->AltBody = "This is the plain text version of the email content";
-                if ($mail->send()) {
-                //if(mail($emailTo, $subject, $html_message, $headers)){
-                    $data['msg'] = __('Thank you for your message. We will get back to you the soonest.');
-                    $data['error'] = 0;
-                }else{                	
-                    $data['msg'] = __('There was a problem sending the Email. Please try again.');
+				$recaptchaflag = 0;
+				if(isset($_POST['g-recaptcha-response'])){
+					$recaptcharesponse = $_POST['g-recaptcha-response'];
+					$secret = '6Ldz9gATAAAAAElm5SbDIt3sfIkoC7f65ciHjGrt';
+					$url = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$recaptcharesponse;
+					$ch = curl_init();
+					curl_setopt($ch,CURLOPT_URL,$url);
+					curl_setopt_array($ch, array(
+					    CURLOPT_RETURNTRANSFER => TRUE,
+					));
+					$response = curl_exec($ch);
+					if($response === FALSE){
+					    //die(curl_error($ch));
+					}
+					$responseData = json_decode($response, TRUE);
+					if(isset($responseData['success'])){
+						if($responseData['success'] == 1){
+							$recaptchaflag = 1;					
+						}
+					}
+				}		
+				if($recaptchaflag == 1){
+	                if ($mail->send()) {
+	                //if(mail($emailTo, $subject, $html_message, $headers)){
+	                    $data['msg'] = __('Thank you for your message. We will get back to you the soonest.');
+	                    $data['error'] = 0;
+	                }else{                	
+	                    $data['msg'] = __('There was a problem sending the Email. Please try again.');
+						$data['error'] = 1;
+	                }
+                }else{
+                	$data['msg'] = __('There was a problem sending the Email. Please try again.');
 					$data['error'] = 1;
                 }
             }
