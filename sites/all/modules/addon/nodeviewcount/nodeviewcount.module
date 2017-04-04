@@ -2,7 +2,6 @@
 
 define('NODEVIEWCOUNT_PHP_WAY_COUNT_VIEWS', 0);
 define('NODEVIEWCOUNT_JS_WAY_COUNT_VIEWS', 1);
-define('NODEVIEWCOUNT_DEFAULT_TIME_FORMAT', 'Y-m-d H:i:sP');
 
 require_once 'includes/nodeviewcount.api.inc';
 require_once 'model/nodeviewcount.db.inc';
@@ -108,7 +107,7 @@ function nodeviewcount_node_view($node, $view_mode, $langcode) {
   $viewsLimitInterval = new DateInterval('PT' . $viewsLimit . 'S');
   $dateTime = new DateTime('NOW');
   $dateTime->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-  $dateTime->format(NODEVIEWCOUNT_DEFAULT_TIME_FORMAT);
+  $dateTime->format(DEFAULT_TIME_FORMAT);
   if (!isset($_SESSION['nodeviewcount_views_limit'][$nid])) {
     $_SESSION['nodeviewcount_views_limit'][$nid] = $dateTime;
     $firstView = TRUE;
@@ -141,7 +140,7 @@ function nodeviewcount_cron() {
   $flush_log_timer = variable_get('nodeviewcount_flush_log_timer', 0);
   if ($flush_log_timer > 0) {
     db_delete('nodeviewcount')
-      ->condition('timestamp', REQUEST_TIME - $flush_log_timer, '<')
+      ->condition('datetime', format_date(REQUEST_TIME - $flush_log_timer, 'custom', DEFAULT_TIME_FORMAT, date_default_timezone_get()), '<')
       ->execute();
   }
 }
@@ -154,4 +153,21 @@ function nodeviewcount_views_api() {
     'api' => 3.0,
     'path' => drupal_get_path('module', 'nodeviewcount') . '/includes',
   );
+}
+
+/**
+ * Implements hook_entity_info().
+ */
+function nodeviewcount_entity_info() {
+  $info['nodeviewcount'] = array(
+    'label' => t('Node view count'),
+    'base table' => 'nodeviewcount',
+    'entity keys' => array(
+      'id' => 'id',
+    ),
+    'module' => 'nodeviewcount',
+    'entity class' => 'Entity',
+    'controller class' => 'EntityAPIController',
+  );
+  return $info;
 }

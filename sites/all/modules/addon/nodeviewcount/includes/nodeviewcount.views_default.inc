@@ -139,11 +139,11 @@ function nodeviewcount_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Sort criterion: Node count: Timestamp */
-  $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['sorts']['timestamp']['table'] = 'nodeviewcount';
-  $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
+  /* Sort criterion: Node count: Datetime */
+  $handler->display->display_options['sorts']['datetime']['id'] = 'datetime';
+  $handler->display->display_options['sorts']['datetime']['table'] = 'nodeviewcount';
+  $handler->display->display_options['sorts']['datetime']['field'] = 'datetime';
+  $handler->display->display_options['sorts']['datetime']['order'] = 'DESC';
   /* Contextual filter: Node count: Who view */
   $handler->display->display_options['arguments']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['arguments']['uid_1']['table'] = 'nodeviewcount';

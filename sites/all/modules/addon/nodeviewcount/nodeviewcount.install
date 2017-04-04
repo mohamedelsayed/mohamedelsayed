@@ -26,18 +26,19 @@ function nodeviewcount_schema() {
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
-      'timestamp' => array(
-        'description' => 'The Unix timestamp when the node was view.',
-        'type' => 'int',
+      'datetime' => array(
+        'description' => 'The date when the node was view.',
+        'type' => 'varchar',
+        'length' => 100,
         'not null' => TRUE,
-        'default' => 0, 
+        'default' => 0,
       ),
     ),
-    'primary key' => array('id'),     
+    'primary key' => array('id'),
     'indexes' => array(
       'nid_uid' => array('uid', 'nid'),
-      'timestamp' => array('timestamp'),  
-    ),  
+      'datetime' => array('datetime'),
+    ),
   );
   return $schema;
 }

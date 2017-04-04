@@ -1,5 +1,7 @@
 <?php
 
+define('DEFAULT_TIME_FORMAT', 'Y-m-d H:i:sP');
+
 /**
  * Insert node view.
  *
@@ -12,10 +14,12 @@
  *   Count written records or FALSE.
  */
 function nodeviewcount_db_insert_node_view($nid, $uid) {
+  $dateTime = new DateTime('NOW');
+  $dateTime->setTimeZone(new DateTimeZone(date_default_timezone_get()));
   $fields = array(
     'nid' => $nid,
     'uid' => $uid,
-    'timestamp' => REQUEST_TIME,
+    'datetime' => $dateTime->format(DEFAULT_TIME_FORMAT),
   );
   return drupal_write_record('nodeviewcount', $fields);
 }
@@ -34,17 +38,18 @@ function nodeviewcount_db_insert_node_view($nid, $uid) {
  *   Count of node views.
  */
 function nodeviewcount_db_count_node_views($node, $user = NULL, $distinct_users = FALSE) {
-  $query = db_select('nodeviewcount', 'nvc');
-  $query->condition('nid', $node->nid, '=');
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'nodeviewcount');
+  $query->propertyCondition('nid', $node->nid);
   if ($user) {
-    $query->condition('uid', $user->uid, '=');
+    $query->propertyCondition('uid', $user->uid);
   }
   if ($distinct_users) {
-    $query->addExpression('COUNT(DISTINCT uid)');
+    $query->count('DISTINCT uid');
   }
   else {
-    $query->addExpression('COUNT(*)');
+    $query->count();
   }
-  $result = $query->execute()->fetchAll();
+  $result = $query->execute();
   return $result;
 }
