@@ -17,7 +17,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     // disabled by default.
     hasWidgetSupport: false,
     mediaLegacyWrappers: false,
-    hidpi: true,
     onLoad: function() {
       // Check if this instance has widget support.
       mediaPluginDefinition.hasWidgetSupport = typeof(CKEDITOR.plugins.registered.widget) != 'undefined';
@@ -38,9 +37,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             content: ''
           };
           var selection = editor.getSelection();
+
           if (selection) {
             data.node = selection.getSelectedElement();
-
             if (data.node) {
               data.node = data.node.$;
             }
@@ -56,24 +55,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
               // content is supposed to contain the "outerHTML".
               data.content = data.node.parentNode.innerHTML;
             }
-          }
-
-          // If we are inside another media element, we need to move the cursor to the end of the element
-          var selected_element = selection.getStartElement();
-          var parent = selected_element.getParent();
-          //if we are inside "a" tag and inside "span" (with class media-element)
-          if (selected_element.is('a') && parent.is('span') && parent.hasClass('media-element')) {
-            selection.selectElement(parent);
-            selected_ranges = selection.getRanges();
-            selected_ranges[0].collapse(false);
-            selection.selectRanges(selected_ranges);
-          }
-          //if we are outside "a" tag but inside "span" (with class media-element)
-          else if (selected_element.is('span') && selected_element.hasClass('media-element')) {
-              selection.selectElement(selected_element);
-              selected_ranges = selection.getRanges();
-              selected_ranges[0].collapse(false);
-              selection.selectRanges(selected_ranges);
           }
           Drupal.settings.ckeditor.plugins['media'].invoke(data, Drupal.settings.ckeditor.plugins['media'], editor.name);
         }
@@ -107,7 +88,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       editor.ui.addButton( 'Media',
       {
         label: 'Add media',
-        command: 'media'
+        command: 'media',
+        icon: this.path + 'images/icon.gif'
       });
 
       var ckeditorversion = parseFloat(CKEDITOR.version);

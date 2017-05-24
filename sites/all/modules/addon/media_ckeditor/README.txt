@@ -41,12 +41,6 @@ CKEditor Library Plugins
 INSTALLATION
 ------------
 
-***NEW***
-  For a quicker and easier setup, follow this recipe
-  https://www.drupal.org/node/2843391
-  use this README.txt as additional troubleshooting
-***end NEW***
-
 * Install Media CKEditor via the standard Drupal installation process:
   'http://drupal.org/node/895232'.
 * If you weren't previously using the CKEditor WYSIWYG client-side editor,
@@ -65,4 +59,3 @@ INSTALLATION
   plugin for the desired text formats from the CKEditor configuration
   page: '/admin/config/content/ckeditor'.
 * Disable CKEditor's Advanced Content Filter for each of the text formats.
-
