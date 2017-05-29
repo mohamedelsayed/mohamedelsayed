@@ -52,9 +52,10 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();
         <?php print $page; ?>
         <?php print $page_bottom; ?>
         <?php print $scripts; ?>
-        <script src='https://www.google.com/recaptcha/api.js'></script>
-        <?php if (variable_get('google_analytics_propertyid') != '') { ?>
-            <script type = "text/javascript">
+        <?php if (!isset($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'Speed Insights') === false) { ?>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <?php if (variable_get('google_analytics_propertyid') != '') { ?>
+                <script type = "text/javascript">
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
@@ -68,7 +69,8 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();
             })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
             ga('create', '<?php echo variable_get('google_analytics_propertyid'); ?>', 'auto');
             ga('send', 'pageview');
-            </script>
+                </script>
+            <?php } ?>
         <?php } ?>
     </body>
 </html>
