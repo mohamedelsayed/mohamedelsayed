@@ -39,8 +39,6 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans|Raleway" rel="stylesheet">
         <link href="<?php echo $base_url . '/' . path_to_theme(); ?>/img/favicon.png" type="image/x-icon" rel="icon">
         <?php print $styles; ?>
-<?php print $scripts; ?>
-        <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
     <?php
     $additional_body_classes = '';
@@ -51,24 +49,26 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();
     ?>
     <body id="top" data-spy="scroll" class="<?php print $classes . $additional_body_classes; ?>" <?php print $attributes; ?>>
         <?php print $page_top; ?>
-<?php print $page; ?>
-<?php print $page_bottom; ?>
-<?php if (variable_get('google_analytics_propertyid') != '') { ?>
+        <?php print $page; ?>
+        <?php print $page_bottom; ?>
+        <?php print $scripts; ?>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <?php if (variable_get('google_analytics_propertyid') != '') { ?>
             <script type = "text/javascript">
-                (function (i, s, o, g, r, a, m) {
-                    i['GoogleAnalyticsObject'] = r;
-                    i[r] = i[r] || function () {
-                        (i[r].q = i[r].q || []).push(arguments)
-                    }, i[r].l = 1 * new Date();
-                    a = s.createElement(o),
-                            m = s.getElementsByTagName(o)[0];
-                    a.async = 1;
-                    a.src = g;
-                    m.parentNode.insertBefore(a, m)
-                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-                ga('create', '<?php echo variable_get('google_analytics_propertyid'); ?>', 'auto');
-                ga('send', 'pageview');
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', '<?php echo variable_get('google_analytics_propertyid'); ?>', 'auto');
+            ga('send', 'pageview');
             </script>
-<?php } ?>
+        <?php } ?>
     </body>
 </html>
