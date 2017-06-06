@@ -11,6 +11,11 @@ if (defined('PHP_VERSION_ID') && constant('PHP_VERSION_ID') >= 50300) {
 }
 
 /**
+ * @addtogroup advagg_hooks
+ * @{
+ */
+
+/**
  * Implements hook_advagg_get_info_on_files_alter().
  *
  * Used to make sure the info is up to date in the cache.
@@ -180,6 +185,10 @@ function advagg_js_compress_advagg_save_aggregate_alter(&$files_to_save, $aggreg
   advagg_js_compress_prep($data, $uri, $aggregate_settings, FALSE);
   $files_to_save[$uri] = $data;
 }
+
+/**
+ * @} End of "addtogroup advagg_hooks".
+ */
 
 /**
  * Get a list of enabled compressors.

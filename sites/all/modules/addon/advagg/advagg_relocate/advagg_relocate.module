@@ -6,6 +6,11 @@
  */
 
 /**
+ * @addtogroup default_variables
+ * @{
+ */
+
+/**
  * Default value to see if css inlining import is enabled.
  */
 define('ADVAGG_RELOCATE_CSS_INLINE_IMPORT', TRUE);
@@ -20,7 +25,15 @@ define('ADVAGG_RELOCATE_CSS_INLINE_EXTERNAL', TRUE);
  */
 define('ADVAGG_RELOCATE_CSS_FILE_DOMAINS', 'fonts.googleapis.com');
 
-// Core hook implementations.
+/**
+ * @} End of "addtogroup default_variables".
+ */
+
+/**
+ * @addtogroup hooks
+ * @{
+ */
+
 /**
  * Implements hook_menu().
  */
@@ -85,7 +98,15 @@ function advagg_relocate_css_alter(&$css) {
   }
 }
 
-// Contrib hook implementations.
+/**
+ * @} End of "addtogroup hooks".
+ */
+
+/**
+ * @addtogroup advagg_hooks
+ * @{
+ */
+
 /**
  * Implements hook_advagg_current_hooks_hash_array_alter().
  */
@@ -103,3 +124,7 @@ function advagg_relocate_advagg_current_hooks_hash_array_alter(&$aggregate_setti
 
   $aggregate_settings['variables']['advagg_relocate_css_file_domains'] = variable_get('advagg_relocate_css_file_domains', ADVAGG_RELOCATE_CSS_FILE_DOMAINS);
 }
+
+/**
+ * @} End of "addtogroup advagg_hooks".
+ */

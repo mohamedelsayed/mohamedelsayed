@@ -6,6 +6,11 @@
  */
 
 /**
+ * @addtogroup default_variables
+ * @{
+ */
+
+/**
  * Default value to see packer is enabled.
  */
 define('ADVAGG_JS_COMPRESS_PACKER', FALSE);
@@ -46,6 +51,15 @@ define('ADVAGG_JS_COMPRESSOR_FILE_SETTINGS', -1);
 define('ADVAGG_JS_COMPRESS_ADD_LICENSE', 3);
 
 /**
+ * @} End of "addtogroup default_variables".
+ */
+
+/**
+ * @addtogroup hooks
+ * @{
+ */
+
+/**
  * Implements hook_menu().
  */
 function advagg_js_compress_menu() {
@@ -65,17 +79,6 @@ function advagg_js_compress_menu() {
   );
 
   return $items;
-}
-
-/**
- * Implements hook_advagg_current_hooks_hash_array_alter().
- */
-function advagg_js_compress_advagg_current_hooks_hash_array_alter(&$aggregate_settings) {
-  $aggregate_settings['variables']['advagg_js_compressor'] = variable_get('advagg_js_compressor', ADVAGG_JS_COMPRESSOR);
-  $aggregate_settings['variables']['advagg_js_compress_packer'] = variable_get('advagg_js_compress_packer', ADVAGG_JS_COMPRESS_PACKER);
-  $aggregate_settings['variables']['advagg_js_compress_max_ratio'] = variable_get('advagg_js_compress_max_ratio', ADVAGG_JS_COMPRESS_MAX_RATIO);
-  $aggregate_settings['variables']['advagg_js_compressor_file_settings'] = variable_get('advagg_js_compressor_file_settings', array());
-  $aggregate_settings['variables']['advagg_js_compress_add_license'] = variable_get('advagg_js_compress_add_license', ADVAGG_JS_COMPRESS_ADD_LICENSE);
 }
 
 /**
@@ -109,6 +112,26 @@ function advagg_js_compress_module_implements_alter(&$implementations, $hook) {
       $implementations = array_merge($item, $implementations);
     }
   }
+}
+
+/**
+ * @} End of "addtogroup hooks".
+ */
+
+/**
+ * @addtogroup advagg_hooks
+ * @{
+ */
+
+/**
+ * Implements hook_advagg_current_hooks_hash_array_alter().
+ */
+function advagg_js_compress_advagg_current_hooks_hash_array_alter(&$aggregate_settings) {
+  $aggregate_settings['variables']['advagg_js_compressor'] = variable_get('advagg_js_compressor', ADVAGG_JS_COMPRESSOR);
+  $aggregate_settings['variables']['advagg_js_compress_packer'] = variable_get('advagg_js_compress_packer', ADVAGG_JS_COMPRESS_PACKER);
+  $aggregate_settings['variables']['advagg_js_compress_max_ratio'] = variable_get('advagg_js_compress_max_ratio', ADVAGG_JS_COMPRESS_MAX_RATIO);
+  $aggregate_settings['variables']['advagg_js_compressor_file_settings'] = variable_get('advagg_js_compressor_file_settings', array());
+  $aggregate_settings['variables']['advagg_js_compress_add_license'] = variable_get('advagg_js_compress_add_license', ADVAGG_JS_COMPRESS_ADD_LICENSE);
 }
 
 /**
@@ -161,6 +184,10 @@ function advagg_js_compress_advagg_modify_js_pre_render_alter(&$children, &$elem
   }
   unset($values);
 }
+
+/**
+ * @} End of "addtogroup advagg_hooks".
+ */
 
 /**
  * Test a file, making sure it is compressible.

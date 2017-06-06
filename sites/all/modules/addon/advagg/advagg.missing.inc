@@ -592,7 +592,6 @@ function advagg_htaccess_check_generate(array $files_to_save, $type, $force = FA
   return $errors;
 }
 
-// Lookup functions.
 /**
  * Given a filename return the type and 2 hashes.
  *
@@ -691,7 +690,6 @@ function advagg_get_files_from_hashes($type, $aggregate_filenames_hash, $aggrega
   return $files;
 }
 
-// Read CSS/JS files.
 /**
  * Given a list of files, grab their contents and glue it into one big string.
  *
@@ -1068,7 +1066,6 @@ function advagg_missing_file_not_readable($filename, $aggregate_filename = '', $
   return $write_aggregate;
 }
 
-// File save functions.
 /**
  * Save an aggregate given a filename, the files included in it, and the type.
  *
@@ -1342,7 +1339,6 @@ function advagg_rename($source, $destination) {
   return $destination;
 }
 
-// Helper functions.
 /**
  * Send out a fast 404 and exit.
  *

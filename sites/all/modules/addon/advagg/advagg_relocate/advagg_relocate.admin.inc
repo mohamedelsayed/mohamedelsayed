@@ -79,16 +79,13 @@ function advagg_relocate_admin_settings_form() {
     foreach ($files_with_import as $filename => $references) {
       $form_api_filename = str_replace(array('/', '.'), array('__', '--'), $filename);
       $options = array();
-      $default_values = array();
-      foreach ($references[0] as $key => $value) {
-        $options[$references[1][$key]] = $value;
-        $default_values[$references[1][$key]] = $references[1][$key];
+      $default_value = TRUE;
+      if (isset($advagg_relocate_css_file_settings['all:' . $form_api_filename])) {
+        $default_value = $advagg_relocate_css_file_settings['all:' . $form_api_filename];
       }
       $form['css']['per_file_settings']['advagg_relocate_css_file_settings_all_' . $form_api_filename] = array(
         '#type' => 'checkbox',
-        '#default_value' => isset($advagg_relocate_css_file_settings['all:' . $form_api_filename])
-          ? $advagg_relocate_css_file_settings['all:' . $form_api_filename]
-          : TRUE,
+        '#default_value' => $default_value,
         '#title' => t('All in @filename', array('@filename' => $filename)),
       );
       $form_api_html_filename = str_replace(array('__', '--'), '-', $form_api_filename);
@@ -102,12 +99,18 @@ function advagg_relocate_admin_settings_form() {
           ),
         ),
       );
+      $default_values = array();
+      foreach ($references[0] as $key => $value) {
+        $options[$references[1][$key]] = $value;
+        $default_values[$references[1][$key]] = $references[1][$key];
+      }
+      if (isset($advagg_relocate_css_file_settings[$form_api_filename])) {
+        $default_values = $advagg_relocate_css_file_settings[$form_api_filename];
+      }
       $form['css']['per_file_settings'][$form_api_filename]['advagg_relocate_css_file_settings_' . $form_api_filename] = array(
         '#type' => 'checkboxes',
         '#options' => $options,
-        '#default_value' => isset($advagg_relocate_css_file_settings[$form_api_filename])
-          ? $advagg_relocate_css_file_settings[$form_api_filename]
-          : $default_values,
+        '#default_value' => $default_values,
       );
     }
   }
@@ -118,11 +121,12 @@ function advagg_relocate_admin_settings_form() {
   return system_settings_form($form);
 }
 
-// Submit callback.
 /**
- * Clear out the advagg cache bin when the save configuration button is pressed.
+ * Submit callback, clear out the advagg cache bin.
  *
  * Also process the advagg_relocate_css_file_settings variable.
+ *
+ * @ingroup advagg_forms_callback
  */
 function advagg_relocate_admin_settings_form_submit($form, &$form_state) {
   // Get settings that start with advagg_relocate_css_file_settings.
@@ -160,7 +164,6 @@ function advagg_relocate_admin_settings_form_submit($form, &$form_state) {
   advagg_cache_clear_admin_submit();
 }
 
-// Helper functions.
 /**
  * See if the key starts with 'advagg_relocate_css_file_settings'.
  *

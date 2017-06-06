@@ -7,7 +7,6 @@
  * These functions are needed for cache misses.
  */
 
-// Database operations.
 /**
  * Insert/Update data in advagg tables.
  *
@@ -410,7 +409,6 @@ function advagg_remove_js_comments(&$content) {
   );
 }
 
-// File operations.
 /**
  * Given a group of files calculate what the aggregate filename will be.
  *
@@ -782,7 +780,6 @@ function advagg_clearstatcache($filename = NULL) {
   }
 }
 
-// Modify CSS/JS arrays.
 /**
  * Group the CSS/JS into the biggest buckets possible.
  *
@@ -1682,6 +1679,19 @@ function _advagg_build_css_path(array $matches, $base = '', array $aggregate_set
 
   // Prefix with base and remove '../' segments where possible.
   $url = $_base . $matches[1];
+  if (variable_get('advagg_skip_file_create_url_inside_css', ADVAGG_SKIP_FILE_CREATE_URL_INSIDE_CSS)) {
+    $new_base_path = $GLOBALS['base_path'];
+    if (isset($_aggregate_settings['variables']['base_path'])) {
+      $new_base_path = $_aggregate_settings['variables']['base_path'];
+    }
+    $pos = strpos($_base, $new_base_path);
+    if ($pos !== FALSE) {
+      $url = substr($_base, $pos) . $matches[1];
+    }
+    else {
+      $url = $new_base_path . $_base . $matches[1];
+    }
+  }
   $last = '';
   while ($url != $last) {
     $last = $url;
@@ -1703,19 +1713,9 @@ function _advagg_build_css_path(array $matches, $base = '', array $aggregate_set
   }
   $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
-  if (variable_get('advagg_skip_file_create_url_inside_css', ADVAGG_SKIP_FILE_CREATE_URL_INSIDE_CSS)) {
-    if (isset($_aggregate_settings['variables']['base_path'])) {
-      $url = $_aggregate_settings['variables']['base_path'] . $url;
-    }
-    else {
-      $url = $GLOBALS['base_path'] . $url;
-    }
-    $query = '';
-    $fragment = '';
-  }
-  else {
-    $url = advagg_file_create_url($base_url, $_aggregate_settings);
+  if (!variable_get('advagg_skip_file_create_url_inside_css', ADVAGG_SKIP_FILE_CREATE_URL_INSIDE_CSS)) {
+    $base_url = advagg_file_create_url($base_url, $_aggregate_settings);
   }
 
-  return 'url(' . $url . $query . $fragment . ')';
+  return 'url(' . $base_url . $query . $fragment . ')';
 }

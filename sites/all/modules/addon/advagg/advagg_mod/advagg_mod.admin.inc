@@ -262,7 +262,6 @@ function advagg_mod_admin_settings_form() {
     '#default_value' => variable_get('advagg_mod_css_preprocess', ADVAGG_MOD_CSS_PREPROCESS),
     '#description' => t('Force all CSS to have the preprocess attribute be set to TRUE. All CSS files will be aggregated if enabled.'),
   );
-  // @ignore security_fapi_title
   $form['css']['advagg_mod_css_preprocess']['#description'] .= module_exists('advagg_bundler') ? ' ' . t('You might want to increase the <a href="@link">CSS Bundles Per Page</a> if this is checked.', array('@link' => url($config_path . '/advagg/bundler'))) : '';
   // Only test the translate option if
   // the locale function is defined OR
@@ -557,9 +556,10 @@ function advagg_mod_admin_settings_form() {
   return system_settings_form($form);
 }
 
-// Validate callback.
 /**
- * Make sure the unified multisite directory was created correctly.
+ * Validate callback, check that the unified multisite directory was created.
+ *
+ * @ingroup advagg_forms_callback
  */
 function advagg_mod_admin_settings_form_validate($form, &$form_state) {
   // Unified Mmultisite.
@@ -596,9 +596,10 @@ function advagg_mod_admin_settings_form_validate($form, &$form_state) {
   }
 }
 
-// Submit callback.
 /**
- * Clear out the advagg cache bin when the save configuration button is pressed.
+ * Submit callback, clear out the advagg cache bin.
+ *
+ * @ingroup advagg_forms_callback
  */
 function advagg_mod_admin_settings_form_submit($form, &$form_state) {
   // Clear caches.
@@ -680,7 +681,7 @@ function advagg_mod_admin_test_css_files() {
         continue;
       }
       // Run t function.
-      // @ignore sniffer_semantics_functioncall_notliteralstring
+      // @codingStandardsIgnoreLine
       $after = t($before);
 
       // Only include it if strings are different.

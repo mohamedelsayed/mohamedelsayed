@@ -6,6 +6,11 @@
  */
 
 /**
+ * @addtogroup advagg_hooks
+ * @{
+ */
+
+/**
  * Implements hook_advagg_get_css_aggregate_contents_alter().
  */
 function advagg_relocate_advagg_get_css_aggregate_contents_alter(&$data, $files, $aggregate_settings) {
@@ -27,6 +32,10 @@ function advagg_relocate_advagg_get_css_aggregate_contents_alter(&$data, $files,
     $data = preg_replace_callback('%@import\s*+(?:url\(\s*+)?+[\'"]?+((?:http:\/\/|https:\/\/|\/\/)(?:[^\'"()\s]++))[\'"]?+\s*+\)?+\s*+;%i', '_advagg_relocate_callback', $data);
   }
 }
+
+/**
+ * @} End of "addtogroup advagg_hooks".
+ */
 
 /**
  * Verifies that the external CSS file is from a domain we allow for inlining.

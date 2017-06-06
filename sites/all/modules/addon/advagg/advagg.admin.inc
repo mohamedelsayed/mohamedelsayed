@@ -7,17 +7,12 @@
 
 /**
  * @defgroup advagg_forms Advanced Aggregates Forms
- *
  * @{
  * Advanced Aggregates administration forms.
- *
- * @}
  */
 
 /**
  * Form builder; Configure advagg settings.
- *
- * @ingroup advagg_forms
  *
  * @see system_settings_form()
  */
@@ -611,8 +606,6 @@ function advagg_admin_settings_form($form, $form_state) {
 
 /**
  * Form builder; Do advagg operations.
- *
- * @ingroup advagg_forms
  */
 function advagg_admin_operations_form($form, $form_state) {
   drupal_set_title(t('AdvAgg: Operations'));
@@ -867,8 +860,6 @@ function advagg_admin_operations_form($form, $form_state) {
 /**
  * Form builder; Show info about advagg and advagg settings.
  *
- * @ingroup advagg_forms
- *
  * @see system_settings_form()
  */
 function advagg_admin_info_form($form, $form_state) {
@@ -1093,7 +1084,16 @@ function advagg_admin_system_performance_settings_form(&$form, $form_state) {
   );
 }
 
-// Submit callback.
+/**
+ * @} End of "defgroup advagg_forms".
+ */
+
+/**
+ * @defgroup advagg_forms_callback AdvAgg forms callbacks and validation.
+ * @{
+ * Functions that handle user input from forms.
+ */
+
 /**
  * Clear out the advagg cache bin when the save configuration button is pressed.
  */
@@ -1176,7 +1176,6 @@ function advagg_admin_settings_form_submit($form, &$form_state) {
   advagg_cache_clear_admin_submit();
 }
 
-// Callbacks for buttons.
 /**
  * Set or remove the AdvAggDisabled cookie.
  */
@@ -1626,3 +1625,7 @@ function advagg_admin_cleanup_temp_files_button() {
     drupal_set_message(format_plural($count, '1 leftover temp files from advagg was found. A total of 1 temp files was removed.', 'Some leftover temp files from advagg were found. A total of %count temp files were removed.'));
   }
 }
+
+/**
+ * @} End of "defgroup advagg_forms_callback".
+ */

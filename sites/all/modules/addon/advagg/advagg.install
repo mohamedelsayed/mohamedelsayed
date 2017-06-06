@@ -6,6 +6,11 @@
  */
 
 /**
+ * @addtogroup hooks
+ * @{
+ */
+
+/**
  * Implements hook_install().
  */
 function advagg_install() {
@@ -748,157 +753,6 @@ function advagg_update_7219(&$sandbox) {
 }
 
 /**
- * Convert the table to the specified collation.
- *
- * @param string $table_name
- *   Perform the operation on this table.
- * @param array $fields
- *   An array of field names.
- * @param string $collation
- *   The db collation to change to table columns to.
- * @param array $schema_fields
- *   An array of field definitions.
- *
- * @return array
- *   Returns an array of tables and column names.
- */
-function advagg_install_change_table_collation($table_name, array $fields, $collation, array $schema_fields) {
-  $db_type = Database::getConnection()->databaseType();
-  // Skip if not MySQL.
-  if ($db_type !== 'mysql') {
-    return FALSE;
-  }
-  $table_name = Database::getConnection()->prefixTables('{' . db_escape_table($table_name) . '}');
-  $results = db_query("SHOW FULL FIELDS FROM $table_name")->fetchAllAssoc('Field');
-  $db_schema = Database::getConnection()->schema();
-  foreach ($results as $row) {
-    if (!in_array($row->Field, $fields)) {
-      continue;
-    }
-
-    $charset = strtolower(substr($collation, 0, strpos($collation, '_')));
-    $query = "ALTER TABLE $table_name CHANGE `{$row->Field}` `{$row->Field}` {$row->Type}";
-    $query .= " CHARACTER SET $charset COLLATE $collation";
-
-    if (isset($schema_fields[$row->Field]['not null'])) {
-      if ($schema_fields[$row->Field]['not null']) {
-        $query .= ' NOT NULL';
-      }
-      else {
-        $query .= ' NULL';
-      }
-    }
-
-    // $schema_fields[$row->Field]['default'] can be NULL, so we explicitly
-    // check for the key here.
-    if (isset($schema_fields[$row->Field])
-      && is_array($schema_fields[$row->Field])
-      && array_key_exists('default', $schema_fields[$row->Field])
-    ) {
-      $default = $schema_fields[$row->Field]['default'];
-      if (is_string($default)) {
-        $default = "'" . $default . "'";
-      }
-      elseif (!isset($default)) {
-        $default = 'NULL';
-      }
-      $query .= ' DEFAULT ' . $default;
-    }
-
-    if (empty($schema_fields[$row->Field]['not null']) && !isset($schema_fields[$row->Field]['default'])) {
-      $query .= ' DEFAULT NULL';
-    }
-
-    // Add column comment.
-    if (!empty($schema_fields[$row->Field]['description'])) {
-      $query .= ' COMMENT ' . $db_schema->prepareComment($schema_fields[$row->Field]['description'], 255);
-    }
-
-    db_query($query);
-  }
-}
-
-/**
- * Callback to delete files if size == 0 and modified more than 60 seconds ago.
- *
- * @param string $uri
- *   Location of the file to check.
- */
-function advagg_install_delete_empty_file_if_stale($uri) {
-  // Set stale file threshold to 60 seconds.
-  if (filesize($uri) < 3 && REQUEST_TIME - filemtime($uri) > 60) {
-    file_unmanaged_delete($uri);
-  }
-}
-
-/**
- * Callback to delete files if size == 0 and modified more than 60 seconds ago.
- *
- * @param string $has_string
- *   If the .htaccess file contains this string it will be removed and
- *   recreated.
- * @param string $does_not_have_string
- *   If the .htaccess file does not contains this string it will be removed &
- *   recreated.
- *
- * @return string
- *   Translated string indicating what was done.
- */
-function advagg_install_update_htaccess($has_string = '', $does_not_have_string = '') {
-  // Make sure the advagg_get_root_files_dir() function is available.
-  drupal_load('module', 'advagg');
-
-  // Get paths to .htaccess file.
-  list($css_path, $js_path) = advagg_get_root_files_dir();
-  $files['css'] = $css_path[0] . '/.htaccess';
-  $files['js'] = $js_path[0] . '/.htaccess';
-
-  // Check for old .htaccess files.
-  $something_done = FALSE;
-  foreach ($files as $type => $uri) {
-    if (!file_exists($uri)) {
-      unset($files[$type]);
-      continue;
-    }
-    $contents = file_get_contents($uri);
-    // Remove old .htaccess file if it has this string.
-    if (!empty($has_string) && strpos($contents, $has_string) !== FALSE) {
-      drupal_unlink($uri);
-      $something_done = TRUE;
-    }
-    // Remove old .htaccess file if it does not have this string.
-    if (!empty($does_not_have_string) && strpos($contents, $does_not_have_string) === FALSE) {
-      drupal_unlink($uri);
-      $something_done = TRUE;
-    }
-  }
-
-  // Create the new .htaccess file.
-  $new_htaccess = FALSE;
-  if (!empty($files) && $something_done && variable_get('advagg_htaccess_check_generate', ADVAGG_HTACCESS_CHECK_GENERATE)) {
-    // Make the advagg_htaccess_check_generate() function available.
-    module_load_include('inc', 'advagg', 'advagg.missing');
-    foreach ($files as $type => $uri) {
-      advagg_htaccess_check_generate(array($uri => $type), $type, TRUE);
-      $new_htaccess = TRUE;
-    }
-  }
-
-  // Output info.
-  if ($something_done) {
-    if ($new_htaccess) {
-      return t('Removed the old .htaccess file and put in a new one.');
-    }
-    else {
-      return t('Removed the old .htaccess file.');
-    }
-  }
-  else {
-    return t('Nothing needed to be done.');
-  }
-}
-
-/**
  * Implements hook_requirements().
  */
 function advagg_requirements($phase) {
@@ -1302,6 +1156,10 @@ $base_url = str_replace("http://", "https://", $base_url);
 
   return $requirements;
 }
+
+/**
+ * @} End of "addtogroup hooks".
+ */
 
 /**
  * Make sure http requests to css/js files work correctly.
@@ -2500,4 +2358,155 @@ function advagg_install_apache_mod_loaded($mod) {
     return NULL;
   }
   return FALSE;
+}
+
+/**
+ * Convert the table to the specified collation.
+ *
+ * @param string $table_name
+ *   Perform the operation on this table.
+ * @param array $fields
+ *   An array of field names.
+ * @param string $collation
+ *   The db collation to change to table columns to.
+ * @param array $schema_fields
+ *   An array of field definitions.
+ *
+ * @return array
+ *   Returns an array of tables and column names.
+ */
+function advagg_install_change_table_collation($table_name, array $fields, $collation, array $schema_fields) {
+  $db_type = Database::getConnection()->databaseType();
+  // Skip if not MySQL.
+  if ($db_type !== 'mysql') {
+    return FALSE;
+  }
+  $table_name = Database::getConnection()->prefixTables('{' . db_escape_table($table_name) . '}');
+  $results = db_query("SHOW FULL FIELDS FROM $table_name")->fetchAllAssoc('Field');
+  $db_schema = Database::getConnection()->schema();
+  foreach ($results as $row) {
+    if (!in_array($row->Field, $fields)) {
+      continue;
+    }
+
+    $charset = strtolower(substr($collation, 0, strpos($collation, '_')));
+    $query = "ALTER TABLE $table_name CHANGE `{$row->Field}` `{$row->Field}` {$row->Type}";
+    $query .= " CHARACTER SET $charset COLLATE $collation";
+
+    if (isset($schema_fields[$row->Field]['not null'])) {
+      if ($schema_fields[$row->Field]['not null']) {
+        $query .= ' NOT NULL';
+      }
+      else {
+        $query .= ' NULL';
+      }
+    }
+
+    // $schema_fields[$row->Field]['default'] can be NULL, so we explicitly
+    // check for the key here.
+    if (isset($schema_fields[$row->Field])
+      && is_array($schema_fields[$row->Field])
+      && array_key_exists('default', $schema_fields[$row->Field])
+    ) {
+      $default = $schema_fields[$row->Field]['default'];
+      if (is_string($default)) {
+        $default = "'" . $default . "'";
+      }
+      elseif (!isset($default)) {
+        $default = 'NULL';
+      }
+      $query .= ' DEFAULT ' . $default;
+    }
+
+    if (empty($schema_fields[$row->Field]['not null']) && !isset($schema_fields[$row->Field]['default'])) {
+      $query .= ' DEFAULT NULL';
+    }
+
+    // Add column comment.
+    if (!empty($schema_fields[$row->Field]['description'])) {
+      $query .= ' COMMENT ' . $db_schema->prepareComment($schema_fields[$row->Field]['description'], 255);
+    }
+
+    db_query($query);
+  }
+}
+
+/**
+ * Callback to delete files if size == 0 and modified more than 60 seconds ago.
+ *
+ * @param string $uri
+ *   Location of the file to check.
+ */
+function advagg_install_delete_empty_file_if_stale($uri) {
+  // Set stale file threshold to 60 seconds.
+  if (filesize($uri) < 3 && REQUEST_TIME - filemtime($uri) > 60) {
+    file_unmanaged_delete($uri);
+  }
+}
+
+/**
+ * Callback to delete files if size == 0 and modified more than 60 seconds ago.
+ *
+ * @param string $has_string
+ *   If the .htaccess file contains this string it will be removed and
+ *   recreated.
+ * @param string $does_not_have_string
+ *   If the .htaccess file does not contains this string it will be removed &
+ *   recreated.
+ *
+ * @return string
+ *   Translated string indicating what was done.
+ */
+function advagg_install_update_htaccess($has_string = '', $does_not_have_string = '') {
+  // Make sure the advagg_get_root_files_dir() function is available.
+  drupal_load('module', 'advagg');
+
+  // Get paths to .htaccess file.
+  list($css_path, $js_path) = advagg_get_root_files_dir();
+  $files['css'] = $css_path[0] . '/.htaccess';
+  $files['js'] = $js_path[0] . '/.htaccess';
+
+  // Check for old .htaccess files.
+  $something_done = FALSE;
+  foreach ($files as $type => $uri) {
+    if (!file_exists($uri)) {
+      unset($files[$type]);
+      continue;
+    }
+    $contents = file_get_contents($uri);
+    // Remove old .htaccess file if it has this string.
+    if (!empty($has_string) && strpos($contents, $has_string) !== FALSE) {
+      drupal_unlink($uri);
+      $something_done = TRUE;
+    }
+    // Remove old .htaccess file if it does not have this string.
+    if (!empty($does_not_have_string) && strpos($contents, $does_not_have_string) === FALSE) {
+      drupal_unlink($uri);
+      $something_done = TRUE;
+    }
+  }
+
+  // Create the new .htaccess file.
+  $new_htaccess = FALSE;
+  if (!empty($files) && $something_done && variable_get('advagg_htaccess_check_generate', ADVAGG_HTACCESS_CHECK_GENERATE)) {
+    // Make the advagg_htaccess_check_generate() function available.
+    module_load_include('inc', 'advagg', 'advagg.missing');
+    foreach ($files as $type => $uri) {
+      advagg_htaccess_check_generate(array($uri => $type), $type, TRUE);
+      $new_htaccess = TRUE;
+    }
+  }
+
+  // Output info.
+  if ($something_done) {
+    if ($new_htaccess) {
+      return t('Removed the old .htaccess file and put in a new one.');
+    }
+    else {
+      return t('Removed the old .htaccess file.');
+    }
+  }
+  else {
+    return t('Nothing needed to be done.');
+  }
 }

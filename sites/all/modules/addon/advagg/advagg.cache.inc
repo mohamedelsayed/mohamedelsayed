@@ -7,7 +7,6 @@
  * Functions used for clearing caches and killing files.
  */
 
-// Cache and file flushing.
 /**
  * Uses the database to scan CSS/JS files for changes.
  *

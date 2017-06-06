@@ -5,7 +5,12 @@
  * Advanced CSS/JS aggregation module.
  */
 
-// Define default variables.
+/**
+ * @defgroup default_variables default values for variables
+ * @{
+ * Default values for various variables are defined here.
+ */
+
 /**
  * Default space characters.
  */
@@ -151,7 +156,7 @@ define('ADVAGG_INCLUDE_BASE_URL', FALSE);
 /**
  * Convert absolute path CSS/JS src/url() to be relative if self referencing.
  */
-define('ADVAGG_CONVERT_ABSOLUTE_TO_RELATIVE_PATH', FALSE);
+define('ADVAGG_CONVERT_ABSOLUTE_TO_RELATIVE_PATH', TRUE);
 
 /**
  * Convert absolute path CSS/JS src/url() to be protocol relative.
@@ -231,7 +236,12 @@ define('ADVAGG_SKIP_GZIP_CHECK', FALSE);
 /**
  * If true do not call file_create_url() for url() inside css files.
  */
-define('ADVAGG_SKIP_FILE_CREATE_URL_INSIDE_CSS', FALSE);
+if (module_exists('cdn')) {
+  define('ADVAGG_SKIP_FILE_CREATE_URL_INSIDE_CSS', FALSE);
+}
+else {
+  define('ADVAGG_SKIP_FILE_CREATE_URL_INSIDE_CSS', TRUE);
+}
 
 /**
  * Display a message that the a CSS/JS file has changed.
@@ -308,12 +318,20 @@ define('ADVAGG_JS_REMOVE_EMPTY_FILES', FALSE);
  */
 define('ADVAGG_DISABLE_ON_ADMIN', FALSE);
 
-
-// Core hook implementations.
 /**
- * Inbound URL rewrite helper.
+ * @} End of "defgroup default_variables".
+ */
+
+/**
+ * @addtogroup hooks
+ * @{
+ */
+
+/**
+ * Implements hook_url_inbound_alter().
  *
- * If host includes subdomain, rewrite URI and internal path if necessary.
+ * Inbound URL rewrite helper. If host includes subdomain, rewrite URI and
+ * internal path if necessary.
  */
 function advagg_url_inbound_alter(&$path, $original_path, $path_language) {
   // Do nothing if this has been disabled.
@@ -716,11 +734,11 @@ function advagg_menu() {
  * Implements hook_cron().
  *
  * This will be ran once a day at most.
- *
- * @param bool $bypass_time_check
- *   Set to TRUE to skip the 24 hour check.
  */
 function advagg_cron($bypass_time_check = FALSE) {
+  // @param bool $bypass_time_check
+  // Set to TRUE to skip the 24 hour check.
+  //
   // Execute once a day (24 hours).
   if (!$bypass_time_check && variable_get('advagg_cron_timestamp', 0) > (REQUEST_TIME - variable_get('advagg_cron_frequency', ADVAGG_CRON_FREQUENCY))) {
     return array();
@@ -764,13 +782,13 @@ function advagg_cron($bypass_time_check = FALSE) {
 
 /**
  * Implements hook_flush_caches().
- *
- * @param bool $all_bins
- *   TRUE: Get all advagg cache bins.
- * @param bool $push_new_changes
- *   FALSE: Do not scan for changes.
  */
 function advagg_flush_caches($all_bins = FALSE, $push_new_changes = TRUE) {
+  // * @param bool $all_bins
+  // *   TRUE: Get all advagg cache bins.
+  // * @param bool $push_new_changes
+  // *   FALSE: Do not scan for changes.
+  //
   // Send back a blank array if aav table doesn't exist.
   if (!db_table_exists('advagg_aggregates_versions')) {
     return array();
@@ -844,23 +862,6 @@ function advagg_element_info_alter(&$type) {
   $type['html_script_tag'] = $type['html_tag'];
   $type['html_script_tag']['#theme'] = 'html_script_tag';
   $type['html_script_tag']['#type'] = 'html_script_tag';
-}
-
-/**
- * Insert element into an array at a specific position.
- *
- * @param array $input_array
- *   The original array.
- * @param array $new_value
- *   The element that is getting inserted.
- * @param int $location_key
- *   The key location.
- *
- * @return array
- *   The new array with the element merged in.
- */
-function advagg_insert_into_array_at_location(array $input_array, array $new_value, $location_key) {
-  return array_merge(array_slice($input_array, 0, $location_key), $new_value, array_slice($input_array, $location_key));
 }
 
 /**
@@ -1023,7 +1024,16 @@ function advagg_form_system_performance_settings_alter(&$form, &$form_state) {
   advagg_admin_system_performance_settings_form($form, $form_state);
 }
 
-// 3rd party hook implementations.
+/**
+ * @} End of "addtogroup hooks".
+ */
+
+/**
+ * @defgroup 3rd_party_hooks 3rd party hook implementations
+ * @{
+ * Hooks that are not apart of core or AdvAgg.
+ */
+
 /**
  * Implements hook_admin_menu_cache_info().
  *
@@ -1076,7 +1086,10 @@ function advagg_pre_flush_all_caches() {
   }
 }
 
-// Core CSS/JS override functions.
+/**
+ * @} End of "defgroup 3rd_party_hooks".
+ */
+
 /**
  * Only the alter part of locale_js_alter(), not the parsing part.
  *
@@ -2871,7 +2884,6 @@ function advagg_merge_plans(array $css_js_groups, array $plans) {
   return $css_js_groups;
 }
 
-// Helper functions.
 /**
  * Function used to see if aggregation is enabled.
  *
@@ -3595,7 +3607,6 @@ function advagg_jsspecialchars($string = '') {
   return $string;
 }
 
-// Exact Copies of core functions from patches.
 /**
  * Callback for pre_render to add elements needed for JavaScript to be rendered.
  *
@@ -4353,7 +4364,7 @@ function advagg_json_encode($data) {
         $pretty_data = httprl_pr($data);
       }
       elseif (is_callable('kprint_r')) {
-        // @ignore production_php:1
+        // @codingStandardsIgnoreLine
         $pretty_data = kprint_r($data, TRUE);
       }
       else {
@@ -4701,10 +4712,10 @@ function advagg_load_stylesheet_content($contents, $optimize = FALSE) {
   if ($optimize) {
     // Perform some safe CSS optimizations.
     // Regexp to match comment blocks.
-    $comment     = '/\*[^*]*\*+(?:[^/*][^*]*\*+)*/';
     // Regexp to match double quoted strings.
-    $double_quot = '"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"';
     // Regexp to match single quoted strings.
+    $comment     = '/\*[^*]*\*+(?:[^/*][^*]*\*+)*/';
+    $double_quot = '"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"';
     $single_quot = "'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'";
     // Strip all comment blocks, but keep double/single quoted strings.
     $contents = preg_replace(
@@ -4712,11 +4723,11 @@ function advagg_load_stylesheet_content($contents, $optimize = FALSE) {
       "$1",
       $contents
     );
+
     // Remove certain whitespace.
     // There are different conditions for removing leading and trailing
     // whitespace.
     // @see http://php.net/manual/regexp.reference.subpatterns.php
-    // @ignore comment_comment_shell:13
     $contents = preg_replace('<
       # Do not strip any space from within single or double quotes
       (' . $double_quot . '|' . $single_quot . ')
@@ -4729,7 +4740,7 @@ function advagg_load_stylesheet_content($contents, $optimize = FALSE) {
       # - Opening parenthesis: Retain "@media (bar) and foo".
       # - Colon: Retain :pseudo-selectors.
       | ([\(:])\s+
-    >xS',
+    >xSs',
       // Only one of the three capturing groups will match, so its reference
       // will contain the wanted value and the references for the
       // two non-matching groups will be replaced with empty strings.
@@ -5329,4 +5340,21 @@ function advagg_add_default_dns_lookups(array &$array, $type) {
       $value['dns_prefetch'][] = 'https://stats.g.doubleclick.net';
     }
   }
+}
+
+/**
+ * Insert element into an array at a specific position.
+ *
+ * @param array $input_array
+ *   The original array.
+ * @param array $new_value
+ *   The element that is getting inserted.
+ * @param int $location_key
+ *   The key location.
+ *
+ * @return array
+ *   The new array with the element merged in.
+ */
+function advagg_insert_into_array_at_location(array $input_array, array $new_value, $location_key) {
+  return array_merge(array_slice($input_array, 0, $location_key), $new_value, array_slice($input_array, $location_key));
 }

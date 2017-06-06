@@ -6,6 +6,11 @@
  */
 
 /**
+ * @addtogroup advagg_hooks
+ * @{
+ */
+
+/**
  * Implements hook_advagg_update_github_versions_alter().
  */
 function advagg_validator_advagg_update_github_versions_alter(&$projects) {
@@ -20,3 +25,7 @@ function advagg_validator_advagg_update_github_versions_alter(&$projects) {
     'variable_name' => 'advagg_validator_github_version_jshint',
   );
 }
+
+/**
+ * @} End of "addtogroup advagg_hooks".
+ */

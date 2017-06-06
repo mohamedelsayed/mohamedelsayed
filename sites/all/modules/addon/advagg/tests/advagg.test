@@ -24,6 +24,53 @@ function advagg_test_reset_statics() {
 }
 
 /**
+ * Generates a large CSS string.
+ *
+ * @param int $selector_count
+ *   The number of selectors to generate.
+ * @param int $denominator
+ *   The max string length of the selector names.
+ *
+ * @return string
+ *   Generated CSS string.
+ */
+function advagg_test_generate_selector_css($selector_count, $denominator = 5) {
+  static $count = 0;
+  $pool = array_merge(range('a', 'z'), range('A', 'Z'));
+  $selector_count = 10000;
+  $css = '';
+  while ($selector_count > 0) {
+    $rand_string = advagg_test_randon_string(($selector_count % $denominator) + 3, $pool);
+    $css .= ".{$rand_string}, ";
+    --$selector_count;
+  }
+  $css .= "#last$count {z-index: 2; margin-left: -1px; content: \" \"; display: table;}";
+
+  ++$count;
+  return $css;
+}
+
+/**
+ * Generates random string.
+ *
+ * @param int $length
+ *   How many characters will this string contain.
+ * @param array $pool
+ *   Array of characters to use.
+ *
+ * @return string
+ *   Random string.
+ */
+function advagg_test_randon_string($length, array $pool) {
+  $string = '';
+  $count = count($pool);
+  for ($i = 0; $i < $length; $i++) {
+    $string .= $pool[mt_rand(0, $count - 1)];
+  }
+  return $string;
+}
+
+/**
  * Strip the codingStandardsIgnoreFile string from the input.
  *
  * @param string $input
@@ -388,6 +435,56 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
     $this->assertRaw('seven/style.css', "The Seven theme's CSS appears on the page.");
 
     //
+    // Test css split file processing.
+    // Generate a massive css file.
+    $css_string = advagg_test_generate_selector_css(1000);
+    $css_string .= '@media print {' . advagg_test_generate_selector_css(1000) . '}';
+    $css_string .= advagg_test_generate_selector_css(1000);
+    $css_string .= '@media screen {' . advagg_test_generate_selector_css(1000) . '}';
+    $css_string .= advagg_test_generate_selector_css(1000);
+    $css_string .= '@media print {' . advagg_test_generate_selector_css(1000) . '}';
+    $css_string .= advagg_test_generate_selector_css(9000);
+    $css_string .= '@media print {' . advagg_test_generate_selector_css(9000) . '}';
+    $css_string .= advagg_test_generate_selector_css(9000);
+    $css_string .= '@media screen {' . advagg_test_generate_selector_css(9000) . '}';
+    $css_string .= '@media print {' . advagg_test_generate_selector_css(50) . '}';
+    $css_string .= '@media screen {' . advagg_test_generate_selector_css(50) . '}';
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= '@media print {' . advagg_test_generate_selector_css(50) . '}';
+    $css_string .= '@media screen {' . advagg_test_generate_selector_css(50) . '}';
+    $css_string .= '@media print {' . advagg_test_generate_selector_css(50) . '}';
+    $css_string .= '@media screen {' . advagg_test_generate_selector_css(50) . '}';
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(15000);
+    $css_string .= '@media print {' . advagg_test_generate_selector_css(15000) . '}';
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(10);
+    $css_string .= advagg_test_generate_selector_css(10);
+    $file_info = array(
+      // Use a file that exists but isn't actually being used here.
+      'data' => drupal_get_path('module', 'advagg') . '/tests/css_test_files/advagg.css',
+    );
+    $before_selector_count = advagg_count_css_selectors($css_string);
+    // Split the huge css file.
+    $parts = advagg_split_css_file($file_info, $css_string);
+    $after = '';
+    foreach ($parts as $part) {
+      // Get written file.
+      $after .= "\n" . (string) @file_get_contents($part['data']);
+      // Cleanup.
+      unlink($part['data']);
+    }
+    // Note that a diff of the text can not be used for this test. Counting
+    // selectors is close enough for now.
+    $after_selector_count = advagg_count_css_selectors($after);
+    $this->assertEqual($before_selector_count, $after_selector_count, t('Expected %before selectors, got %after.', array('%before' => $before_selector_count, '%after' => $after_selector_count)));
+
+    //
     // Test css file processing.
     advagg_test_reset_statics();
     // Array of files to test living in 'advagg/tests/css_test_files/'.
@@ -453,6 +550,7 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
       'charset_newline.css',
       'charset_sameline.css',
     );
+    $path = drupal_get_path('module', 'advagg') . '/tests/css_test_files';
     foreach ($testfiles as $file) {
       $file_path = $path . '/' . $file;
       $file_url = $GLOBALS['base_url'] . '/' . $file_path;
@@ -468,11 +566,14 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
       $this->assertEqual($optimized_output_url, $expected, format_string('Optimized CSS file (loaded from an URL) has expected contents (@file)', array('@file' => $file)));
     }
 
+    // Set all to FALSE.
     $GLOBALS['conf']['advagg_convert_absolute_to_relative_path'] = FALSE;
     $GLOBALS['conf']['advagg_convert_absolute_to_protocol_relative_path'] = FALSE;
     $GLOBALS['conf']['advagg_force_https_path'] = FALSE;
+    $GLOBALS['conf']['advagg_skip_file_create_url_inside_css'] = FALSE;
     $settings_to_change = array(
       '' => '',
+      'advagg_skip_file_create_url_inside_css' => TRUE,
       'advagg_convert_absolute_to_relative_path' => TRUE,
       'advagg_convert_absolute_to_protocol_relative_path' => TRUE,
       'advagg_force_https_path' => TRUE,
@@ -493,6 +594,7 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
       $testfiles = array(
         'advagg.css',
       );
+      $path = drupal_get_path('module', 'advagg') . '/tests/css_test_files';
       foreach ($testfiles as $file) {
         $file_path = $path . '/' . $file;
         $file_url = $GLOBALS['base_url'] . '/' . $file_path;
@@ -513,7 +615,9 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
         $expected = file_get_contents($file_path . '.optimized.css');
         $expected = advagg_test_remove_sniffer_comments($expected);
         $optimized_output = advagg_load_css_stylesheet($file_path, TRUE, $aggregate_settings);
-        if ($aggregate_settings['variables']['advagg_convert_absolute_to_relative_path']) {
+        if ($GLOBALS['conf']['advagg_skip_file_create_url_inside_css']
+        || $aggregate_settings['variables']['advagg_convert_absolute_to_relative_path']
+        ) {
           $optimized_output = str_replace($aggregate_settings['variables']['base_path'] . drupal_get_path('module', 'advagg') . '/', '', $optimized_output);
         }
         elseif ($aggregate_settings['variables']['advagg_convert_absolute_to_protocol_relative_path']) {
@@ -525,7 +629,7 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
         else {
           $optimized_output = str_replace('http://' . $_SERVER['HTTP_HOST'] . $aggregate_settings['variables']['base_path'] . drupal_get_path('module', 'advagg') . '/', '', $optimized_output);
         }
-        $this->assertEqual($optimized_output, $expected, format_string('Optimized CSS file has expected contents (@file). Setting tested: @name; value before: @before, value after: @after', array(
+        $this->assertEqual($optimized_output, $expected, format_string("Optimized CSS file has expected contents (@file). Setting tested: @name; value before: @before, value after: @after.", array(
           '@file' => $file,
           '@name' => $name,
           '@before' => (is_bool($before) || strlen((string) $before) == 0) ? strtoupper(var_export($before, TRUE)) : $before,
@@ -535,7 +639,9 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
         $expected = file_get_contents($file_path . '.optimized.css');
         $expected = advagg_test_remove_sniffer_comments($expected);
         $optimized_output_url = advagg_load_css_stylesheet($file_url, TRUE, $aggregate_settings);
-        if ($aggregate_settings['variables']['advagg_convert_absolute_to_relative_path']) {
+        if ($GLOBALS['conf']['advagg_skip_file_create_url_inside_css']
+        || $aggregate_settings['variables']['advagg_convert_absolute_to_relative_path']
+        ) {
           $optimized_output_url = str_replace($aggregate_settings['variables']['base_path'] . drupal_get_path('module', 'advagg') . '/', '', $optimized_output_url);
         }
         elseif ($aggregate_settings['variables']['advagg_convert_absolute_to_protocol_relative_path']) {
@@ -547,7 +653,7 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
         else {
           $optimized_output_url = str_replace('http://' . $_SERVER['HTTP_HOST'] . $aggregate_settings['variables']['base_path'] . drupal_get_path('module', 'advagg') . '/', '', $optimized_output_url);
         }
-        $this->assertEqual($optimized_output_url, $expected, format_string('Optimized CSS file (loaded from an URL) has expected contents (@file). Setting tested: @name; value before: @before, value after: @after', array(
+        $this->assertEqual($optimized_output_url, $expected, format_string("Optimized CSS file (loaded from an URL) has expected contents (@file). Setting tested: @name; value before: @before, value after: @after.", array(
           '@file' => $file,
           '@name' => $name,
           '@before' => (is_bool($before) || strlen((string) $before) == 0) ? strtoupper(var_export($before, TRUE)) : $before,
