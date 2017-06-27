@@ -596,8 +596,9 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
       );
       $path = drupal_get_path('module', 'advagg') . '/tests/css_test_files';
       foreach ($testfiles as $file) {
-        $file_path = $path . '/' . $file;
-        $file_url = $GLOBALS['base_url'] . '/' . $file_path;
+        $base_url_before = $GLOBALS['base_url'];
+        $GLOBALS['base_url'] = advagg_force_http_path($GLOBALS['base_url']);
+
         $aggregate_settings = array(
           'variables' => array(
             'is_https' => FALSE,
@@ -611,6 +612,9 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
           $aggregate_settings['variables'][CDN_MODE_VARIABLE] = CDN_DISABLED;
           $aggregate_settings['variables'][CDN_STATUS_VARIABLE] = CDN_DISABLED;
         }
+
+        $file_path = $path . '/' . $file;
+        $file_url = $GLOBALS['base_url'] . '/' . $file_path;
 
         $expected = file_get_contents($file_path . '.optimized.css');
         $expected = advagg_test_remove_sniffer_comments($expected);
@@ -659,6 +663,8 @@ class AdvAggCascadingStylesheetsTestCase extends DrupalWebTestCase {
           '@before' => (is_bool($before) || strlen((string) $before) == 0) ? strtoupper(var_export($before, TRUE)) : $before,
           '@after' => (is_bool($value) || strlen((string) $value) == 0) ? strtoupper(var_export($value, TRUE)) : $value,
         )));
+
+        $GLOBALS['base_url'] = $base_url_before;
       }
 
       if (!empty($name)) {

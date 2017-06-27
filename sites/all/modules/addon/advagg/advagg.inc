@@ -1609,7 +1609,17 @@ function advagg_load_css_stylesheet($file, $optimize = TRUE, array $aggregate_se
   // Replace the old base path with the one that was passed in.
   $pos = strpos($css_base_url, $old_base_path);
   if ($pos !== FALSE) {
-    $css_base_url = substr_replace($css_base_url, $GLOBALS['base_path'], $pos, strlen($old_base_path));
+    $parsed_url = parse_url($css_base_url);
+    if (!empty($parsed_url['path'])) {
+      // Make sure path starts with a slash.
+      $parsed_url['path'] = str_replace('//', '/', '/' . $parsed_url['path']);
+      // Get newly recalculated position.
+      $pos = strpos($parsed_url['path'], $old_base_path);
+
+      // Replace.
+      $parsed_url['path'] = substr_replace($parsed_url['path'], $GLOBALS['base_path'], $pos, strlen($old_base_path));
+      $css_base_url = advagg_glue_url($parsed_url);
+    }
   }
 
   _advagg_build_css_path(array(), $css_base_url . '/', $aggregate_settings);

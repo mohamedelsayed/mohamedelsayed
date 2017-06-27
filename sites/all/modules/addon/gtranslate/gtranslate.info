@@ -10,9 +10,9 @@ project = "gtranslate"
 datestamp = "1357904911"
 
 
-; Information added by Drupal.org packaging script on 2014-04-26
-version = "7.x-1.10"
+; Information added by Drupal.org packaging script on 2016-09-06
+version = "7.x-1.14"
 core = "7.x"
 project = "gtranslate"
-datestamp = "1398503928"
+datestamp = "1473179357"
 

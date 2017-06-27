@@ -1214,7 +1214,7 @@ function advagg_install_check_via_http(array &$requirements) {
             'title' => $t('Adv CSS/JS Agg - Self Request Failure'),
             'severity' => REQUIREMENT_ERROR,
             'value' => $t('HTTP loopback requests to this server are returning a non positive response code of %code', array('%code' => $new_request->code)),
-            'description' => $t('If you have manually verified that AdvAgg is working correctly you can set the advagg_skip_404_check variable to TRUE in your settings.php. Editing the servers hosts file so the host name points to the localhost might also fix this (127.0.0.1 !hostname). To manually check go to <a href="@url">@url</a>, view the source and check for this string <code>@string</code>. If that string is in the source, you can safely add this to your settings.php file <code>@code</code>', array(
+            'description' => $t('If you have manually verified that AdvAgg is working correctly you can set the advagg_skip_404_check variable to TRUE in your settings.php. Editing the servers hosts file so the host name points to the localhost might also fix this (127.0.0.1 !hostname). To manually check go to <a href="@url">@url</a>, view the source (press ctrl+u on your keyboard) and check for this string <code>@string</code>. If that string is in the source, you can safely add this to your settings.php file <code>@code</code>', array(
               '!hostname' => $_SERVER['HTTP_HOST'],
               '@url' => $url,
               '@string' => '<!-- advagg_missing_fast404 -->',
@@ -1397,7 +1397,7 @@ location ~* files/advagg_(?:css|js)/ {
             'title' => $t('Adv CSS/JS Agg - HTTP Request'),
             'severity' => REQUIREMENT_ERROR,
             'value' => $t('HTTP requests to advagg for ' . $type . ' files are not getting through.'),
-            'description' => $t('AdvAgg will issue a request for a file that does not exist inside of the AdvAgg directory. If AdvAgg sends a 404, everything is ok; if something else sends a 404 then that means that AdvAgg will not be able to generate an aggregate if it is missing as something else is handling the 404 before AdvAgg has a chance to do it. If you are reading this, it means that something else is handling the 404 before AdvAgg can. In some cases this can sometimes be a false report; go here: <a href="@url">@url</a> and check if the source has an html comment that says "advagg_missing_fast404"; if it does, this is a false report, add this <code>$conf[\'advagg_skip_404_check\'] = TRUE;</code> to your settings.php file. Raw request info: <pre>@request</pre>', array(
+            'description' => $t('AdvAgg will issue a request for a file that does not exist inside of the AdvAgg directory. If AdvAgg sends a 404, everything is ok; if something else sends a 404 then that means that AdvAgg will not be able to generate an aggregate if it is missing as something else is handling the 404 before AdvAgg has a chance to do it. If you are reading this, it means that something else is handling the 404 before AdvAgg can. In some cases this can sometimes be a false report; go here: <a href="@url">@url</a> and check if the source (press ctrl+u on your keyboard) has an html comment that says "advagg_missing_fast404"; if it does, this is a false report, add this <code>$conf[\'advagg_skip_404_check\'] = TRUE;</code> to your settings.php file. Raw request info: <pre>@request</pre>', array(
               '@request' => var_export($request, TRUE),
               '@url' => $url,
             )),

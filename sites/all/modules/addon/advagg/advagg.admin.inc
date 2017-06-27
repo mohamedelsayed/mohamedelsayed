@@ -179,7 +179,7 @@ function advagg_admin_settings_form($form, $form_state) {
     '#title' => t('Preload Ordering and Settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#description' => t('Change the order of what preload items get sent first. Can also control what will be sent and if HTTP/2 push should be used (if your server supports it). If your webserver supports HTTP/2 Push, and it is enabled, the server will send every asset flagged to be pushed to the browser on every request, ignoring the browser cache (not a good thing for repeat vists). More complex server configuration will be needed to make this efficient; no sollutions are currently available.'),
+    '#description' => t('Change the order of what preload items get sent first. Can also control what will be sent and if HTTP/2 push should be used (if your server supports it). If your webserver supports HTTP/2 Push, and it is enabled, the server will send every asset flagged to be pushed to the browser on every request, ignoring the browser cache (not a good thing for repeat visits). More complex server configuration will be needed to make this efficient; no solutions are currently available.'),
     '#states' => array(
       'invisible' => array(
         '#edit-advagg-resource-hints-preload' => array('checked' => FALSE),
@@ -304,7 +304,7 @@ function advagg_admin_settings_form($form, $form_state) {
     '#type' => 'checkbox',
     '#title' => t('Send immutable header for all aggregated files.'),
     '#default_value' => variable_get('advagg_resource_hints_use_immutable', ADVAGG_RESOURCE_HINTS_USE_IMMUTABLE),
-    '#description' => t('Have apache send <a href="@url1">Cache-Control: immutable</a> for all aggregated files. Current <a href="@url2">browser support</a>', array(
+    '#description' => t('Have Apache send <a href="@url1">Cache-Control: immutable</a> for all aggregated files. Current <a href="@url2">browser support</a>', array(
       '@url1' => 'http://bitsup.blogspot.de/2016/05/cache-control-immutable.html',
       '@url2' => 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#Browser_compatibility',
     )),
@@ -523,6 +523,30 @@ function advagg_admin_settings_form($form, $form_state) {
       )),
     );
   }
+  $stream_wrappers = file_get_stream_wrappers();
+  $prefix = variable_get('advagg_root_dir_prefix', ADVAGG_ROOT_DIR_PREFIX);
+  if ($prefix !== 'public://'
+    || $stream_wrappers['public']['class'] !== 'DrupalPublicStreamWrapper'
+    || count($stream_wrappers) > 2
+  ) {
+    $stream_wrappers_string = array();
+    foreach ($stream_wrappers as $key => $values) {
+      $stream_wrappers_string[] = t("<strong>@key://</strong> uses @class; @description", array(
+        '@key' => $key,
+        '@class' => $values['class'],
+        '@description' => $values['description'],
+      ));
+    }
+    $stream_wrappers_string = implode("<br>\n", $stream_wrappers_string);
+    $form['global']['obscure']['advagg_root_dir_prefix'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Stream wrapper for AdvAgg.'),
+      '#default_value' => $prefix,
+      '#description' => t("Options:<br>\n!stream_wrappers", array(
+        '!stream_wrappers' => $stream_wrappers_string,
+      )),
+    );
+  }
 
   $form['css'] = array(
     '#type' => 'fieldset',
@@ -576,7 +600,7 @@ function advagg_admin_settings_form($form, $form_state) {
     '#type' => 'checkbox',
     '#title' => t('Remove empty CSS files from aggregates'),
     '#default_value' => variable_get('advagg_css_remove_empty_files', ADVAGG_CSS_REMOVE_EMPTY_FILES),
-    '#description' => t('If an empty CSS file ends up being in its own aggregate, that aggreate can end up as a 404.'),
+    '#description' => t('If an empty CSS file ends up being in its own aggregate, that aggregate can end up as a 404.'),
   );
 
   $form['js'] = array(
@@ -595,7 +619,7 @@ function advagg_admin_settings_form($form, $form_state) {
     '#type' => 'checkbox',
     '#title' => t('Remove empty JS files from aggregates'),
     '#default_value' => variable_get('advagg_js_remove_empty_files', ADVAGG_JS_REMOVE_EMPTY_FILES),
-    '#description' => t('If an empty JS file ends up being in its own aggregate, that aggreate can end up as a 404.'),
+    '#description' => t('If an empty JS file ends up being in its own aggregate, that aggregate can end up as a 404.'),
   );
 
   // Clear the cache bins on submit.
@@ -1622,7 +1646,7 @@ function advagg_admin_cleanup_temp_files_button() {
     drupal_set_message(t('No leftover temp files found. Nothing was deleted.'));
   }
   else {
-    drupal_set_message(format_plural($count, '1 leftover temp files from advagg was found. A total of 1 temp files was removed.', 'Some leftover temp files from advagg were found. A total of %count temp files were removed.'));
+    drupal_set_message(format_plural($count, '1 leftover temp files from advagg was found. A total of 1 temp files was removed.', 'Some leftover temp files from advagg were found. A total of @count temp files were removed.'));
   }
 }
 
