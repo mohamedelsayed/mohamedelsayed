@@ -37,3 +37,13 @@ function imageapi_optimize_update_7000() {
   }
   drupal_flush_all_caches();
 }
+
+/**
+ * If imageapi_optimize_service is set to 'smushit', change it to 'resmushit'
+ */
+function imageapi_optimize_update_7001() {
+  $var = variable_get('imageapi_optimize_service');
+  if ($var == 'smushit') {
+    variable_set('imageapi_optimize_service', 'resmushit');
+  }
+}
