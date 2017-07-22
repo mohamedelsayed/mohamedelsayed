@@ -39,6 +39,7 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans|Raleway" rel="stylesheet">
         <link href="<?php echo $base_url . '/' . path_to_theme(); ?>/img/favicon.png" type="image/x-icon" rel="icon">
         <?php print $styles; ?>
+        <?php print $scripts; ?>
     </head>
     <?php
     $additional_body_classes = '';
@@ -51,7 +52,6 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();
         <?php print $page_top; ?>
         <?php print $page; ?>
         <?php print $page_bottom; ?>
-        <?php print $scripts; ?>
         <?php if (!isset($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'Speed Insights') === false) { ?>
             <script src='https://www.google.com/recaptcha/api.js'></script>
             <?php if (variable_get('google_analytics_propertyid') != '') { ?>
