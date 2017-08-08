@@ -6,6 +6,13 @@
  * @link http://www.mohamedelsayed.net
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
+require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+$dotenv = new Dotenv\Dotenv(dirname(dirname(__DIR__)));
+$dotenv->load();
+$db_host = getenv('DB_HOST');
+$database = getenv('DB_DATABASE');
+$username = getenv('DB_USERNAME');
+$password = getenv('DB_PASSWORD');
 ini_set('max_execution_time', 0);
 define('DS', DIRECTORY_SEPARATOR);
 $http_string = "http://";
@@ -20,17 +27,10 @@ if ($dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '\/')) {
     $base_path = $dir;
     $base_url .= $base_path;
 }
-$database = 'mohamedelsayed';
-$db_host = 'localhost';
-$username = 'root';
-$password = 'root';
 $conf['error_level'] = 0;
 if (strpos($http_host, 'mohamedelsayed.net') !== FALSE) {
     $conf['css_gzip_compression'] = TRUE;
     $conf['js_gzip_compression'] = TRUE;
-    $database = 'elsayed_mohamedelsayed';
-    $username = 'elsayed_mohamede';
-    $password = 'vTJep5pfyesE';
 } elseif (strpos($http_host, 'localhost') !== FALSE) {
     $conf['css_gzip_compression'] = FALSE;
     $conf['js_gzip_compression'] = FALSE;
