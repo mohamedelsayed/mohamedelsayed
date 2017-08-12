@@ -6,7 +6,7 @@
  * @link http://www.mohamedelsayed.net
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
-module_load_include('inc', 'content', 'includes/password');
+//module_load_include('inc', 'content', 'includes/password');
 require "PHPMailer/PHPMailerAutoload.php";
 function elsayed_init(){
     elsayed_update_node_language();
@@ -40,21 +40,21 @@ function elsayed_menu() {
         'access arguments' => array('access content'),
         'delivery callback' => 'drupal_json_output',
     );
-    $items['register-form'] = array(
-        'title' => __('Register'),
-        'page callback' => 'elsayed_register_form_custom',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['ajax_signup'] = array(
-        'title' => 'Ajax Signup',
-        'page callback' => 'elsayed_ajax_signup',
-        'page arguments' => array(1),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-        'delivery callback' => 'drupal_json_output',
-    );
+//    $items['register-form'] = array(
+//        'title' => __('Register'),
+//        'page callback' => 'elsayed_register_form_custom',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['ajax_signup'] = array(
+//        'title' => 'Ajax Signup',
+//        'page callback' => 'elsayed_ajax_signup',
+//        'page arguments' => array(1),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//        'delivery callback' => 'drupal_json_output',
+//    );
     $items['projects'] = array(
         'title' => 'Projects',
         'page callback' => 'elsayed_projects',
@@ -62,94 +62,94 @@ function elsayed_menu() {
         'type' => MENU_CALLBACK,
         'access arguments' => array('access content'),
     );
-    $items['add_to_cart'] = array(
-        'title' => 'Add to cart',
-        'page callback' => 'elsayed_add_to_cart',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-        'delivery callback' => 'drupal_json_output',
-    );
-    $items['change_currency'] = array(
-        'title' => __('Change Currency'),
-        'page callback' => 'elsayed_change_currency',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['refresh_cart_info_text'] = array(
-        'title' => 'Refresh Cart Info Text',
-        'page callback' => 'elsayed_refresh_cart_info_text',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-        'delivery callback' => 'drupal_json_output',
-    );
-    $items['articles'] = array(
-        'title' => 'Articles',
-        'page callback' => 'elsayed_articles',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['cart'] = array(
-        'title' => 'Cart',
-        'page callback' => 'elsayed_cart',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['remove_from_cart/%'] = array(
-        'title' => 'Remove from cart',
-        'page callback' => 'elsayed_remove_from_cart',
-        'page arguments' => array(1),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['update_cart'] = array(
-        'title' => 'Update cart',
-        'page callback' => 'elsayed_update_cart',
-        'page arguments' => array(0),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['checkout'] = array(
-        'title' => 'Checkout',
-        'page callback' => 'elsayed_checkout',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['cancel_payment'] = array(
-        'title' => 'Cancel Payment',
-        'page callback' => 'elsayed_cancel_payment',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['success_payment'] = array(
-        'title' => 'Success Payment',
-        'page callback' => 'elsayed_success_payment',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
-    $items['user/edit'] = array(
-        'title'            => 'Edit Profile',
-        'description'      => 'Edit own profile',
-        'page callback'    => 'elsayed_user_edit',
-        'access callback'  => 'elsayed_user_edit_access',
-        'type'             => MENU_LOCAL_TASK,
-        'file'             => 'user.pages.inc',
-        'file path'        => 'modules/user'
-    );
-	$items['search-results'] = array(
-        'title' => 'Search',
-        'page callback' => 'elsayed_search',
-        'page arguments' => array(),
-        'type' => MENU_CALLBACK,
-        'access arguments' => array('access content'),
-    );
+//    $items['add_to_cart'] = array(
+//        'title' => 'Add to cart',
+//        'page callback' => 'elsayed_add_to_cart',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//        'delivery callback' => 'drupal_json_output',
+//    );
+//    $items['change_currency'] = array(
+//        'title' => __('Change Currency'),
+//        'page callback' => 'elsayed_change_currency',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['refresh_cart_info_text'] = array(
+//        'title' => 'Refresh Cart Info Text',
+//        'page callback' => 'elsayed_refresh_cart_info_text',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//        'delivery callback' => 'drupal_json_output',
+//    );
+//    $items['articles'] = array(
+//        'title' => 'Articles',
+//        'page callback' => 'elsayed_articles',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['cart'] = array(
+//        'title' => 'Cart',
+//        'page callback' => 'elsayed_cart',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['remove_from_cart/%'] = array(
+//        'title' => 'Remove from cart',
+//        'page callback' => 'elsayed_remove_from_cart',
+//        'page arguments' => array(1),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['update_cart'] = array(
+//        'title' => 'Update cart',
+//        'page callback' => 'elsayed_update_cart',
+//        'page arguments' => array(0),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['checkout'] = array(
+//        'title' => 'Checkout',
+//        'page callback' => 'elsayed_checkout',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['cancel_payment'] = array(
+//        'title' => 'Cancel Payment',
+//        'page callback' => 'elsayed_cancel_payment',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['success_payment'] = array(
+//        'title' => 'Success Payment',
+//        'page callback' => 'elsayed_success_payment',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+//    $items['user/edit'] = array(
+//        'title'            => 'Edit Profile',
+//        'description'      => 'Edit own profile',
+//        'page callback'    => 'elsayed_user_edit',
+//        'access callback'  => 'elsayed_user_edit_access',
+//        'type'             => MENU_LOCAL_TASK,
+//        'file'             => 'user.pages.inc',
+//        'file path'        => 'modules/user'
+//    );
+//	$items['search-results'] = array(
+//        'title' => 'Search',
+//        'page callback' => 'elsayed_search',
+//        'page arguments' => array(),
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
 	$items['admin/custom/custom-settings'] = array(
         'title' => 'Custom Settings',
         'type' => MENU_NORMAL_ITEM,
