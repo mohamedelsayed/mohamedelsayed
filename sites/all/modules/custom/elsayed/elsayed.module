@@ -1478,71 +1478,77 @@ function elsayed_access_denied(){
     return $output;
 }
 function elsayed_custom_setting_form($form, &$form_state) {
-	$form['site_name'] = array(
-        '#title' => __('Site Name'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => true,
-        '#default_value' => variable_get('site_name', ''),
-    );
-	$form['contact_mail'] = array(
-        '#title' => __('Contact Email'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => true,
-        '#default_value' => variable_get('contact_mail', ''),
-    );
-    $form['facebook_url'] = array(
-        '#title' => __('Facebook URL'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => false,
-        '#default_value' => variable_get('facebook_url', ''),
-    );
-	$form['twitter_url'] = array(
-        '#title' => __('Twitter URL'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => false,
-        '#default_value' => variable_get('twitter_url', ''),
-    );
-	$form['google_plus_url'] = array(
-        '#title' => __('Google Plus URL'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => false,
-        '#default_value' => variable_get('google_plus_url', ''),
-    );
-	$form['linkedin_url'] = array(
-        '#title' => __('Linkedin URL'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => false,
-        '#default_value' => variable_get('linkedin_url', ''),
-    );
-	$form['codecademy_url'] = array(
-        '#title' => __('Codecademy URL'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => false,
-        '#default_value' => variable_get('codecademy_url', ''),
-    );
-	$form['mostaql_url'] = array(
-        '#title' => __('Mostaql URL'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => false,
-        '#default_value' => variable_get('mostaql_url', ''),
-    );
-	$form['google_analytics_propertyid'] = array(
-        '#title' => __('Google Analytics Property ID'),
-        '#discription' => __(''),
-        '#type' => 'textfield',
-        '#required' => false,
-        '#default_value' => variable_get('google_analytics_propertyid', ''),
-    );
-    $form['#validate'][] = 'elsayed_custom_setting_form_validation';
-    return system_settings_form($form);
+    $is_user_admin = elsayed_is_user_admin();
+    if($is_user_admin){
+            $form['site_name'] = array(
+            '#title' => __('Site Name'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => true,
+            '#default_value' => variable_get('site_name', ''),
+        );
+            $form['contact_mail'] = array(
+            '#title' => __('Contact Email'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => true,
+            '#default_value' => variable_get('contact_mail', ''),
+        );
+        $form['facebook_url'] = array(
+            '#title' => __('Facebook URL'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('facebook_url', ''),
+        );
+            $form['twitter_url'] = array(
+            '#title' => __('Twitter URL'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('twitter_url', ''),
+        );
+            $form['google_plus_url'] = array(
+            '#title' => __('Google Plus URL'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('google_plus_url', ''),
+        );
+            $form['linkedin_url'] = array(
+            '#title' => __('Linkedin URL'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('linkedin_url', ''),
+        );
+            $form['codecademy_url'] = array(
+            '#title' => __('Codecademy URL'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('codecademy_url', ''),
+        );
+            $form['mostaql_url'] = array(
+            '#title' => __('Mostaql URL'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('mostaql_url', ''),
+        );
+            $form['google_analytics_propertyid'] = array(
+            '#title' => __('Google Analytics Property ID'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('google_analytics_propertyid', ''),
+        );
+        $form['#validate'][] = 'elsayed_custom_setting_form_validation';
+        return system_settings_form($form);
+    }else{
+        global $base_url;
+        drupal_goto($base_url);
+    }
 }
 function elsayed_custom_setting_form_validation($form, &$form_state) {
     $contact_mail = $form_state['values']['contact_mail'];
