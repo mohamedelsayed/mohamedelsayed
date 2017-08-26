@@ -320,10 +320,10 @@ function elsayed_contact_us_form(){
                 $mail->SMTPAuth = true;
                 $mail->CharSet = "UTF-8";
                 //$mail->SMTPSecure = 'tls';
-                $mail->Host = 'mail.mohamedelsayed.net';
-                $mail->Port = 26;
-                $mail->Username = "noreply@mohamedelsayed.net";
-                $mail->Password = "lavQUPSvFiaa";
+                $mail->Host = getenv('MAIL_HOST');
+                $mail->Port = getenv('MAIL_PORT');
+                $mail->Username = getenv('MAIL_USERNAME');
+                $mail->Password = getenv('MAIL_PASSWORD');
                 $mail->From = $email;
                 $mail->FromName = $name;
                 $mail->addAddress($emailTo, variable_get('site_name'));

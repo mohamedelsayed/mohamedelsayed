@@ -27,7 +27,6 @@ if (isset($home_widgets['contact']) && !empty($home_widgets['contact'])) {
         </div>
         <div class="content">
             <div class="row">
-                <div id="sendmessage">Your message has been sent. Thank you!</div>
                 <div id="sendmessage"><?php echo __('Thank you for your message. I will get back to you as soon as possible.'); ?></div>
                 <div id="errormessage"><?php echo __('There is a problem in sending mail. Try again.'); ?></div>
                 <form id="contact-form" onsubmit="return validate_contact_us_form();" action="<?php echo $base_url . '/contact-us-form'; ?>" method="post"  role="form" class="form contactForm">
