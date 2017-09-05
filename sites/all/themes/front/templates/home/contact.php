@@ -29,7 +29,7 @@ if (isset($home_widgets['contact']) && !empty($home_widgets['contact'])) {
             <div class="row">
                 <div id="sendmessage"><?php echo __('Thank you for your message. I will get back to you as soon as possible.'); ?></div>
                 <div id="errormessage"><?php echo __('There is a problem in sending mail. Try again.'); ?></div>
-                <form id="contact-form" onsubmit="return validate_contact_us_form();" action="<?php echo $base_url . '/contact-us-form'; ?>" method="post"  role="form" class="form contactForm">
+                <form id="contact-form" onsubmit="return validate_contact_us_form();" action="<?php echo $base_url . '/contact-us-form'; ?>" method="post" role="form" class="form contactForm">
                     <div class="col-md-4">
                         <div class="form-group">
                             <input type="text" name="name" id="name" class="form-control text-field-box" placeholder="<?php echo __('Your Name'); ?>" />

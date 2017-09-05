@@ -310,10 +310,6 @@ function elsayed_contact_us_form(){
             $tpl = file_get_contents(drupal_get_path('module', 'elsayed').'/emails/contactus.html');
             $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}'),
                                         array($mailsubject, $name, $email, $subject, $message), $tpl);
-            $headers = "From: ".$name." <".$email.">"."\r\n";
-            $headers .= "Reply-To: ".strip_tags($email)."\r\n";
-            $headers .= "MIME-Version: 1.0\r\n";
-            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
             if($emailTo != ''){
             	$mail = new PHPMailer();
                 $mail->IsSMTP();
@@ -327,8 +323,6 @@ function elsayed_contact_us_form(){
                 $mail->From = $email;
                 $mail->FromName = $name;
                 $mail->addAddress($emailTo, variable_get('site_name'));
-				//$mail->addCC("cc@example.com");
-				//$mail->addBCC("cc@example.com");
                 $mail->isHTML(true);
                 $mail->Subject = $mailsubject;
                 $mail->Body = $html_message;
@@ -356,21 +350,20 @@ function elsayed_contact_us_form(){
 				}
 				if($recaptchaflag == 1){
 	                if ($mail->send()) {
-	                //if(mail($emailTo, $subject, $html_message, $headers)){
-	                    $data['msg'] = __('Thank you for your message. We will get back to you the soonest.');
+	                    //$data['msg'] = __('Thank you for your message. We will get back to you the soonest.');
 	                    $data['error'] = 0;
 	                }else{
-	                    $data['msg'] = __('There was a problem sending the Email. Please try again.');
-						$data['error'] = 1;
+	                    //$data['msg'] = __('There was a problem sending the Email. Please try again.');
+                            $data['error'] = 1;
 	                }
                 }else{
-                	$data['msg'] = __('There was a problem sending the Email. Please try again.');
-					$data['error'] = 1;
+                    //$data['msg'] = __('There was a problem sending the Email. Please try again.');
+                    $data['error'] = 1;
                 }
             }
        }
     }
-	return $data;
+    return $data;
 }
 function elsayed_update_node_language() {
     db_query("UPDATE `node` SET `language` = '".LANGUAGE_NONE."' WHERE `node`.`language` != '".LANGUAGE_NONE."'");
