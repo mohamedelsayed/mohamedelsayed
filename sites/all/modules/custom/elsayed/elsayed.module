@@ -1680,7 +1680,7 @@ function elsayed_get_certificates($limit = 0, $page = 1){
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
             ->entityCondition('bundle', 'certificate')
-            ->propertyCondition('status', 1);
+            ->propertyCondition('status', 1)
             ->propertyOrderBy('created', 'DESC');
     $query->fieldOrderBy('field_weight', 'value', 'ASC');
     $query->addMetaData('account', user_load(1));
