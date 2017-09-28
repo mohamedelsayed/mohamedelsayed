@@ -10,7 +10,7 @@ global $base_url;
                 <div class="col-md-6">
                     <div class="top-left">
                         <ul>
-<?php include 'social.php'; ?>
+                            <?php include 'social.php'; ?>
                         </ul>
                     </div>
                 </div>

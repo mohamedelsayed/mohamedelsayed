@@ -167,6 +167,13 @@ function elsayed_menu() {
     'weight' => -10,
     'file' => 'node.admin.inc',
   	);
+    $items['certificates'] = array(
+        'title' => 'Certificates',
+        'page callback' => 'elsayed_certificates',
+        'page arguments' => array(),
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
     return $items;
 }
 function elsayed_user_edit() {
@@ -793,6 +800,10 @@ function elsayed_get_projects($home = 0, $limit = 0, $page = 1){
     return $return;
 }
 function elsayed_projects(){
+    $output = '';
+    return $output;
+}
+function elsayed_certificates(){
     $output = '';
     return $output;
 }
@@ -1654,7 +1665,7 @@ function elsayed_get_admin_theme_path(){
 	return $admin_theme_path;
 }
 function elsayed_redirect_admin_to_dashboard(){
-	global $base_url;
+    global $base_url;
 	$redirect = $base_url.'/admin/dashboard';
 	$arg1 = arg(1);
 	$arg0 = arg(0);
@@ -1663,4 +1674,32 @@ function elsayed_redirect_admin_to_dashboard(){
 			drupal_goto("$redirect");
 		}
 	}
+}
+function elsayed_get_certificates($limit = 0, $page = 1){
+    $items = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'certificate')
+            ->propertyCondition('status', 1);
+            //->propertyOrderBy('created', 'DESC');
+    $query->fieldOrderBy('field_weight', 'value', 'ASC');
+    $query->addMetaData('account', user_load(1));
+    $result = $query->execute();
+    $total_items_nids = array();
+    if (isset($result['node'])) {
+        $total_items_nids = array_keys($result['node']);
+    }
+    $return = array();
+    if($limit != 0) {
+        $start = ($page - 1) * $limit;
+        $total_count = count($total_items_nids);
+        $items_nids = array_slice($total_items_nids, $start, $limit);
+        $items = entity_load('node', $items_nids);
+        $return['page_count'] = ceil($total_count / $limit);
+        $return['items'] = $items;
+    }else{
+        $items = entity_load('node', $total_items_nids);
+        $return = $items;
+    }
+    return $return;
 }
