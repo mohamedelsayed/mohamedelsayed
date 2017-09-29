@@ -7,11 +7,12 @@
  */ ?>
 <?php global $base_url; ?>
 <?php include_once 'common' . DS . 'header.php'; ?>
-<?php $page_title = __('Projects');
+<?php
+$page_title = __('Projects');
 drupal_set_title($page_title);
 ?>
 <div class="projects">
-    <div class="container">
+    <div class="container container_list">
         <h3 class="tittle"><?php echo $page_title; ?></h3>
         <?php
         $home = 0;

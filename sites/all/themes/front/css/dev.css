@@ -17,7 +17,7 @@
 }
 .pagination{
 	width: 100%;
-	float: left;
+	float: left;        
 }
 #sendmail_ajaxLoading{
     display:none;   
@@ -134,4 +134,10 @@ ul.pagination_in li{
 }
 .me_error{
 	border: 2px solid #e20612 !important;
+}
+.container_list{
+    margin-bottom: 20px;
+}
+.pagination{
+    margin-bottom: 0px;
 }

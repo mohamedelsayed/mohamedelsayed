@@ -12,7 +12,7 @@ $page_title = __('Certificates');
 drupal_set_title($page_title);
 ?>
 <div class="projects">
-    <div class="container">
+    <div class="container container_list">
         <h3 class="tittle"><?php echo $page_title; ?></h3>
         <?php
         $home = 0;
