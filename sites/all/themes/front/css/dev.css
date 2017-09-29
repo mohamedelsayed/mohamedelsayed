@@ -141,3 +141,7 @@ ul.pagination_in li{
 .pagination{
     margin-bottom: 0px;
 }
+.listing_item{
+    float: left;
+    margin-bottom: 20px;
+}

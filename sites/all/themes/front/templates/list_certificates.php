@@ -13,7 +13,7 @@
             $image = image_style_url('thumbnail', $certificate->field_images[LANGUAGE_NONE][0]['uri']);
         }
         ?>
-        <div class="view_1 view_1-eighth filimg col-md-3 col-sm-4 col-xs-6" style="float: left;">
+        <div class="view_1 view_1-eighth filimg col-md-3 col-sm-4 col-xs-6 listing_item" style="">
             <a class="b-link-stripe b-animate-go swipebox"  title="<?php echo $certificate_title; ?>">
                 <a hreflang="<?php echo $sitelang; ?>" class="b-link-stripe b-animate-go swipebox" href="<?php echo $certificate_url; ?>">
                     <img src="<?php echo $image; ?>" alt="<?php echo $certificate_title; ?>" class="img-responsive">
