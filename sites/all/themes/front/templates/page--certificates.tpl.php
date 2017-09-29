@@ -12,7 +12,7 @@ $page_title = __('Certificates');
 drupal_set_title($page_title);
 ?>
 <div class="projects">
-    <div class="container container_list">
+    <div class="container container_list" style="min-height: 700px;">
         <h3 class="tittle"><?php echo $page_title; ?></h3>
         <?php
         $home = 0;
