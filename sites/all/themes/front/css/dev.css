@@ -142,6 +142,6 @@ ul.pagination_in li{
     margin-bottom: 0px;
 }
 .listing_item{
-    float: left;
+    float: left !important;
     margin-bottom: 20px;
 }
