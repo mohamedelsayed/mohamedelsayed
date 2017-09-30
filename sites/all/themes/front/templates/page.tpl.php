@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2015 Programming by "http://www.mohamedelsayed.net"
  */ ?>
 <?php include_once 'common' . DS . 'header.php'; ?>
-<div id="page" class="page-div">
+<div id="page" class="page-div page_margin_bottom">
     <div class="container">
         <div class="row">
             <div class="col-md-12">

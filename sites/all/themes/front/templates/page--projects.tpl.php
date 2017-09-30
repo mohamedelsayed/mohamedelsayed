@@ -11,8 +11,8 @@
 $page_title = __('Projects');
 drupal_set_title($page_title);
 ?>
-<div class="projects">
-    <div class="container container_list">
+<div class="projects page_margin_bottom">
+    <div class="container ">
         <h3 class="tittle"><?php echo $page_title; ?></h3>
         <?php
         $home = 0;
@@ -25,7 +25,7 @@ drupal_set_title($page_title);
         $page_count = $return['page_count'];
         $projects = $return['items'];
         ?>
-<?php include_once 'list_projects.php'; ?>
+        <?php include_once 'list_projects.php'; ?>
         <div class="clearfix"></div>
     </div>
 </div>

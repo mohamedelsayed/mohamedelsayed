@@ -145,3 +145,6 @@ ul.pagination_in li{
     float: left !important;
     margin-bottom: 20px;
 }
+.page_margin_bottom{
+    margin-bottom: 50px;
+}
