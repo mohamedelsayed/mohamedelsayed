@@ -8,17 +8,19 @@
  */
 //module_load_include('inc', 'content', 'includes/password');
 require "PHPMailer/PHPMailerAutoload.php";
-function elsayed_init(){
+
+function elsayed_init() {
     elsayed_update_node_language();
     $GLOBALS['google_api_key'] = 'AIzaSyDGGlo0fNATzYKU761Fx-8VAIJDXu-b3QM';
     $GLOBALS['limit'] = 12;
-    $GLOBALS['default_image'] = $GLOBALS['base_url'].'/'.path_to_theme().'/img/blank.png';
+    $GLOBALS['default_image'] = $GLOBALS['base_url'] . '/' . path_to_theme() . '/img/blank.png';
     elsayed_redirect_admin_to_dashboard();
     $home_widgets = elsayed_get_home_widgets();
     $GLOBALS['home_widgets'] = $home_widgets;
     global $sitelang;
     $sitelang = elsayed_get_language_from_url();
 }
+
 function elsayed_menu() {
     $items['page_not_found'] = array(
         'title' => 'Page not found',
@@ -27,7 +29,7 @@ function elsayed_menu() {
         'type' => MENU_CALLBACK,
         'access arguments' => array('access content'),
     );
-	$items['access-denied'] = array(
+    $items['access-denied'] = array(
         'title' => 'Access Denied',
         'page callback' => 'elsayed_access_denied',
         'access arguments' => array('access content')
@@ -150,7 +152,7 @@ function elsayed_menu() {
 //        'type' => MENU_CALLBACK,
 //        'access arguments' => array('access content'),
 //    );
-	$items['admin/custom/custom-settings'] = array(
+    $items['admin/custom/custom-settings'] = array(
         'title' => 'Custom Settings',
         'type' => MENU_NORMAL_ITEM,
         'page callback' => 'drupal_get_form',
@@ -158,15 +160,15 @@ function elsayed_menu() {
         'access arguments' => array('access adminstration page'),
         'access callback' => true,
     );
-	$items['admin/custom/content'] = array(
-    'title' => 'Content',
-    'description' => 'Find and manage content.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('elsayed_node_admin_content'),
-    'access arguments' => array('access content overview'),
-    'weight' => -10,
-    'file' => 'node.admin.inc',
-  	);
+    $items['admin/custom/content'] = array(
+        'title' => 'Content',
+        'description' => 'Find and manage content.',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('elsayed_node_admin_content'),
+        'access arguments' => array('access content overview'),
+        'weight' => -10,
+        'file' => 'node.admin.inc',
+    );
     $items['certificates'] = array(
         'title' => 'Certificates',
         'page callback' => 'elsayed_certificates',
@@ -176,19 +178,23 @@ function elsayed_menu() {
     );
     return $items;
 }
+
 function elsayed_user_edit() {
     global $user;
     $account = user_load($user->uid);
     return drupal_get_form('user_profile_form', $account);
 }
-function elsayed_user_edit_access(){
+
+function elsayed_user_edit_access() {
     global $user;
     return user_edit_access($user);
 }
-function elsayed_get_default_language(){
+
+function elsayed_get_default_language() {
     $default_language = 'en';
     return $default_language;
 }
+
 function elsayed_get_http_string() {
     $http_string = "http://";
     if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
@@ -196,14 +202,17 @@ function elsayed_get_http_string() {
     }
     return $http_string;
 }
+
 function elsayed_get_site_base_url() {
-	global $base_url;
+    global $base_url;
     return $base_url;
 }
+
 function elsayed_get_languages() {
-    $languages =  array('en' => 'English');
+    $languages = array('en' => 'English');
     return $languages;
 }
+
 function elsayed_get_language_from_url() {
     $sitelang = elsayed_get_default_language();
     $http_string = elsayed_get_http_string();
@@ -221,7 +230,7 @@ function elsayed_get_language_from_url() {
             $time = 0;
             $host_names = explode(".", $_SERVER['HTTP_HOST']);
             if (isset($host_names[count($host_names) - 2]) && isset($host_names[count($host_names) - 1])) {
-                $bottom_host_name = $host_names[count($host_names) - 2].".".$host_names[count($host_names) - 1];
+                $bottom_host_name = $host_names[count($host_names) - 2] . "." . $host_names[count($host_names) - 1];
             } else {
                 $bottom_host_name = $_SERVER['HTTP_HOST'];
             }
@@ -241,24 +250,27 @@ function elsayed_get_language_from_url() {
     }
     return $sitelang;
 }
+
 function elsayed_get_base_url_with_lang() {
     $site_base_url = elsayed_get_site_base_url();
     //$sitelang = elsayed_get_language_from_url();
     $result = $site_base_url;
-    /*if ($sitelang != '') {
-        $result = $site_base_url.'/'.$sitelang;
-    }*/
+    /* if ($sitelang != '') {
+      $result = $site_base_url.'/'.$sitelang;
+      } */
     return $result;
 }
+
 function elsayed_get_node_url_by_id($nid = 0) {
     $node_url = '';
     $base_url_with_lang = elsayed_get_base_url_with_lang();
     if ($nid != 0) {
-        $alias = drupal_get_path_alias('node/'.$nid);
-        $node_url = $base_url_with_lang.'/'.$alias;
+        $alias = drupal_get_path_alias('node/' . $nid);
+        $node_url = $base_url_with_lang . '/' . $alias;
     }
     return $node_url;
 }
+
 function pr($data, $flag = '') {
     echo "<pre>\n";
     if ($flag == '') {
@@ -268,11 +280,13 @@ function pr($data, $flag = '') {
     }
     echo "</pre>\n";
 }
-function elsayed_page_not_found_page(){
+
+function elsayed_page_not_found_page() {
     $output = '';
     return $output;
 }
-function elsayed_get_slider_widget(){
+
+function elsayed_get_slider_widget() {
     $start = 0;
     $limit = 10;
     $items = array();
@@ -290,35 +304,35 @@ function elsayed_get_slider_widget(){
     }
     return $items;
 }
-function elsayed_contact_us_form(){
-	$data = array();
-	$data['error'] = 1;
-	$data['msg'] = '';
-    if(isset($_POST)){
-        if(!empty($_POST)){
+
+function elsayed_contact_us_form() {
+    $data = array();
+    $data['error'] = 1;
+    $data['msg'] = '';
+    if (isset($_POST)) {
+        if (!empty($_POST)) {
             $name = '';
-            if(isset($_POST['name'])){
+            if (isset($_POST['name'])) {
                 $name = $_POST['name'];
             }
             $email = '';
-            if(isset($_POST['email'])){
+            if (isset($_POST['email'])) {
                 $email = $_POST['email'];
             }
             $subject = '';
-            if(isset($_POST['subject'])){
+            if (isset($_POST['subject'])) {
                 $subject = $_POST['subject'];
             }
             $message = '';
-            if(isset($_POST['message'])){
+            if (isset($_POST['message'])) {
                 $message = $_POST['message'];
             }
-            $mailsubject = variable_get('site_name').' - '.'Contact Me';
-			$emailTo = variable_get('contact_mail');
-            $tpl = file_get_contents(drupal_get_path('module', 'elsayed').'/emails/contactus.html');
-            $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}'),
-                                        array($mailsubject, $name, $email, $subject, $message), $tpl);
-            if($emailTo != ''){
-            	$mail = new PHPMailer();
+            $mailsubject = variable_get('site_name') . ' - ' . 'Contact Me';
+            $emailTo = variable_get('contact_mail');
+            $tpl = file_get_contents(drupal_get_path('module', 'elsayed') . '/emails/contactus.html');
+            $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}'), array($mailsubject, $name, $email, $subject, $message), $tpl);
+            if ($emailTo != '') {
+                $mail = new PHPMailer();
                 $mail->IsSMTP();
                 $mail->SMTPAuth = true;
                 $mail->CharSet = "UTF-8";
@@ -334,126 +348,132 @@ function elsayed_contact_us_form(){
                 $mail->Subject = $mailsubject;
                 $mail->Body = $html_message;
                 $mail->AltBody = "This is the plain text version of the email content";
-				$recaptchaflag = 0;
-				if(isset($_POST['g-recaptcha-response'])){
-					$recaptcharesponse = $_POST['g-recaptcha-response'];
-					$secret = '6Ldz9gATAAAAAElm5SbDIt3sfIkoC7f65ciHjGrt';
-					$url = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$recaptcharesponse;
-					$ch = curl_init();
-					curl_setopt($ch,CURLOPT_URL,$url);
-					curl_setopt_array($ch, array(
-					    CURLOPT_RETURNTRANSFER => TRUE,
-					));
-					$response = curl_exec($ch);
-					if($response === FALSE){
-					    //die(curl_error($ch));
-					}
-					$responseData = json_decode($response, TRUE);
-					if(isset($responseData['success'])){
-						if($responseData['success'] == 1){
-							$recaptchaflag = 1;
-						}
-					}
-				}
-				if($recaptchaflag == 1){
-	                if ($mail->send()) {
-	                    //$data['msg'] = __('Thank you for your message. We will get back to you the soonest.');
-	                    $data['error'] = 0;
-	                }else{
-	                    //$data['msg'] = __('There was a problem sending the Email. Please try again.');
-                            $data['error'] = 1;
-	                }
-                }else{
+                $recaptchaflag = 0;
+                if (isset($_POST['g-recaptcha-response'])) {
+                    $recaptcharesponse = $_POST['g-recaptcha-response'];
+                    $secret = '6Ldz9gATAAAAAElm5SbDIt3sfIkoC7f65ciHjGrt';
+                    $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $recaptcharesponse;
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt_array($ch, array(
+                        CURLOPT_RETURNTRANSFER => TRUE,
+                    ));
+                    $response = curl_exec($ch);
+                    if ($response === FALSE) {
+                        //die(curl_error($ch));
+                    }
+                    $responseData = json_decode($response, TRUE);
+                    if (isset($responseData['success'])) {
+                        if ($responseData['success'] == 1) {
+                            $recaptchaflag = 1;
+                        }
+                    }
+                }
+                if ($recaptchaflag == 1) {
+                    if ($mail->send()) {
+                        //$data['msg'] = __('Thank you for your message. We will get back to you the soonest.');
+                        $data['error'] = 0;
+                    } else {
+                        //$data['msg'] = __('There was a problem sending the Email. Please try again.');
+                        $data['error'] = 1;
+                    }
+                } else {
                     //$data['msg'] = __('There was a problem sending the Email. Please try again.');
                     $data['error'] = 1;
                 }
             }
-       }
+        }
     }
     return $data;
 }
+
 function elsayed_update_node_language() {
-    db_query("UPDATE `node` SET `language` = '".LANGUAGE_NONE."' WHERE `node`.`language` != '".LANGUAGE_NONE."'");
-    db_query("UPDATE `url_alias` SET `language` = '".LANGUAGE_NONE."'  WHERE `url_alias`.`language` != '".LANGUAGE_NONE."'");
+    db_query("UPDATE `node` SET `language` = '" . LANGUAGE_NONE . "' WHERE `node`.`language` != '" . LANGUAGE_NONE . "'");
+    db_query("UPDATE `url_alias` SET `language` = '" . LANGUAGE_NONE . "'  WHERE `url_alias`.`language` != '" . LANGUAGE_NONE . "'");
 }
-function elsayed_get_node_field_value($field = '', $node){
+
+function elsayed_get_node_field_value($field = '', $node) {
     $languages = elsayed_get_languages();
     $data = $node->$field;
-    if(isset($data[LANGUAGE_NONE][0]['value']) && trim($data[LANGUAGE_NONE][0]['value']) != ''){
+    if (isset($data[LANGUAGE_NONE][0]['value']) && trim($data[LANGUAGE_NONE][0]['value']) != '') {
         return $data[LANGUAGE_NONE][0]['value'];
-    }else{
+    } else {
         foreach ($languages as $key => $language) {
-            if(isset($data[$key][0]['value']) && trim($data[$key][0]['value']) != ''){
+            if (isset($data[$key][0]['value']) && trim($data[$key][0]['value']) != '') {
                 return $data[$key][0]['value'];
             }
         }
     }
     return '';
 }
-function elsayed_string_format_view($str = '', $val = 0){
+
+function elsayed_string_format_view($str = '', $val = 0) {
     $data = '';
     $str_without_tags = strip_tags($str);
     $strArr = explode(" ", $str_without_tags);
-    if(count($strArr) > $val){
-        for($index = 0; $index < $val; $index++){
-            $data .= $strArr[$index].' ';
+    if (count($strArr) > $val) {
+        for ($index = 0; $index < $val; $index++) {
+            $data .= $strArr[$index] . ' ';
         }
         $data .= '...';
-    }else{
+    } else {
         $data .= $str;
     }
     return $data;
 }
-function elsayed_form_alter(&$form, &$form_state, $form_id){
-    if(isset($form['#node']) && $form_id == 'page_node_form'){
+
+function elsayed_form_alter(&$form, &$form_state, $form_id) {
+    if (isset($form['#node']) && $form_id == 'page_node_form') {
         //$form['#validate'][] = 'elsayed_page_validate';
     }
-    if(isset($form['#node']) && $form_id == 'contact_us_node_form'){
+    if (isset($form['#node']) && $form_id == 'contact_us_node_form') {
         $form['#validate'][] = 'elsayed_contact_us_validate';
     }
-    if(isset($form['#node']) && $form_id == 'currency_node_form'){
+    if (isset($form['#node']) && $form_id == 'currency_node_form') {
         $form['actions']['submit']['#submit'][] = 'elsayed_submit_currency_node_form';
     }
     $_SESSION['last_page'] = $_SERVER['HTTP_REFERER'];
     if ($form_id == 'user_login') {
         $form['#submit'][] = 'elsayed_user_login_form_submit';
     }
-	if(isset($form['#node']) && $form_id == 'widget_node_form'){
-		$info = field_info_field('field_identifier');
-		$values = &$info['settings']['allowed_values'];
-		if(!isset($values['portfolio'])){
-			$values['portfolio'] = 'Portfolio';
-			field_update_field($info);
-		}
-		if(!isset($values['contact'])){
-			$values['contact'] = 'Contact me';
-			field_update_field($info);
-		}
-		/*$arg1 = arg(1);
-		if($arg1 == 5){
-			$form['field_video_file'][LANGUAGE_NONE][0]['#required'] = 1;
-		}else{
-			$form['field_video_file']['#access'] = 0;
-		}*/
-	}
-	if ($form_id == 'video_node_form') {
-		$form['#validate'][] = 'elsayed_video_node_form_form_validation';
-	}
+    if (isset($form['#node']) && $form_id == 'widget_node_form') {
+        $info = field_info_field('field_identifier');
+        $values = &$info['settings']['allowed_values'];
+        if (!isset($values['portfolio'])) {
+            $values['portfolio'] = 'Portfolio';
+            field_update_field($info);
+        }
+        if (!isset($values['contact'])) {
+            $values['contact'] = 'Contact me';
+            field_update_field($info);
+        }
+        /* $arg1 = arg(1);
+          if($arg1 == 5){
+          $form['field_video_file'][LANGUAGE_NONE][0]['#required'] = 1;
+          }else{
+          $form['field_video_file']['#access'] = 0;
+          } */
+    }
+    if ($form_id == 'video_node_form') {
+        $form['#validate'][] = 'elsayed_video_node_form_form_validation';
+    }
 }
+
 function elsayed_form_node_delete_confirm_alter(&$form, $form_state) {
-    if(isset($form['nid']['#value'])){
+    if (isset($form['nid']['#value'])) {
         $node = node_load($form['nid']['#value']);
-        if(isset($node->type)){
-            if($node->type ==  'page' || $node->type ==  'contact_us'){
-                drupal_set_message(t("You can't delete this content.")."\n", 'error');
+        if (isset($node->type)) {
+            if ($node->type == 'page' || $node->type == 'contact_us') {
+                drupal_set_message(t("You can't delete this content.") . "\n", 'error');
                 $base_url_with_lang = elsayed_get_base_url_with_lang();
-                $redirect = $base_url_with_lang.'/admin/content';
+                $redirect = $base_url_with_lang . '/admin/content';
                 drupal_goto("$redirect");
             }
         }
     }
 }
-function elsayed_get_about_us(){
+
+function elsayed_get_about_us() {
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -467,19 +487,21 @@ function elsayed_get_about_us(){
         $items = entity_load('node', $items_nids);
     }
     $item = array();
-    if(!empty($items)){
+    if (!empty($items)) {
         reset($items);
         $first_key = key($items);
         $item = $items[$first_key];
     }
     return $item;
 }
-function elsayed_get_actual_link(){
+
+function elsayed_get_actual_link() {
     $https_string = elsayed_get_http_string();
-    $actual_link = $https_string.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    $actual_link = $https_string . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     return $actual_link;
 }
-function elsayed_get_contact_us(){
+
+function elsayed_get_contact_us() {
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -493,17 +515,18 @@ function elsayed_get_contact_us(){
         $items = entity_load('node', $items_nids);
     }
     $item = array();
-    if(!empty($items)){
+    if (!empty($items)) {
         reset($items);
         $first_key = key($items);
         $item = $items[$first_key];
     }
     return $item;
 }
-function elsayed_page_validate(&$form, &$form_state){
+
+function elsayed_page_validate(&$form, &$form_state) {
     $nid = 0;
-    if(isset($form_state['values']['nid'])){
-        if($form_state['values']['nid'] != ''){
+    if (isset($form_state['values']['nid'])) {
+        if ($form_state['values']['nid'] != '') {
             $nid = $form_state['values']['nid'];
         }
     }
@@ -513,7 +536,7 @@ function elsayed_page_validate(&$form, &$form_state){
             ->entityCondition('bundle', 'page')
             ->propertyCondition('status', 1)
             ->propertyOrderBy('created', 'DESC');
-    if($nid != 0){
+    if ($nid != 0) {
         $query->propertyCondition('nid', $nid, '<>');
     }
     $query->addMetaData('account', user_load(1));
@@ -522,14 +545,15 @@ function elsayed_page_validate(&$form, &$form_state){
         $items_nids = array_keys($result['node']);
         $items = entity_load('node', $items_nids);
     }
-    if(!empty($items)){
+    if (!empty($items)) {
         form_set_error('title', __("Content can't be added."));
     }
 }
-function elsayed_contact_us_validate(&$form, &$form_state){
+
+function elsayed_contact_us_validate(&$form, &$form_state) {
     $nid = 0;
-    if(isset($form_state['values']['nid'])){
-        if($form_state['values']['nid'] != ''){
+    if (isset($form_state['values']['nid'])) {
+        if ($form_state['values']['nid'] != '') {
             $nid = $form_state['values']['nid'];
         }
     }
@@ -539,7 +563,7 @@ function elsayed_contact_us_validate(&$form, &$form_state){
             ->entityCondition('bundle', 'contact_us')
             ->propertyCondition('status', 1)
             ->propertyOrderBy('created', 'DESC');
-    if($nid != 0){
+    if ($nid != 0) {
         $query->propertyCondition('nid', $nid, '<>');
     }
     $query->addMetaData('account', user_load(1));
@@ -548,10 +572,11 @@ function elsayed_contact_us_validate(&$form, &$form_state){
         $items_nids = array_keys($result['node']);
         $items = entity_load('node', $items_nids);
     }
-    if(!empty($items)){
+    if (!empty($items)) {
         form_set_error('title', __("Content can't be added."));
     }
 }
+
 function elsayed_slugify($text) {
     // replace non letter or digits by -
     $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
@@ -568,7 +593,8 @@ function elsayed_slugify($text) {
     }
     return $text;
 }
-function elsayed_ajax_signup(){
+
+function elsayed_ajax_signup() {
     $name = $_POST['name'];
     $mail = $_POST['mail'];
     $pass1 = $_POST['pass1'];
@@ -579,33 +605,34 @@ function elsayed_ajax_signup(){
     $output = '';
     $data = array();
     $data['error'] = 1;
-    if($return['error'] == TRUE){
+    if ($return['error'] == TRUE) {
         $output .= '<script type="text/javascript">
         jQuery(document).ready(function() {';
-        if(isset($return['msg']['name'])){
-            $output .= 'jQuery(".validationuserregistername").html("'.$return['msg']['name'].'");';
+        if (isset($return['msg']['name'])) {
+            $output .= 'jQuery(".validationuserregistername").html("' . $return['msg']['name'] . '");';
         }
-        if(isset($return['msg']['mail'])){
-            $output .= 'jQuery(".validationuserregistermail").html("'.$return['msg']['mail'].'");';
+        if (isset($return['msg']['mail'])) {
+            $output .= 'jQuery(".validationuserregistermail").html("' . $return['msg']['mail'] . '");';
         }
-        if(isset($return['msg']['pass'])){
-            $output .= 'jQuery(".validationuserregisterpass").html("'.$return['msg']['pass'].'");';
+        if (isset($return['msg']['pass'])) {
+            $output .= 'jQuery(".validationuserregisterpass").html("' . $return['msg']['pass'] . '");';
         }
-        if(isset($return['msg']['field_first_name'])){
-            $output .= 'jQuery(".validationuserregisterfname").html("'.$return['msg']['field_first_name'].'");';
+        if (isset($return['msg']['field_first_name'])) {
+            $output .= 'jQuery(".validationuserregisterfname").html("' . $return['msg']['field_first_name'] . '");';
         }
-        if(isset($return['msg']['field_last_name'])){
-            $output .= 'jQuery(".validationuserregisterlname").html("'.$return['msg']['field_last_name'].'");';
+        if (isset($return['msg']['field_last_name'])) {
+            $output .= 'jQuery(".validationuserregisterlname").html("' . $return['msg']['field_last_name'] . '");';
         }
         $output .= '});
         </script>';
-    }else{
+    } else {
         //$return = elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name);
         $data['error'] = 0;
     }
     $data['html'] = $output;
     return $data;
 }
+
 function elsayed_validate_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name) {
     $output['error'] = FALSE;
     $output['msg']['name'] = '';
@@ -678,10 +705,12 @@ function elsayed_validate_register_new_user($name, $mail, $pass1, $pass2, $field
         return $output;
     }
 }
+
 function elsayed_hasUpperCaseLetter($string) {
     return strtolower($string) !== $string;
 }
-function elsayed_register_form_custom(){
+
+function elsayed_register_form_custom() {
     $name = $_POST['name'];
     $mail = $_POST['mail'];
     $pass1 = $_POST['pass1'];
@@ -690,6 +719,7 @@ function elsayed_register_form_custom(){
     $field_last_name = $_POST['field_last_name'];
     $return = elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name);
 }
+
 function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_name, $field_last_name, $send_mail = TRUE) {
     $roles = array(2 => true);
     // register a new user
@@ -739,27 +769,27 @@ function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_na
     //$fromserveremail = 'noreply@'.$_SERVER['HTTP_HOST'];
     if ($send_mail == TRUE) {
         //shiftme_send_register_mail($account, $token);
-        /*$emailsubject = variable_get('site_name').' | Account details for '.$account->realname.' at '.variable_get('site_name');
-        $to = $mail;
-        $creative_url = '<a href="'.$GLOBALS['base_url'].'">'.variable_get('site_name').'</a>';
-        /*
-        $message = 'Thank you for registering at '.variable_get('site_name').'.Your username is:'.$account->name.'<p>
-        To protect our serious users from unwanted registrations, it is important that you validate your registration by visiting the following URL:</p>
-        <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>
-        Thank you for your understanding, and we look forward to seeing you on '.variable_get('site_name').'.';
-        */
-        /*$message = __('Thank you for registering at', $sitelang).' '.variable_get('site_name').'.'.__('Your username is', $sitelang).': '.$account->name.'<p>'.__('To protect our serious users from unwanted registrations, it is important that you validate your registration', $sitelang).' '.__('by visiting the following URL', $sitelang).': </p>
-        <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>'.__('Thank you for your understanding, and we look forward to seeing you on', $sitelang).' '.variable_get('site_name').'.';
+        /* $emailsubject = variable_get('site_name').' | Account details for '.$account->realname.' at '.variable_get('site_name');
+          $to = $mail;
+          $creative_url = '<a href="'.$GLOBALS['base_url'].'">'.variable_get('site_name').'</a>';
+          /*
+          $message = 'Thank you for registering at '.variable_get('site_name').'.Your username is:'.$account->name.'<p>
+          To protect our serious users from unwanted registrations, it is important that you validate your registration by visiting the following URL:</p>
+          <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>
+          Thank you for your understanding, and we look forward to seeing you on '.variable_get('site_name').'.';
+         */
+        /* $message = __('Thank you for registering at', $sitelang).' '.variable_get('site_name').'.'.__('Your username is', $sitelang).': '.$account->name.'<p>'.__('To protect our serious users from unwanted registrations, it is important that you validate your registration', $sitelang).' '.__('by visiting the following URL', $sitelang).': </p>
+          <p><a href="'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'">'.$GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token.'</a></p>'.__('Thank you for your understanding, and we look forward to seeing you on', $sitelang).' '.variable_get('site_name').'.';
 
-        $base_url = $GLOBALS['base_url'].'/'.path_to_theme();
-        $url_message = $GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token ;
-        $sender_image = "";
-        $content = mail_template($sender_image, $message, $sitelang);
-        if(isset($GLOBALS['mail_functions_old']) && $GLOBALS['mail_functions_old'] == 1){
-            sendByEmailTemplate($content, $to, $emailsubject, $url_message, $base_url, 'en', 3 ,"", 1);
-        }else{
-            sendByEmailTemplate($name, $content, $to, $emailsubject, $url_message, $base_url, 'en', 3 , "", 1);
-        }*/
+          $base_url = $GLOBALS['base_url'].'/'.path_to_theme();
+          $url_message = $GLOBALS['base_url'].'/verifyuser/'.$account->uid.'/'.$token ;
+          $sender_image = "";
+          $content = mail_template($sender_image, $message, $sitelang);
+          if(isset($GLOBALS['mail_functions_old']) && $GLOBALS['mail_functions_old'] == 1){
+          sendByEmailTemplate($content, $to, $emailsubject, $url_message, $base_url, 'en', 3 ,"", 1);
+          }else{
+          sendByEmailTemplate($name, $content, $to, $emailsubject, $url_message, $base_url, 'en', 3 , "", 1);
+          } */
     }
     global $user;
     $user_data = user_load($account->uid);
@@ -768,118 +798,124 @@ function elsayed_register_new_user($name, $mail, $pass1, $pass2, $field_first_na
     $redirect = $GLOBALS['base_url'];
     drupal_goto("$redirect");
 }
-function elsayed_get_projects($home = 0, $limit = 0, $page = 1){
+
+function elsayed_get_projects($home = 0, $limit = 0, $page = 1) {
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
             ->entityCondition('bundle', 'project')
             ->propertyCondition('status', 1);
-            //->propertyOrderBy('created', 'DESC');
-    if($home != 0){
+    //->propertyOrderBy('created', 'DESC');
+    if ($home != 0) {
         $query->fieldCondition('field_show_in_home', 'value', $home, '=');
     }
-	$query->fieldOrderBy('field_weight', 'value', 'ASC');
-	$query->addMetaData('account', user_load(1));
+    $query->fieldOrderBy('field_weight', 'value', 'ASC');
+    $query->addMetaData('account', user_load(1));
     $result = $query->execute();
     $total_items_nids = array();
     if (isset($result['node'])) {
         $total_items_nids = array_keys($result['node']);
     }
     $return = array();
-    if($limit != 0) {
+    if ($limit != 0) {
         $start = ($page - 1) * $limit;
         $total_count = count($total_items_nids);
         $items_nids = array_slice($total_items_nids, $start, $limit);
         $items = entity_load('node', $items_nids);
         $return['page_count'] = ceil($total_count / $limit);
         $return['items'] = $items;
-    }else{
+    } else {
         $items = entity_load('node', $total_items_nids);
         $return = $items;
     }
     return $return;
 }
-function elsayed_projects(){
+
+function elsayed_projects() {
     $output = '';
     return $output;
 }
-function elsayed_certificates(){
+
+function elsayed_certificates() {
     $output = '';
     return $output;
 }
-function elsayed_videos(){
-	$output = '';
-    return $output;
-}
-function elsayed_articles(){
+
+function elsayed_videos() {
     $output = '';
     return $output;
 }
-function elsayed_draw_paging($page_count = 0, $page = 1){
+
+function elsayed_articles() {
+    $output = '';
+    return $output;
+}
+
+function elsayed_draw_paging($page_count = 0, $page = 1) {
     $actual_link = elsayed_get_actual_link();
     $rest_link = '';
-    if(strpos($actual_link, '?') !== FALSE){
-        if(strpos($actual_link, 'page=') !== FALSE){
+    if (strpos($actual_link, '?') !== FALSE) {
+        if (strpos($actual_link, 'page=') !== FALSE) {
             $actual_link_exploded = explode('?', $actual_link);
-            if(isset($actual_link_exploded[1])){
+            if (isset($actual_link_exploded[1])) {
                 $actual_link_exploded_exploded = explode('&', $actual_link_exploded[1]);
-                $actual_link = $actual_link_exploded[0].'?';
+                $actual_link = $actual_link_exploded[0] . '?';
                 foreach ($actual_link_exploded_exploded as $key => $value) {
-                    if(strpos($value, 'page=') === FALSE){
-                        $actual_link .= $value.'&';
+                    if (strpos($value, 'page=') === FALSE) {
+                        $actual_link .= $value . '&';
                     }
                 }
                 $actual_link = trim($actual_link, '&');
             }
         }
         $actual_link .= '&page=';
-    }else{
+    } else {
         $actual_link .= '?page=';
     }
     $return = '';
-    if($page_count > 1){
+    if ($page_count > 1) {
         $return .= '<div class="pagination">
                 <div class="row">
                     <div class="col-md-12" style="text-align:center">
                         <ul class="pagination_in">';
-        if($page > 1){
-            $prev = $page-1;
+        if ($page > 1) {
+            $prev = $page - 1;
             $class = '';
-            $a_begin = '<a href="'.$actual_link.$prev.'" title="'.__('Go to').' '.$prev.'">';
+            $a_begin = '<a href="' . $actual_link . $prev . '" title="' . __('Go to') . ' ' . $prev . '">';
             $a_end = '</a>';
-            $return .= '<li class="'.$class.'">'.$a_begin.__('Previous').$a_end.'</li>';
+            $return .= '<li class="' . $class . '">' . $a_begin . __('Previous') . $a_end . '</li>';
         }
         $step = 10;
         $start = $page - $step;
         $end = $start + 2 * $step;
-        if($end > $page_count){
+        if ($end > $page_count) {
             $start = $page_count - 2 * $step;
         }
-        if($start < 1){
+        if ($start < 1) {
             $start = 1;
             $end = $start + 2 * $step;
         }
-        for ($i=$start; $i <= $page_count; $i++) {
+        for ($i = $start; $i <= $page_count; $i++) {
             $class = '';
-            $a_begin = '<a href="'.$actual_link.$i.'" title="'.__('Go to').' '.$i.'">';
+            $a_begin = '<a href="' . $actual_link . $i . '" title="' . __('Go to') . ' ' . $i . '">';
             $a_end = '</a>';
-            if($i <= $end){
-                if($i == $page){
+            if ($i <= $end) {
+                if ($i == $page) {
                     $class = 'active';
-                    $a_begin = '<a title="page '.$i.'">';
+                    $a_begin = '<a title="page ' . $i . '">';
                     $a_end = '</a>';
                 }
-                $return .= '<li class="'.$class.'">'.$a_begin.$i.$a_end.'</li>';
-            }else{
+                $return .= '<li class="' . $class . '">' . $a_begin . $i . $a_end . '</li>';
+            } else {
                 break;
             }
         }
-        if($page != $page_count){
-            $next = $page+1;
+        if ($page != $page_count) {
+            $next = $page + 1;
             $class = '';
-            $a_begin = '<a href="'.$actual_link.$next.'" title="Go to page '.$next.'">';
+            $a_begin = '<a href="' . $actual_link . $next . '" title="Go to page ' . $next . '">';
             $a_end = '</a>';
-            $return .= '<li class="'.$class.'">'.$a_begin.__('Next').$a_end.'</li>';
+            $return .= '<li class="' . $class . '">' . $a_begin . __('Next') . $a_end . '</li>';
         }
         $return .= '</ul>
                     </div>
@@ -888,59 +924,60 @@ function elsayed_draw_paging($page_count = 0, $page = 1){
     }
     return $return;
 }
-function elsayed_get_product_price($product, $symbol = 0){
+
+function elsayed_get_product_price($product, $symbol = 0) {
     $current_currency = elsayed_get_current_currency();
     $field_value_versus_default = 0;
-    if(isset($current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'])){
+    if (isset($current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'])) {
         $field_value_versus_default = $current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'];
     }
-    if(isset($current_currency->field_default[LANGUAGE_NONE][0]['value'])){
-        if($current_currency->field_default[LANGUAGE_NONE][0]['value'] == 1){
+    if (isset($current_currency->field_default[LANGUAGE_NONE][0]['value'])) {
+        if ($current_currency->field_default[LANGUAGE_NONE][0]['value'] == 1) {
             $field_value_versus_default = 1;
         }
     }
     $field_price = '';
-    if(isset($product->field_price[LANGUAGE_NONE][0]['value'])){
+    if (isset($product->field_price[LANGUAGE_NONE][0]['value'])) {
         $field_price = $product->field_price[LANGUAGE_NONE][0]['value'] * $field_value_versus_default;
     }
-    if($symbol == 1){
-        if(isset($current_currency->field_symbol[LANGUAGE_NONE][0]['value'])){
-        $field_price .= $current_currency->field_symbol[LANGUAGE_NONE][0]['value'];
+    if ($symbol == 1) {
+        if (isset($current_currency->field_symbol[LANGUAGE_NONE][0]['value'])) {
+            $field_price .= $current_currency->field_symbol[LANGUAGE_NONE][0]['value'];
         }
     }
     return $field_price;
 }
-function elsayed_add_to_cart(){
-    if(user_is_logged_in()){
+
+function elsayed_add_to_cart() {
+    if (user_is_logged_in()) {
         $nid = 0;
-        if(isset($_POST['nid'])){
+        if (isset($_POST['nid'])) {
             $nid = $_POST['nid'];
         }
         $price = 0;
-        if(isset($_POST['price'])){
+        if (isset($_POST['price'])) {
             $price = $_POST['price'];
         }
         $quantity = 0;
-        if(isset($_POST['quantity'])){
+        if (isset($_POST['quantity'])) {
             $quantity = $_POST['quantity'];
         }
         global $user;
         $uid = $user->uid;
-        if($nid > 0 && $quantity > 0){
-            $record = db_query('SELECT * FROM {orders_products} WHERE (nid = :nid) AND (uid = :uid) AND (order_id = 0)',
-                                array(':nid' => $nid, ':uid' => $uid))->fetchObject();
+        if ($nid > 0 && $quantity > 0) {
+            $record = db_query('SELECT * FROM {orders_products} WHERE (nid = :nid) AND (uid = :uid) AND (order_id = 0)', array(':nid' => $nid, ':uid' => $uid))->fetchObject();
             if (empty($record)) {
                 $id = db_insert('orders_products')
-                        ->fields(array(
-                            'nid' => $nid,
-                            'price' => $price,
-                            'quantity' => $quantity,
-                            'order_id' => 0,
-                            'uid' => $uid,
-                        ))->execute();
+                                ->fields(array(
+                                    'nid' => $nid,
+                                    'price' => $price,
+                                    'quantity' => $quantity,
+                                    'order_id' => 0,
+                                    'uid' => $uid,
+                                ))->execute();
             } else {
                 $new_quantity = $record->quantity + $quantity;
-                    db_update('orders_products')
+                db_update('orders_products')
                         ->fields(array(
                             'price' => $price,
                             'quantity' => $new_quantity,
@@ -949,10 +986,11 @@ function elsayed_add_to_cart(){
             }
         }
         echo 'Added to cart.';
-    }else{
+    } else {
         echo 'You must login!';
     }
 }
+
 function elsayed_update_7100() {
     $schema = array(
         'fields' => array(
@@ -990,13 +1028,14 @@ function elsayed_update_7100() {
     );
     db_create_table('orders_products', $schema);
 }
+
 function elsayed_submit_currency_node_form($form, &$form_state) {
     $nid = 0;
-    if (isset($form_state['values']['nid'])){
+    if (isset($form_state['values']['nid'])) {
         $nid = $form_state['values']['nid'];
     }
-    if(isset($form_state['values']['field_default'][LANGUAGE_NONE][0]['value'])){
-        if($form_state['values']['field_default'][LANGUAGE_NONE][0]['value'] == 1){
+    if (isset($form_state['values']['field_default'][LANGUAGE_NONE][0]['value'])) {
+        if ($form_state['values']['field_default'][LANGUAGE_NONE][0]['value'] == 1) {
             $query = new EntityFieldQuery();
             $query->entityCondition('entity_type', 'node')
                     ->entityCondition('bundle', 'currency')
@@ -1010,7 +1049,7 @@ function elsayed_submit_currency_node_form($form, &$form_state) {
                 $items_nids = array_keys($result['node']);
                 $items = entity_load('node', $items_nids);
             }
-            if(!empty($items)){
+            if (!empty($items)) {
                 foreach ($items as $key => $value) {
                     $value->field_default[LANGUAGE_NONE][0]['value'] = 0;
                     node_save($value);
@@ -1019,66 +1058,68 @@ function elsayed_submit_currency_node_form($form, &$form_state) {
         }
     }
 }
-function elsayed_get_currencies(){
+
+function elsayed_get_currencies() {
     $currencies = array();
-    if(!isset($GLOBALS['currencies']) || empty($GLOBALS['currencies'])){
+    if (!isset($GLOBALS['currencies']) || empty($GLOBALS['currencies'])) {
         $currencies_nodes = db_query("SELECT n.nid
                             FROM {node} n
                             WHERE (n.status = 1) AND (n.type = 'currency')
-                            ORDER BY n.title ASC",
-                            array())->fetchAll();
-        $items_nids =  array();
-        if(!empty($currencies_nodes)){
+                            ORDER BY n.title ASC", array())->fetchAll();
+        $items_nids = array();
+        if (!empty($currencies_nodes)) {
             foreach ($currencies_nodes as $key => $value) {
                 $items_nids[] = $value->nid;
             }
         }
-        if(!empty($items_nids)){
+        if (!empty($items_nids)) {
             $currencies = entity_load('node', $items_nids);
         }
         $GLOBALS['currencies'] = $currencies;
-    }else{
+    } else {
         $currencies = $GLOBALS['currencies'];
     }
     return $currencies;
 }
-function elsayed_get_current_currency(){
+
+function elsayed_get_current_currency() {
     $default_currency = elsayed_get_default_currency();
     $current_currency = array();
-    if(!user_is_logged_in()){
+    if (!user_is_logged_in()) {
         //session_start();
-        if(isset($_SESSION['current_currency'])){
+        if (isset($_SESSION['current_currency'])) {
             $current_currency = node_load($_SESSION['current_currency']);
-        }else{
+        } else {
             $current_currency = $default_currency;
         }
-    }else{
-        if(!isset($GLOBALS['current_currency']) || empty($GLOBALS['current_currency'])){
-            if(!isset($GLOBALS['user_data']) || empty($GLOBALS['user_data'])){
+    } else {
+        if (!isset($GLOBALS['current_currency']) || empty($GLOBALS['current_currency'])) {
+            if (!isset($GLOBALS['user_data']) || empty($GLOBALS['user_data'])) {
                 global $user;
                 $user_data = user_load($user->uid);
                 $GLOBALS['user_data'] = $user_data;
-            }else{
+            } else {
                 $user_data = $GLOBALS['user_data'];
             }
-            if(isset($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'])){
-                if($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'] > 0){
+            if (isset($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'])) {
+                if ($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'] > 0) {
                     $current_currency = node_load($user_data->field_default_currency[LANGUAGE_NONE][0]['target_id']);
                 }
             }
-            if(empty($current_currency)){
+            if (empty($current_currency)) {
                 $current_currency = $default_currency;
             }
             $GLOBALS['current_currency'] = $current_currency;
-        }else{
+        } else {
             $current_currency = $GLOBALS['current_currency'];
         }
     }
     return $current_currency;
 }
-function elsayed_get_default_currency(){
+
+function elsayed_get_default_currency() {
     $default_currency = array();
-    if(!isset($GLOBALS['default_currency']) || empty($GLOBALS['default_currency'])){
+    if (!isset($GLOBALS['default_currency']) || empty($GLOBALS['default_currency'])) {
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
                 ->entityCondition('bundle', 'currency')
@@ -1091,30 +1132,31 @@ function elsayed_get_default_currency(){
         if (isset($result['node'])) {
             $items_nids = array_keys($result['node']);
         }
-        if(isset($items_nids[0])){
+        if (isset($items_nids[0])) {
             $default_currency = node_load($items_nids[0]);
         }
         $GLOBALS['default_currency'] = $default_currency;
-    }else{
+    } else {
         $default_currency = $GLOBALS['default_currency'];
     }
     return $default_currency;
 }
-function elsayed_change_currency(){
+
+function elsayed_change_currency() {
     $actual_link = $GLOBALS['base_url'];
-    if(isset($_POST['actual_link'])){
+    if (isset($_POST['actual_link'])) {
         $actual_link = $_POST['actual_link'];
     }
-    if(isset($_POST['currency_select'])){
+    if (isset($_POST['currency_select'])) {
         $currency_select = $_POST['currency_select'];
-    }else{
+    } else {
         $default_currency = elsayed_get_default_currency();
         $currency_select = $default_currency->nid;
     }
-    if(!user_is_logged_in()){
+    if (!user_is_logged_in()) {
         //session_start();
         $_SESSION['current_currency'] = $currency_select;
-    }else{
+    } else {
         global $user;
         $user_data = user_load($user->uid);
         $user_data->field_default_currency[LANGUAGE_NONE][0]['target_id'] = $currency_select;
@@ -1122,7 +1164,8 @@ function elsayed_change_currency(){
     }
     drupal_goto("$actual_link");
 }
-function elsayed_update_7101(){
+
+function elsayed_update_7101() {
     $uid = array(
         'type' => 'int',
         'unsigned' => TRUE,
@@ -1131,6 +1174,7 @@ function elsayed_update_7101(){
     );
     db_add_field('orders_products', 'uid', $uid);
 }
+
 function elsayed_update_7102() {
     $price = array(
         'type' => 'float',
@@ -1140,27 +1184,28 @@ function elsayed_update_7102() {
     );
     db_change_field('orders_products', 'price', 'price', $price);
 }
-function elsayed_get_cart_query($uid = 0){
+
+function elsayed_get_cart_query($uid = 0) {
     $records = array();
-    if($uid == 0){
+    if ($uid == 0) {
         global $user;
         $uid = $user->uid;
     }
-    if($uid != 0){
+    if ($uid != 0) {
         $records = db_query('SELECT *
-                        FROM {orders_products} WHERE(uid = :uid) AND (order_id = 0)',
-                            array(':uid' => $uid))->fetchAll();
+                        FROM {orders_products} WHERE(uid = :uid) AND (order_id = 0)', array(':uid' => $uid))->fetchAll();
     }
     return $records;
 }
-function elsayed_get_cart_summary(){
+
+function elsayed_get_cart_summary() {
     $quantity = 0;
     $price = 0;
     global $user;
     $uid = $user->uid;
-    if(user_is_logged_in()){
+    if (user_is_logged_in()) {
         $records = elsayed_get_cart_query($uid);
-        if(!empty($records)){
+        if (!empty($records)) {
             foreach ($records as $key => $record) {
                 $quantity += $record->quantity;
                 $price_in = $record->quantity * $record->price;
@@ -1172,35 +1217,38 @@ function elsayed_get_cart_summary(){
     $data['quantity'] = $quantity;
     $current_currency = elsayed_get_current_currency();
     $field_value_versus_default = 0;
-    if(isset($current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'])){
+    if (isset($current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'])) {
         $field_value_versus_default = $current_currency->field_value_versus_default[LANGUAGE_NONE][0]['value'];
     }
-    if(isset($current_currency->field_default[LANGUAGE_NONE][0]['value'])){
-        if($current_currency->field_default[LANGUAGE_NONE][0]['value'] == 1){
+    if (isset($current_currency->field_default[LANGUAGE_NONE][0]['value'])) {
+        if ($current_currency->field_default[LANGUAGE_NONE][0]['value'] == 1) {
             $field_value_versus_default = 1;
         }
     }
     $data['default_price'] = $price;
     $price = $price * $field_value_versus_default;
     $price_with_symbol = '';
-    if(isset($current_currency->field_symbol[LANGUAGE_NONE][0]['value'])){
-        $price_with_symbol = $price.$current_currency->field_symbol[LANGUAGE_NONE][0]['value'];
+    if (isset($current_currency->field_symbol[LANGUAGE_NONE][0]['value'])) {
+        $price_with_symbol = $price . $current_currency->field_symbol[LANGUAGE_NONE][0]['value'];
     }
     $data['price'] = $price;
     $data['price_with_symbol'] = $price_with_symbol;
     return $data;
 }
-function elsayed_get_cart_info_text(){
+
+function elsayed_get_cart_info_text() {
     $cart_summary = elsayed_get_cart_summary();
-    $text = '<a href="'.$GLOBALS['base_url'].'/cart"><i class="fa fa-shopping-cart"></i>
-             ('.$cart_summary['quantity'].' '.t('items').'</a>) '.t('in your cart').' (<a href="'.$GLOBALS['base_url'].'/cart">'.
-             $cart_summary['price_with_symbol'].'</a>)';
-     return $text;
+    $text = '<a href="' . $GLOBALS['base_url'] . '/cart"><i class="fa fa-shopping-cart"></i>
+             (' . $cart_summary['quantity'] . ' ' . t('items') . '</a>) ' . t('in your cart') . ' (<a href="' . $GLOBALS['base_url'] . '/cart">' .
+            $cart_summary['price_with_symbol'] . '</a>)';
+    return $text;
 }
-function elsayed_refresh_cart_info_text(){
+
+function elsayed_refresh_cart_info_text() {
     echo elsayed_get_cart_info_text();
 }
-function elsayed_get_news_home(){
+
+function elsayed_get_news_home() {
     $start = 0;
     $limit = 10;
     $items = array();
@@ -1219,7 +1267,8 @@ function elsayed_get_news_home(){
     }
     return $items;
 }
-function elsayed_get_articles($limit = 0, $page = 1){
+
+function elsayed_get_articles($limit = 0, $page = 1) {
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -1233,97 +1282,106 @@ function elsayed_get_articles($limit = 0, $page = 1){
         $total_items_nids = array_keys($result['node']);
     }
     $return = array();
-    if($limit != 0) {
+    if ($limit != 0) {
         $start = ($page - 1) * $limit;
         $total_count = count($total_items_nids);
         $items_nids = array_slice($total_items_nids, $start, $limit);
         $items = entity_load('node', $items_nids);
         $return['page_count'] = ceil($total_count / $limit);
         $return['items'] = $items;
-    }else{
+    } else {
         $items = entity_load('node', $total_items_nids);
         $return = $items;
     }
     return $return;
 }
-function elsayed_cart(){
-    if(!user_is_logged_in()){
-        $redirect = $GLOBALS['base_url'].'#sign-in';
+
+function elsayed_cart() {
+    if (!user_is_logged_in()) {
+        $redirect = $GLOBALS['base_url'] . '#sign-in';
         drupal_goto("$redirect");
     }
     $output = '';
     return $output;
 }
-function elsayed_get_cart(){
+
+function elsayed_get_cart() {
     global $user;
     $uid = $user->uid;
     $records = array();
-    if(user_is_logged_in()){
+    if (user_is_logged_in()) {
         $records = elsayed_get_cart_query($uid);
     }
     return $records;
 }
-function elsayed_remove_from_cart(){
+
+function elsayed_remove_from_cart() {
     $arg1 = arg(1);
     global $user;
     $uid = $user->uid;
-    if(user_is_logged_in()){
+    if (user_is_logged_in()) {
         $num_deleted = db_delete('orders_products')
-              ->condition('uid', $uid)
-              ->condition('order_id', 0)
-              ->condition('nid', $arg1)
-              ->execute();
+                ->condition('uid', $uid)
+                ->condition('order_id', 0)
+                ->condition('nid', $arg1)
+                ->execute();
     }
-    $redirect = $GLOBALS['base_url'].'/cart';
+    $redirect = $GLOBALS['base_url'] . '/cart';
     drupal_goto("$redirect");
 }
-function elsayed_update_cart(){
+
+function elsayed_update_cart() {
     $redirect = $GLOBALS['base_url'];
     global $user;
     $uid = $user->uid;
-    if(user_is_logged_in()){
-        if(!empty($_POST)){
+    if (user_is_logged_in()) {
+        if (!empty($_POST)) {
             foreach ($_POST as $key => $value) {
-                if(is_numeric($key)){
-                    if($value > 0){
+                if (is_numeric($key)) {
+                    if ($value > 0) {
                         db_update('orders_products')
-                            ->fields(array(
-                                'quantity' => $value,
-                            ))
-                            ->condition('id', $key, '=')
-                            ->condition('uid', $uid, '=')
-                            ->execute();
+                                ->fields(array(
+                                    'quantity' => $value,
+                                ))
+                                ->condition('id', $key, '=')
+                                ->condition('uid', $uid, '=')
+                                ->execute();
                     }
                 }
             }
         }
-        if(isset($_POST['continue'])){
+        if (isset($_POST['continue'])) {
             $redirect = $GLOBALS['base_url'];
-        }elseif(isset($_POST['checkout'])){
-            $redirect = $GLOBALS['base_url'].'/checkout';
+        } elseif (isset($_POST['checkout'])) {
+            $redirect = $GLOBALS['base_url'] . '/checkout';
         }
     }
     drupal_goto("$redirect");
 }
+
 function elsayed_user_login_form_submit($form, &$form_state) {
     drupal_goto($_SESSION['last_page']);
 }
-function elsayed_checkout(){
-    if(!user_is_logged_in()){
-        $redirect = $GLOBALS['base_url'].'#sign-in';
+
+function elsayed_checkout() {
+    if (!user_is_logged_in()) {
+        $redirect = $GLOBALS['base_url'] . '#sign-in';
         drupal_goto("$redirect");
     }
     $output = '';
     return $output;
 }
-function elsayed_cancel_payment(){
+
+function elsayed_cancel_payment() {
     $output = '';
     return $output;
 }
-function elsayed_success_payment(){
+
+function elsayed_success_payment() {
     $output = '';
     return $output;
 }
+
 function elsayed_ip_info($ip = NULL, $deep_detect = TRUE) {
     $output = NULL;
     if (filter_var($ip, FILTER_VALIDATE_IP) === FALSE) {
@@ -1335,23 +1393,24 @@ function elsayed_ip_info($ip = NULL, $deep_detect = TRUE) {
                 $ip = $_SERVER['HTTP_CLIENT_IP'];
         }
     }
-    if($ip == '127.0.0.1'){
+    if ($ip == '127.0.0.1') {
         $output = 'EG';
     }
     if (filter_var($ip, FILTER_VALIDATE_IP)) {
-        $ipdat = @json_decode(file_get_contents("http://ipinfo.io/".$ip));
-        if(!empty($ipdat)){
-            if(isset($ipdat->country)){
+        $ipdat = @json_decode(file_get_contents("http://ipinfo.io/" . $ip));
+        if (!empty($ipdat)) {
+            if (isset($ipdat->country)) {
                 $output = $ipdat->country;
             }
         }
     }
     return $output;
 }
-function elsayed_get_cart_json(){
+
+function elsayed_get_cart_json() {
     $records = elsayed_get_cart();
     $data = array();
-    if(!empty($records)){
+    if (!empty($records)) {
         foreach ($records as $key => $record) {
             $quantity = $record->quantity;
             $nid = $record->nid;
@@ -1360,7 +1419,8 @@ function elsayed_get_cart_json(){
     }
     return json_encode($data);
 }
-function elsayed_is_user_admin($uid = 0){
+
+function elsayed_is_user_admin($uid = 0) {
     $is_admin = 0;
     if ($uid == 0) {
         global $user;
@@ -1368,7 +1428,7 @@ function elsayed_is_user_admin($uid = 0){
     } else {
         $userdata = user_load($uid);
     }
-    if($user->uid == 1){
+    if ($user->uid == 1) {
         $is_admin = 1;
     }
     if (in_array('administrator', $user->roles)) {
@@ -1376,7 +1436,8 @@ function elsayed_is_user_admin($uid = 0){
     }
     return $is_admin;
 }
-function elsayed_get_last_order_info($uid = 0){
+
+function elsayed_get_last_order_info($uid = 0) {
     $data = array();
     $data['phone'] = '';
     $data['address1'] = '';
@@ -1388,9 +1449,8 @@ function elsayed_get_last_order_info($uid = 0){
         global $user;
         $uid = $user->uid;
     }
-    $record = db_query('SELECT * FROM {orders} WHERE (uid = :uid)',
-                                array(':uid' => $uid))->fetchObject();
-    if(!empty($record)){
+    $record = db_query('SELECT * FROM {orders} WHERE (uid = :uid)', array(':uid' => $uid))->fetchObject();
+    if (!empty($record)) {
         $data['phone'] = $record->phone;
         $data['address1'] = $record->address1;
         $data['address2'] = $record->address2;
@@ -1400,98 +1460,104 @@ function elsayed_get_last_order_info($uid = 0){
     }
     return $data;
 }
+
 function elsayed_search() {
-	$output = '';
+    $output = '';
     return $output;
 }
-function elsayed_get_categories_by_type($category_type = 1){
-	$categories = array();
+
+function elsayed_get_categories_by_type($category_type = 1) {
+    $categories = array();
     $data = array();
-	if(!isset($GLOBALS['categories']) || empty($GLOBALS['categories'])){
-		$query = new EntityFieldQuery();
-	    $query->entityCondition('entity_type', 'node')
-	            ->entityCondition('bundle', 'category')
-	            ->propertyCondition('status', 1)
-	            ->propertyOrderBy('title', 'ASC');
-	        $query->fieldCondition('field_branding', 'value', 1, '=');
-	    $query->addMetaData('account', user_load(1));
-	    $result = $query->execute();
-	    $brands_categories_data = array();
-	    $brands_nids = array();
-	    if (isset($result['node'])) {
-	        $brands_nids = array_keys($result['node']);
-	        $brands_categories_data = entity_load('node', $brands_nids);
-	    }
-	    //brands categories
-	    $brands_categories = array();
-	    if(!empty($brands_categories_data)) {
-	    	foreach ($brands_categories_data as $key => $category) {
-	    		$brands_categories[$key] = $category->title;
-	    	}
-	    }
-	    //other categories
-	    $other_categories = array();
-	    $other_categories_data = array();
-        if(!empty($brands_nids)){
-	       $other_categories_data= db_query("SELECT nid,title  FROM {node} n
+    if (!isset($GLOBALS['categories']) || empty($GLOBALS['categories'])) {
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'node')
+                ->entityCondition('bundle', 'category')
+                ->propertyCondition('status', 1)
+                ->propertyOrderBy('title', 'ASC');
+        $query->fieldCondition('field_branding', 'value', 1, '=');
+        $query->addMetaData('account', user_load(1));
+        $result = $query->execute();
+        $brands_categories_data = array();
+        $brands_nids = array();
+        if (isset($result['node'])) {
+            $brands_nids = array_keys($result['node']);
+            $brands_categories_data = entity_load('node', $brands_nids);
+        }
+        //brands categories
+        $brands_categories = array();
+        if (!empty($brands_categories_data)) {
+            foreach ($brands_categories_data as $key => $category) {
+                $brands_categories[$key] = $category->title;
+            }
+        }
+        //other categories
+        $other_categories = array();
+        $other_categories_data = array();
+        if (!empty($brands_nids)) {
+            $other_categories_data = db_query("SELECT nid,title  FROM {node} n
 	    	WHERE (n.type = 'category') AND (n.nid NOT IN (:nids)) AND (n.status =1) ORDER BY title ASC ", array(':nids' => $brands_nids))->fetchALL();
-    	}else{
-    	    $other_categories_data= db_query("SELECT nid,title  FROM {node} n
+        } else {
+            $other_categories_data = db_query("SELECT nid,title  FROM {node} n
             WHERE (n.type = 'category') AND (n.status =1) ORDER BY title ASC ", array())->fetchALL();
-    	}
-	    if(!empty($other_categories_data)) {
-	    	foreach ($other_categories_data as $key => $category) {
-	    		$other_categories [$category->nid] = $category->title;
-	    	}
-	    }
+        }
+        if (!empty($other_categories_data)) {
+            foreach ($other_categories_data as $key => $category) {
+                $other_categories [$category->nid] = $category->title;
+            }
+        }
         $data['brands_categories'] = $brands_categories;
         $data['other_categories'] = $other_categories;
-	    $GLOBALS['categories'] = $data;
-	} else {
-		$data = $GLOBALS['categories'];
-	}
-	$categories = $data['brands_categories'];
-    if($category_type == 0) {
+        $GLOBALS['categories'] = $data;
+    } else {
+        $data = $GLOBALS['categories'];
+    }
+    $categories = $data['brands_categories'];
+    if ($category_type == 0) {
         $categories = $data['other_categories'];
     }
-	return $categories;
+    return $categories;
 }
-function elsayed_get_header_menu(){
-	global $base_url;
-	$items = array();
-	$active_class = 'active';
-	$class = '';
-	$is_front_page = drupal_is_front_page();
-	if($is_front_page){
-		$class = $active_class;
-	}
-	$items[] = array('title' => __('Home'), 'link' => $base_url, 'class' => $class);
-	$class = '';
-	$items[] = array('title' => __('About me'), 'link' => $base_url, 'class' => $class);
-	$class = '';
-	$items[] = array('title' => __('Projects'), 'link' => $base_url, 'class' => $class);
-	$class = '';
-	$items[] = array('title' => __('Contact Us'), 'link' => $base_url, 'class' => $class);
-	return $items;
+
+function elsayed_get_header_menu() {
+    global $base_url;
+    $items = array();
+    $active_class = 'active';
+    $class = '';
+    $is_front_page = drupal_is_front_page();
+    if ($is_front_page) {
+        $class = $active_class;
+    }
+    $items[] = array('title' => __('Home'), 'link' => $base_url, 'class' => $class);
+    $class = '';
+    $items[] = array('title' => __('About me'), 'link' => $base_url, 'class' => $class);
+    $class = '';
+    $items[] = array('title' => __('Projects'), 'link' => $base_url, 'class' => $class);
+    $class = '';
+    $items[] = array('title' => __('Contact Us'), 'link' => $base_url, 'class' => $class);
+    return $items;
 }
-function __($string = '', $lang = ''){
-	return $string;
+
+function __($string = '', $lang = '') {
+    return $string;
 }
-function elsayed_access_denied(){
-	$output = '';
+
+function elsayed_access_denied() {
+    $output = '';
     return $output;
 }
+
 function elsayed_custom_setting_form($form, &$form_state) {
     $is_user_admin = elsayed_is_user_admin();
-    if($is_user_admin){
-            $form['site_name'] = array(
+    if ($is_user_admin) {
+        $form['site_name'] = array(
             '#title' => __('Site Name'),
             '#discription' => __(''),
             '#type' => 'textfield',
             '#required' => true,
             '#default_value' => variable_get('site_name', ''),
         );
-            $form['contact_mail'] = array(
+        $form['contact_mail'] = array(
             '#title' => __('Contact Email'),
             '#discription' => __(''),
             '#type' => 'textfield',
@@ -1505,42 +1571,42 @@ function elsayed_custom_setting_form($form, &$form_state) {
             '#required' => false,
             '#default_value' => variable_get('facebook_url', ''),
         );
-            $form['twitter_url'] = array(
+        $form['twitter_url'] = array(
             '#title' => __('Twitter URL'),
             '#discription' => __(''),
             '#type' => 'textfield',
             '#required' => false,
             '#default_value' => variable_get('twitter_url', ''),
         );
-            $form['google_plus_url'] = array(
+        $form['google_plus_url'] = array(
             '#title' => __('Google Plus URL'),
             '#discription' => __(''),
             '#type' => 'textfield',
             '#required' => false,
             '#default_value' => variable_get('google_plus_url', ''),
         );
-            $form['linkedin_url'] = array(
+        $form['linkedin_url'] = array(
             '#title' => __('Linkedin URL'),
             '#discription' => __(''),
             '#type' => 'textfield',
             '#required' => false,
             '#default_value' => variable_get('linkedin_url', ''),
         );
-            $form['codecademy_url'] = array(
+        $form['codecademy_url'] = array(
             '#title' => __('Codecademy URL'),
             '#discription' => __(''),
             '#type' => 'textfield',
             '#required' => false,
             '#default_value' => variable_get('codecademy_url', ''),
         );
-            $form['mostaql_url'] = array(
+        $form['mostaql_url'] = array(
             '#title' => __('Mostaql URL'),
             '#discription' => __(''),
             '#type' => 'textfield',
             '#required' => false,
             '#default_value' => variable_get('mostaql_url', ''),
         );
-            $form['google_analytics_propertyid'] = array(
+        $form['google_analytics_propertyid'] = array(
             '#title' => __('Google Analytics Property ID'),
             '#discription' => __(''),
             '#type' => 'textfield',
@@ -1549,20 +1615,22 @@ function elsayed_custom_setting_form($form, &$form_state) {
         );
         $form['#validate'][] = 'elsayed_custom_setting_form_validation';
         return system_settings_form($form);
-    }else{
+    } else {
         global $base_url;
         drupal_goto($base_url);
     }
 }
+
 function elsayed_custom_setting_form_validation($form, &$form_state) {
     $contact_mail = $form_state['values']['contact_mail'];
-	if(trim($contact_mail) != ''){
-		if (filter_var($contact_mail, FILTER_VALIDATE_EMAIL) === false) {
-			form_set_error('contact_mail', __('Email must be valid.'));
-		}
-	}
+    if (trim($contact_mail) != '') {
+        if (filter_var($contact_mail, FILTER_VALIDATE_EMAIL) === false) {
+            form_set_error('contact_mail', __('Email must be valid.'));
+        }
+    }
 }
-function elsayed_get_home_widgets(){
+
+function elsayed_get_home_widgets() {
     $start = 0;
     $limit = 10;
     $items = array();
@@ -1578,42 +1646,45 @@ function elsayed_get_home_widgets(){
         $items_nids = array_keys($result['node']);
         $items = entity_load('node', $items_nids);
     }
-	$data = array();
-	if(!empty($items)){
-		foreach ($items as $key => $value) {
-			$data[$value->field_identifier[LANGUAGE_NONE][0]['value']] = $value;
-		}
-	}
+    $data = array();
+    if (!empty($items)) {
+        foreach ($items as $key => $value) {
+            $data[$value->field_identifier[LANGUAGE_NONE][0]['value']] = $value;
+        }
+    }
     return $data;
 }
-function elsayed_redirect_user_to_admin(){
-	$arg0 = arg(0);
-	if($arg0 == 'user'){
-		if(user_is_logged_in()){
-			if(elsayed_is_user_admin()){
-				global $base_url;
-				$redirect = $base_url.'/admin/dashboard';
+
+function elsayed_redirect_user_to_admin() {
+    $arg0 = arg(0);
+    if ($arg0 == 'user') {
+        if (user_is_logged_in()) {
+            if (elsayed_is_user_admin()) {
+                global $base_url;
+                $redirect = $base_url . '/admin/dashboard';
                 drupal_goto("$redirect");
-			}
-		}
-	}
+            }
+        }
+    }
 }
-function elsayed_cut_string($str = '', $val = 0){
-	$return = '';
-	$str_without_tags = strip_tags($str);
-	$return = substr($str_without_tags, 0, $val);
-	/*$strArr = split(" ", $str_without_tags);
-	if(count($strArr) > $val){
-		for($index=0; $index<$val; $index++){
-			$return = $strArr[$index].' ';
-		}
-		$return .= '...';
-	}else {
-		$return = $str_without_tags;
-	}*/
-	return $return;
+
+function elsayed_cut_string($str = '', $val = 0) {
+    $return = '';
+    $str_without_tags = strip_tags($str);
+    $return = substr($str_without_tags, 0, $val);
+    /* $strArr = split(" ", $str_without_tags);
+      if(count($strArr) > $val){
+      for($index=0; $index<$val; $index++){
+      $return = $strArr[$index].' ';
+      }
+      $return .= '...';
+      }else {
+      $return = $str_without_tags;
+      } */
+    return $return;
 }
-function elsayed_get_videos($category = 0, $home = 0, $limit = 0, $page = 1){
+
+function elsayed_get_videos($category = 0, $home = 0, $limit = 0, $page = 1) {
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -1621,10 +1692,10 @@ function elsayed_get_videos($category = 0, $home = 0, $limit = 0, $page = 1){
             ->propertyCondition('status', 1)
             ->propertyOrderBy('created', 'DESC');
     $query->addMetaData('account', user_load(1));
-    if($category != 0){
+    if ($category != 0) {
         //$query->fieldCondition('field_category', 'target_id', $category, '=');
     }
-    if($home != 0){
+    if ($home != 0) {
         $query->fieldCondition('field_show_in_home', 'value', $home, '=');
     }
     $result = $query->execute();
@@ -1633,49 +1704,53 @@ function elsayed_get_videos($category = 0, $home = 0, $limit = 0, $page = 1){
         $total_items_nids = array_keys($result['node']);
     }
     $return = array();
-    if($limit != 0) {
+    if ($limit != 0) {
         $start = ($page - 1) * $limit;
         $total_count = count($total_items_nids);
         $items_nids = array_slice($total_items_nids, $start, $limit);
         $items = entity_load('node', $items_nids);
         $return['page_count'] = ceil($total_count / $limit);
         $return['items'] = $items;
-    }else{
+    } else {
         $items = entity_load('node', $total_items_nids);
         $return = $items;
     }
     return $return;
 }
-function elsayed_video_node_form_form_validation($form, &$form_state){
-	$field_youtube_link = '';
-	if(isset($form_state['values']['field_youtube_link'][LANGUAGE_NONE][0]['value'])){
-		$field_youtube_link = $form_state['values']['field_youtube_link'][LANGUAGE_NONE][0]['value'];
-	}
-	if(trim($field_youtube_link) != ''){
-		if (!(strpos($field_youtube_link, 'youtube') > 0)) {
-			form_set_error('field_youtube_link', __('Please enter valid Youtube link.'));
-		}
-	}
+
+function elsayed_video_node_form_form_validation($form, &$form_state) {
+    $field_youtube_link = '';
+    if (isset($form_state['values']['field_youtube_link'][LANGUAGE_NONE][0]['value'])) {
+        $field_youtube_link = $form_state['values']['field_youtube_link'][LANGUAGE_NONE][0]['value'];
+    }
+    if (trim($field_youtube_link) != '') {
+        if (!(strpos($field_youtube_link, 'youtube') > 0)) {
+            form_set_error('field_youtube_link', __('Please enter valid Youtube link.'));
+        }
+    }
 }
-function elsayed_get_admin_theme_path(){
-	global $admin_theme_path;
-	if($admin_theme_path == ''){
-		$admin_theme_path = drupal_get_path('theme', variable_get('admin_theme'));
-	}
-	return $admin_theme_path;
+
+function elsayed_get_admin_theme_path() {
+    global $admin_theme_path;
+    if ($admin_theme_path == '') {
+        $admin_theme_path = drupal_get_path('theme', variable_get('admin_theme'));
+    }
+    return $admin_theme_path;
 }
-function elsayed_redirect_admin_to_dashboard(){
+
+function elsayed_redirect_admin_to_dashboard() {
     global $base_url;
-	$redirect = $base_url.'/admin/dashboard';
-	$arg1 = arg(1);
-	$arg0 = arg(0);
-	if($arg0 == 'admin'){
-		if(trim($arg1) == ''){
-			drupal_goto("$redirect");
-		}
-	}
+    $redirect = $base_url . '/admin/dashboard';
+    $arg1 = arg(1);
+    $arg0 = arg(0);
+    if ($arg0 == 'admin') {
+        if (trim($arg1) == '') {
+            drupal_goto("$redirect");
+        }
+    }
 }
-function elsayed_get_certificates($limit = 0, $page = 1){
+
+function elsayed_get_certificates($limit = 0, $page = 1) {
     $items = array();
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -1690,14 +1765,14 @@ function elsayed_get_certificates($limit = 0, $page = 1){
         $total_items_nids = array_keys($result['node']);
     }
     $return = array();
-    if($limit != 0) {
+    if ($limit != 0) {
         $start = ($page - 1) * $limit;
         $total_count = count($total_items_nids);
         $items_nids = array_slice($total_items_nids, $start, $limit);
         $items = entity_load('node', $items_nids);
         $return['page_count'] = ceil($total_count / $limit);
         $return['items'] = $items;
-    }else{
+    } else {
         $items = entity_load('node', $total_items_nids);
         $return = $items;
     }
