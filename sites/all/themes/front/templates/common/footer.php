@@ -30,7 +30,7 @@
           </div> */ ?>
     </section>
 </div>
-<div id="Developer">
+<div id="Developer" class="hidden-xs hidden-sm hidden-md hidden-lg">
     Developed by <a hreflang="<?php echo $sitelang; ?>" href="http://www.mohamedelsayed.net" target="_blank">Mohamed Elsayed</a>
 </div>
 <a hreflang="<?php echo $sitelang; ?>" href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
