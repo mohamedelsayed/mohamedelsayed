@@ -29,7 +29,6 @@ $base_url_with_lang = elsayed_get_base_url_with_lang();
         <meta name="twitter:image" content="<?php echo $GLOBALS['social_image']; ?>">
         <meta name="description" content="<?php echo $GLOBALS['meta_description']; ?>">
         <meta name="keywords" content="<?php echo $GLOBALS['meta_keywords']; ?>">
-        <link href="<?php echo $base_url . '/' . path_to_theme(); ?>/img/favicon.ico" type="image/x-icon" rel="icon">
         <meta name="author" content="Mohamed Elsayed">
         <script type="text/javascript">
             var base_url_with_lang = '<?php echo $base_url_with_lang; ?>';
