@@ -7,9 +7,9 @@ hidden = TRUE
 files[] = includes/MediaInternetTestStreamWrapper.inc
 files[] = includes/MediaInternetTestHandler.inc
 
-; Information added by Drupal.org packaging script on 2018-02-05
-version = "7.x-3.0-rc1"
+; Information added by Drupal.org packaging script on 2018-02-09
+version = "7.x-3.0-rc2"
 core = "7.x"
 project = "media"
-datestamp = "1517856486"
+datestamp = "1518139388"
 
