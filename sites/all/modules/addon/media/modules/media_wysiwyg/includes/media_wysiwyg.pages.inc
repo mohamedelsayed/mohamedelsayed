@@ -406,7 +406,7 @@ function media_wysiwyg_upgrade_content_tokens_batch(&$context) {
     $context['results']['!tokens_total'] += $report['found'];
     $context['results']['!tokens_upgraded'] += $report['upgraded'];
     if ($report['upgraded']) {
-      $report['!entities_upgraded']++;
+      $context['results']['!entities_upgraded']++;
     }
   }
   if ($context['sandbox']['progress'] < $context['results']['!entities_total']) {
