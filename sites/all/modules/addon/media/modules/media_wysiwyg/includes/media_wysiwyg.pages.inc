@@ -180,6 +180,7 @@ function media_wysiwyg_format_form_view_mode(&$form, $form_state, $file) {
       'class' => 'button',
       'title' => t('Use for replace fox or edit file fields.'),
     ),
+    'query' => drupal_get_destination(),
   );
   if (!empty($_GET['render'])) {
     $link_options['query']['render'] = $_GET['render'];
@@ -271,6 +272,12 @@ function media_wysiwyg_upgrade_entity_tokens($entity_type, $id) {
     'upgraded' => 0,
   );
 
+  // Assert that the entity type has a valid controller class to avoid getting
+  // php parse errors during token upgrades. See issue #2950150.
+  $type_info = entity_get_info($entity_type);
+  if (empty($type_info['controller class'])) {
+    return $report;
+  }
   if (!($entity = entity_load($entity_type, array($id)))) {
     return $report;
   };
