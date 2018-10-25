@@ -89,8 +89,8 @@ function media_ckeditor_media_browser_params_alter(&$stored_params) {
       ));
     }
     if (empty($stored_params['file_extensions'])) {
-      $stored_params['file_extensions'] = variable_get('media_wysiwyg_wysiwyg_allowed_file_extensions', array(
-        'jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp mp3 mov mp4 m4a m4v mpeg avi ogg oga ogv weba webp webm')
+      $stored_params['file_extensions'] = variable_get('media_wysiwyg_wysiwyg_allowed_file_extensions',
+        'jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp mp3 mov mp4 m4a m4v mpeg avi ogg oga ogv weba webp webm'
       );
     }
   }
