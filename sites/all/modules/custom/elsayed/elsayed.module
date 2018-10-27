@@ -6,8 +6,7 @@
  * @link http://www.mohamedelsayed.net
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
-//module_load_include('inc', 'content', 'includes/password');
-require "PHPMailer/PHPMailerAutoload.php";
+//require "PHPMailer/PHPMailerAutoload.php";
 
 function elsayed_init() {
     elsayed_redirect_non_ssl_to_ssl();
@@ -333,7 +332,7 @@ function elsayed_contact_us_form() {
             $tpl = file_get_contents(drupal_get_path('module', 'elsayed') . '/emails/contactus.html');
             $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}'), array($mailsubject, $name, $email, $subject, $message), $tpl);
             if ($emailTo != '') {
-                $mail = new PHPMailer();
+                $mail = new \PHPMailer\PHPMailer\PHPMailer();
                 $mail->IsSMTP();
                 $mail->SMTPAuth = true;
                 $mail->CharSet = "UTF-8";
