@@ -10,6 +10,7 @@
 require "PHPMailer/PHPMailerAutoload.php";
 
 function elsayed_init() {
+    elsayed_redirect_non_ssl_to_ssl();
     elsayed_update_node_language();
     $GLOBALS['google_api_key'] = 'AIzaSyDGGlo0fNATzYKU761Fx-8VAIJDXu-b3QM';
     $GLOBALS['limit'] = 12;
@@ -1777,4 +1778,16 @@ function elsayed_get_certificates($limit = 0, $page = 1) {
         $return = $items;
     }
     return $return;
+}
+
+function elsayed_redirect_non_ssl_to_ssl() {
+    $http_host = $_SERVER['HTTP_HOST'];
+    if ($http_host == 'mohamedelsayed.net') {
+        if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off") {
+            $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            header('HTTP/1.1 301 Moved Permanently');
+            header('Location: ' . $redirect);
+            exit();
+        }
+    }
 }
