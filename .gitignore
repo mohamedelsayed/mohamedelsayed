@@ -5,3 +5,10 @@ sites/*/settings*.php
 sites/*/files
 sites/*/private
 .env
+
+/nbproject
+/nbproject/private/
+.settings/
+.project
+vendor
+composer.lock
