@@ -6,8 +6,6 @@
  * @link http://www.mohamedelsayed.net
  * @copyright Copyright (c) 2017 Programming by "http://www.mohamedelsayed.net"
  */
-//require "PHPMailer/PHPMailerAutoload.php";
-
 function elsayed_init() {
     elsayed_redirect_non_ssl_to_ssl();
     elsayed_update_node_language();
