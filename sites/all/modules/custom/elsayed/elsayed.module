@@ -1604,6 +1604,13 @@ function elsayed_custom_setting_form($form, &$form_state) {
             '#required' => false,
             '#default_value' => variable_get('mostaql_url', ''),
         );
+        $form['hackerrank_url'] = array(
+            '#title' => __('Hackerrank URL'),
+            '#discription' => __(''),
+            '#type' => 'textfield',
+            '#required' => false,
+            '#default_value' => variable_get('hackerrank_url', ''),
+        );
         $form['google_analytics_propertyid'] = array(
             '#title' => __('Google Analytics Property ID'),
             '#discription' => __(''),
