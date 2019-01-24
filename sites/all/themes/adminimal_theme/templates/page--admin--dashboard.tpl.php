@@ -27,7 +27,7 @@
             </div>
         <?php endif; ?>
         <div class="row">
-            <div class="item col-md-3 col-md-offset-1">
+            <div class="item col-md-1 ">
                 <a href="<?php echo $base_url . '/admin/custom/custom-settings'; ?>">
                     <div class="icon">
                         <img src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/pic1.png">
@@ -35,7 +35,7 @@
                     <h3><?php echo __('Settings'); ?></h3>
                 </a>
             </div>
-            <div class="item col-md-3 col-md-offset-1">
+            <div class="item col-md-1 ">
                 <a href="<?php echo $base_url . '/admin/custom/content/widget'; ?>">
                     <div class="icon">
                         <img src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/pic2.png">
@@ -43,7 +43,7 @@
                     <h3><?php echo __('Widgets'); ?></h3>
                 </a>
             </div>
-            <div class="item col-md-3 col-md-offset-1">
+            <div class="item col-md-1 ">
                 <a href="<?php echo $base_url . '/admin/custom/content/slider'; ?>">
                     <div class="icon">
                         <img src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/pic3.png">
@@ -51,7 +51,7 @@
                     <h3><?php echo __('Sliders'); ?></h3>
                 </a>
             </div>
-            <div class="item col-md-3 col-md-offset-1">
+            <div class="item col-md-1 ">
                 <a href="<?php echo $base_url . '/admin/custom/content/project'; ?>">
                     <div class="icon">
                         <img src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/pic4.png">
@@ -59,7 +59,7 @@
                     <h3><?php echo __('Projects'); ?></h3>
                 </a>
             </div>
-            <div class="item col-md-3 col-md-offset-1">
+            <div class="item col-md-1 ">
                 <a href="<?php echo $base_url . '/admin/custom/content/page'; ?>">
                     <div class="icon">
                         <img src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/pic5.png">
@@ -67,7 +67,7 @@
                     <h3><?php echo __('Pages'); ?></h3>
                 </a>
             </div>
-            <div class="item col-md-3 col-md-offset-1">
+            <div class="item col-md-1 ">
                 <a href="<?php echo $base_url . '/admin/people'; ?>">
                     <div class="icon">
                         <img src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/pic6.png">
@@ -75,10 +75,10 @@
                     <h3><?php echo __('Users'); ?></h3>
                 </a>
             </div>
-            <div class="item col-md-3 col-md-offset-1">
+            <div class="item col-md-1 ">
                 <a href="<?php echo $base_url . '/admin/custom/content/certificate'; ?>">
                     <div class="icon">
-                        <img style="max-width: 150px;" src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/certificates.png">
+                        <img src="<?php echo $base_url . '/' . elsayed_get_admin_theme_path(); ?>/images/certificates.png">
                     </div>
                     <h3><?php echo __('Certificates'); ?></h3>
                 </a>
@@ -115,3 +115,13 @@
         <?php print $feed_icons; ?>
     </div>
 </div>
+<style type="text/css">
+    h3{
+        font-weight: bold;
+        text-align: center;
+    }
+    .icon img{
+        max-width: 100%;
+        max-height: 85px;
+    }
+</style>
