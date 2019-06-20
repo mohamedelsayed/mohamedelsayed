@@ -122,6 +122,6 @@
     }
     .icon img{
         max-width: 100%;
-        max-height: 85px;
+        max-height: 60px;
     }
 </style>
