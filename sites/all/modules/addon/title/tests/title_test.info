@@ -5,11 +5,9 @@ package = Testing
 hidden = TRUE
 dependencies[] = title
 dependencies[] = taxonomy
-dependencies[] = entity
-dependencies[] = entity_translation
 
-; Information added by Drupal.org packaging script on 2019-09-14
-version = "7.x-1.0-beta1"
+; Information added by Drupal.org packaging script on 2019-10-13
+version = "7.x-1.0-beta2"
 core = "7.x"
 project = "title"
-datestamp = "1568461687"
+datestamp = "1570952291"

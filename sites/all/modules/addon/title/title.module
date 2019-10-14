@@ -140,8 +140,39 @@ function title_entity_label($entity, $type, $langcode = NULL) {
  * Implements hook_entity_presave().
  */
 function title_entity_presave($entity, $entity_type) {
-  if ($langcode = entity_language($entity_type, $entity)) {
+  $entity_langcode = title_entity_language($entity_type, $entity);
+  $langcode = $entity_langcode;
+
+  // If Entity Translation is enabled and the entity type is transltable,we need
+  // to check if we have a translation for the current active language. If so we
+  // need to synchronize the legacy field values into the replacing field
+  // translations in the active language.
+  if (module_invoke('entity_translation', 'enabled', $entity_type)) {
+    $langcode = title_active_language();
+    $translations = entity_translation_get_handler($entity_type, $entity)->getTranslations();
+    // If we are removing a translation for the active language we need to skip
+    // reverse synchronization, as we would store empty values in the original
+    // replacing fields immediately afterwards.
+    if (!isset($translations->data[$langcode])) {
+      $langcode = isset($translations->hook[$langcode]['hook']) && $translations->hook[$langcode]['hook'] == 'delete' ? FALSE : $entity_langcode;
+    }
+  }
+
+  // Perform reverse synchronization to retain any change in the legacy field
+  // values. We must avoid doing this twice as we might overwrite the already
+  // synchronized values, if we are updating an existing entity.
+  if ($langcode) {
     title_entity_sync($entity_type, $entity, $langcode, TRUE);
+  }
+
+  // If we are not dealing with the entity language, we need to synchronize the
+  // original values into the legacy fields to ensure they are always stored in
+  // the entity table.
+  if ($entity_langcode != $langcode) {
+    list($id, , ) = entity_extract_ids($entity_type, $entity);
+    $sync = &drupal_static('title_entity_sync', array());
+    unset($sync[$entity_type][$id]);
+    title_entity_sync($entity_type, $entity, $entity_langcode);
   }
 }
 
@@ -195,8 +226,8 @@ function title_entity_load($entities, $type) {
     // When the node is not being edited, the language must be set to current
     // entity language if set, otherwise NULL.
     $language = NULL;
-    if ((preg_match('/node\/[0-9]+\/edit/', current_path()) == 0)
-      && (preg_match('/node\/[0-9]+$/', current_path()) == 0)) {
+    if ((preg_match('/node\/\d+\/edit/', current_path()) == 0)
+      && (preg_match('/node\/\d+$/', current_path()) == 0)) {
       if (!empty($entity->language)) {
         $language = $entity->language;
       }
