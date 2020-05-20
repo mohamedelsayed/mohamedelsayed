@@ -44,11 +44,16 @@ var google_map_field_map;
         scrollwheel: S.scrollwheel,
         streetViewControl: S.streetViewControl,
         zoomControl: S.zoomControl,
+        disableDefaultUI: S.disableDefaultUI,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       google_map_field_map = new google.maps.Map(this, mapOptions);
 
-      google.maps.event.trigger(google_map_field_map, 'resize')
+      google.maps.event.addDomListener(window, "resize", function() {
+        var center = google_map_field_map.getCenter();
+        google.maps.event.trigger(google_map_field_map, "resize");
+        google_map_field_map.setCenter(center);
+      });
 
       // Drop a marker at the specified position.
       marker = new google.maps.Marker({

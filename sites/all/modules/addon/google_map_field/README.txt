@@ -44,4 +44,4 @@ NOTES
 -----
 
 This module used to contain a WYSIWYG map feature.  This has been moved to its 
-own module. Please see http://drupal.org/projects/wysiwyg_map
+own module. Please see the WYSIWYG Map module (http://drupal.org/project/wysiwyg_map)

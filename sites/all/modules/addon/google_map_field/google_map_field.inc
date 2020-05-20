@@ -42,4 +42,8 @@ $settings = array(
     'description' => 'The enabled/disabled state of the Zoom control.',
     'default' => true
   ),
+  'disableDefaultUI' => array(
+    'description' => 'Disable the default UI.',
+    'default' => false
+  ),
 );
