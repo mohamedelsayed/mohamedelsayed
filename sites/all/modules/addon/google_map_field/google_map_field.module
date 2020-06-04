@@ -105,6 +105,11 @@ function google_map_field_field_formatter_info() {
       'description' => t('Use latitude format to display the google maps latitude info'),
       'field types' => array('google_map_field'),
     ),
+      'google_map_field_formatter_zoom' => array(
+          'label' => t('Zoom'),
+          'description' => t('Use latitude format to display the google maps latitude info'),
+          'field types' => array('google_map_field'),
+      ),
   );
   return $formats;
 }
@@ -157,6 +162,11 @@ function google_map_field_field_formatter_view($object_type, $object, $field, $i
     case 'google_map_field_formatter_latitude':
       foreach ($items as $delta => $item) {
         $element[$delta] = array('#markup' => $item['lat']);
+      }
+      break;
+    case 'google_map_field_formatter_zoom':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array('#markup' => $item['zoom']);
       }
       break;
   }
