@@ -5,8 +5,8 @@ dependencies[] = field
 core = "7.x"
 configure = admin/config/development/google-map-field
 
-; Information added by Drupal.org packaging script on 2020-05-21
-version = "7.x-2.21"
+; Information added by Drupal.org packaging script on 2020-06-03
+version = "7.x-2.22"
 core = "7.x"
 project = "google_map_field"
-datestamp = "1590079525"
+datestamp = "1591202089"
