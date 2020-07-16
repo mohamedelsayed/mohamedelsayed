@@ -797,11 +797,11 @@ class backup_migrate_destination extends backup_migrate_location {
   public $supported_ops = array();
 
   /**
-   * 24 hours, i.e. 86400 seconds.
+   * 24 hours, i.e. 24 * 60 * 60 seconds.
    * 
    * @var int.
    */
-  public $cache_expire = 24 * 60 * 60;
+  public $cache_expire = 86400;
 
   /**
    * This function is not supposed to be called.

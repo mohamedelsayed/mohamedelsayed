@@ -1,3 +1,8 @@
+Backup and Migrate 7.x-3.9, 2020-07-15
+--------------------------------------
+#3158379 by DamienMcKenna, monnerat: Fixed compatibility with PHP 5.4.
+
+
 Backup and Migrate 7.x-3.8, 2020-07-10
 --------------------------------------
 #3119038 by solideogloria, gisle: Spelling typo in update scripts.
