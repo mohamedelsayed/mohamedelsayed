@@ -1,9 +1,9 @@
-name = Bulk Export
-description = Performs bulk exporting of data objects known about by Chaos tools.
+name = Views content panes Test
+description = Test module for Views content panes.
+package = Views
 core = 7.x
-dependencies[] = ctools
-package = Chaos tool suite
-
+dependencies[] = views_content
+hidden = TRUE
 ; Information added by Drupal.org packaging script on 2021-01-28
 version = "7.x-1.18"
 core = "7.x"
