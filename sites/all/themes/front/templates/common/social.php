@@ -41,3 +41,10 @@
         </a>
     </li>
 <?php } ?>
+<?php if (variable_get('github_url') != '') { ?>
+    <li>
+        <a title="<?php echo __('GitHUb'); ?>" hreflang="<?php echo $sitelang; ?>" target="_blank" href="<?php echo variable_get('github_url'); ?>">
+            <i class="fab fa-github" aria-hidden="true"></i>
+        </a>
+    </li>
+<?php } ?>
