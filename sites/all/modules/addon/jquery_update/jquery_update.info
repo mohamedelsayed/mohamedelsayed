@@ -5,8 +5,8 @@ core = 7.x
 
 configure = admin/config/development/jquery_update
 
-; Information added by Drupal.org packaging script on 2022-07-22
-version = "7.x-4.0-alpha1"
+; Information added by Drupal.org packaging script on 2022-08-01
+version = "7.x-4.0-alpha2"
 core = "7.x"
 project = "jquery_update"
-datestamp = "1658500932"
+datestamp = "1659371630"
