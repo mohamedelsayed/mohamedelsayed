@@ -329,7 +329,7 @@ function elsayed_contact_us_form() {
             $emailTo = variable_get('contact_mail');
             $tpl = file_get_contents(drupal_get_path('module', 'elsayed') . '/emails/contactus.html');
             $html_message = str_replace(array('{{mailsubject}}', '{{name}}', '{{email}}', '{{subject}}', '{{message}}'), array($mailsubject, $name, $email, $subject, $message), $tpl);
-            if ($emailTo != '') {
+            if ($emailTo != '' && $name != '' && $email != '' && $subject != '' && $message != '') {
                 $mail = new \PHPMailer\PHPMailer\PHPMailer();
                 $mail->IsSMTP();
                 $mail->SMTPAuth = true;
@@ -379,6 +379,8 @@ function elsayed_contact_us_form() {
                     //$data['msg'] = __('There was a problem sending the Email. Please try again.');
                     $data['error'] = 1;
                 }
+            }else{
+                $data['error'] = 1;
             }
         }
     }
