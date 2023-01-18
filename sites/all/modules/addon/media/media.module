@@ -371,7 +371,7 @@ function media_form_field_ui_field_edit_form_alter(&$form, &$form_state) {
   // Add a validation function to any field instance which uses the media widget
   // to ensure that the upload destination scheme is one of the allowed schemes
   // if any defined by settings.
-  if (isset($form['instance']['widget']) && $form['instance']['widget']['type']['#value'] == 'media_generic' && isset($form['#field']['settings']['uri_scheme'])) {
+  if (isset($form['instance']['widget']) && isset($form['instance']['widget']['type']) && $form['instance']['widget']['type']['#value'] == 'media_generic' && isset($form['#field']['settings']['uri_scheme'])) {
     $form['#validate'][] = 'media_field_instance_validate';
   }
 }
