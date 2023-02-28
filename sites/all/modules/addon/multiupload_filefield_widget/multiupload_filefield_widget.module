@@ -1,11 +1,11 @@
 <?php
+
 /**
  * @file
- * Module creating a multiple file upload widget
+ * Module creating a multiple file upload widget.
  */
 
-$mfw_path = drupal_get_path('module', 'multiupload_filefield_widget');
-require_once $mfw_path . '/multiupload_filefield_widget.field.inc';
+require_once __DIR__ . '/multiupload_filefield_widget.field.inc';
 
 /**
  * Implements hook_element_info().
@@ -14,26 +14,41 @@ function multiupload_filefield_widget_element_info() {
   $file_path = drupal_get_path('module', 'file');
   $mfw_path = drupal_get_path('module', 'multiupload_filefield_widget');
 
-  $types['mfw_managed_file'] = array(
+  $types['mfw_managed_file'] = [
     '#input' => TRUE,
-    '#process' => array('mfw_managed_file_process'),
+    '#process' => ['mfw_managed_file_process'],
     '#value_callback' => 'mfw_managed_file_value',
-    '#element_validate' => array('file_managed_file_validate'),
-    '#pre_render' => array('file_managed_file_pre_render'),
+    '#element_validate' => ['file_managed_file_validate'],
+    '#pre_render' => ['file_managed_file_pre_render'],
     '#theme' => 'file_managed_file',
-    '#theme_wrappers' => array('form_element'),
+    '#theme_wrappers' => ['form_element'],
     '#progress_indicator' => 'throbber',
     '#progress_message' => NULL,
-    '#upload_validators' => array(),
+    '#upload_validators' => [],
     '#upload_location' => NULL,
     '#extended' => FALSE,
     '#size' => 22,
-    '#attached' => array(
-      'css' => array($file_path . '/file.css'),
-      'js' => array($mfw_path . '/mfw.js', $file_path . '/file.js'),
-  ),
-  );
+    '#attached' => [
+      'css' => [$file_path . '/file.css'],
+      'js' => [$mfw_path . '/mfw.js', $file_path . '/file.js'],
+    ],
+  ];
+
+  if (module_exists('filefield_sources')) {
+    $types['mfw_managed_file']['#process'][] = 'filefield_sources_field_process';
+    $types['mfw_managed_file']['#pre_render'][] = 'filefield_sources_field_pre_render';
+    $types['mfw_managed_file']['#element_validate'][] = 'filefield_sources_field_validate';
+    $types['mfw_managed_file']['#file_value_callbacks'][] = 'filefield_sources_field_value';
+  }
+
   return $types;
+}
+
+/**
+ * Implements hook_filefield_sources_widgets().
+ */
+function multiupload_filefield_widget_filefield_sources_widgets() {
+  return ['file_mfw'];
 }
 
 /**
@@ -44,7 +59,16 @@ function multiupload_filefield_widget_element_info() {
  */
 function mfw_managed_file_process($element, &$form_state, &$form) {
   $element = file_managed_file_process($element, $form_state, $form);
-  $element['upload']['#attributes'] = array('multiple' => 'multiple');
+  $element['upload']['#attributes'] = ['multiple' => 'multiple'];
+
+  if (isset($element['#upload_validators']['file_validate_extensions'][0])) {
+    $extensions = explode(' ', $element['#upload_validators']['file_validate_extensions'][0]);
+    foreach ($extensions as &$extension) {
+      $extension = '.' . $extension;
+    }
+    $element['upload']['#attributes']['accept'] = implode(', ', $extensions);
+  }
+
   $element['upload']['#name'] .= '[]';
   if (!empty($element['upload']['#attached']['js'][0]['data']['file'])) {
     $element['upload']['#attached']['js'][0]['data']['mfw'] = $element['upload']['#attached']['js'][0]['data']['file'];
@@ -64,7 +88,7 @@ function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
   // Find the current value of this field from the form state.
   $form_state_fid = $form_state['values'];
   foreach ($element['#parents'] as $parent) {
-    $form_state_fid = isset($form_state_fid[$parent]) ? $form_state_fid[$parent] : 0;
+    $form_state_fid = $form_state_fid[$parent] ?? 0;
   }
 
   if ($element['#extended'] && isset($form_state_fid['fid'])) {
@@ -78,8 +102,8 @@ function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
   if ($input !== FALSE) {
     $return = $input;
 
-    $element_parent = drupal_array_get_nested_value($form_state['complete form'], array_slice($element['#parents'],0,-1));
-    $element['#file_upload_delta_original'] = isset($element_parent['#file_upload_delta'])? $element_parent['#file_upload_delta'] : 0;
+    $element_parent = drupal_array_get_nested_value($form_state['complete form'], array_slice($element['#parents'], 0, -1));
+    $element['#file_upload_delta_original'] = $element_parent['#file_upload_delta'] ?? 0;
 
     // Uploads take priority over all other values.
     if ($file = mfw_managed_file_save_upload($element)) {
@@ -105,12 +129,12 @@ function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
   // If there is no input, set the default value.
   else {
     if ($element['#extended']) {
-      $default_fid = isset($element['#default_value']['fid']) ? $element['#default_value']['fid'] : 0;
-      $return = isset($element['#default_value']) ? $element['#default_value'] : array('fid' => 0);
+      $default_fid = $element['#default_value']['fid'] ?? 0;
+      $return = $element['#default_value'] ?? ['fid' => 0];
     }
     else {
-      $default_fid = isset($element['#default_value']) ? $element['#default_value'] : 0;
-      $return = array('fid' => 0);
+      $default_fid = $element['#default_value'] ?? 0;
+      $return = ['fid' => 0];
     }
 
     // Confirm that the file exists when used as a default value.
@@ -125,12 +149,14 @@ function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
 }
 
 /**
- * Given a mfw_managed_file element, save any files that have been uploaded into it.
+ * Given a mfw_managed_file element, save any files that have been uploaded
+ * into it.
  *
  * Mostly copied from file.module.
  *
  * @param $element
  *   The FAPI element whose values are being saved.
+ *
  * @return
  *   The file object representing the file that was saved, or FALSE if no file
  *   was saved.
@@ -148,16 +174,22 @@ function mfw_managed_file_save_upload($element) {
       return FALSE;
     }
 
-    $destination = isset($element['#upload_location']) ? $element['#upload_location'] : NULL;
+    $destination = $element['#upload_location'] ?? NULL;
     if (isset($destination) && !file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
-      watchdog('file', 'The upload directory %directory for the file field !name could not be created or is not accessible. A newly uploaded file could not be saved in this directory as a consequence, and the upload was canceled.', array('%directory' => $destination, '!name' => $element['#field_name']));
-      form_set_error($upload_name, t('The file could not be uploaded.'));
+      watchdog('file', 'The upload directory %directory for the file field !name could not be created or is not accessible. A newly uploaded file could not be saved in this directory as a consequence, and the upload was canceled.', [
+        '%directory' => $destination,
+        '!name' => $element['#field_name'],
+      ]);
+      drupal_set_message(t('The file could not be uploaded.'), 'error');
       return FALSE;
     }
 
     if (!$file = mfw_file_save_upload($upload_name, $file_number, $element['#upload_validators'], $destination)) {
-      watchdog('file', 'The file upload failed. %upload', array('%upload' => $upload_name));
-      form_set_error($upload_name, t('The file in the !name field was unable to be uploaded.', array('!name' => $element['#title'])));
+      watchdog('file', 'The file upload failed. %upload', ['%upload' => $upload_name]);
+      drupal_set_message(t('The file %file_name in the !name field was unable to be uploaded.', [
+        '!name' => $element['#title'],
+        '%file_name' => $name,
+      ]), 'error');
       return FALSE;
     }
     return $file;
@@ -166,7 +198,6 @@ function mfw_managed_file_save_upload($element) {
     return FALSE;
   }
 }
-
 
 /**
  * Saves a file upload to a new location.
@@ -181,7 +212,7 @@ function mfw_managed_file_save_upload($element) {
  *
  * @param $source
  *   A string specifying the filepath or URI of the uploaded file to save.
- * @param  $file_number
+ * @param $file_number
  *   The array key of the file to save in $_FILES['files']['name'][$source].
  * @param $validators
  *   An optional, associative array of callback functions used to validate the
@@ -213,7 +244,7 @@ function mfw_managed_file_save_upload($element) {
  *   - source: Path to the file before it is moved.
  *   - destination: Path to the file after it is moved (same as 'uri').
  */
-function mfw_file_save_upload($source, $file_number, $validators = array(), $destination = FALSE, $replace = FILE_EXISTS_RENAME) {
+function mfw_file_save_upload($source, $file_number, $validators = [], $destination = FALSE, $replace = FILE_EXISTS_RENAME) {
   global $user;
   static $upload_cache;
 
@@ -234,12 +265,15 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
   switch ($_FILES['files']['error'][$source][$file_number]) {
     case UPLOAD_ERR_INI_SIZE:
     case UPLOAD_ERR_FORM_SIZE:
-      drupal_set_message(t('The file %file could not be saved, because it exceeds %maxsize, the maximum allowed size for uploads.', array('%file' => $_FILES['files']['name'][$source][$file_number], '%maxsize' => format_size(file_upload_max_size()))), 'error');
+      drupal_set_message(t('The file %file could not be saved, because it exceeds %maxsize, the maximum allowed size for uploads.', [
+        '%file' => $_FILES['files']['name'][$source][$file_number],
+        '%maxsize' => format_size(file_upload_max_size()),
+      ]), 'error');
       return FALSE;
 
     case UPLOAD_ERR_PARTIAL:
     case UPLOAD_ERR_NO_FILE:
-      drupal_set_message(t('The file %file could not be saved, because the upload did not complete.', array('%file' => $_FILES['files']['name'][$source][$file_number])), 'error');
+      drupal_set_message(t('The file %file could not be saved, because the upload did not complete.', ['%file' => $_FILES['files']['name'][$source][$file_number]]), 'error');
       return FALSE;
 
     case UPLOAD_ERR_OK:
@@ -249,18 +283,18 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
         break;
       }
 
-    // Unknown error
+      // Unknown error.
     default:
-      drupal_set_message(t('The file %file could not be saved. An unknown error has occurred.', array('%file' => $_FILES['files']['name'][$source][$file_number])), 'error');
+      drupal_set_message(t('The file %file could not be saved. An unknown error has occurred.', ['%file' => $_FILES['files']['name'][$source][$file_number]]), 'error');
       return FALSE;
   }
 
   // Begin building file object.
   $file = new stdClass();
-  $file->uid      = $user->uid;
-  $file->status   = 0;
+  $file->uid = $user->uid;
+  $file->status = 0;
   $file->filename = trim(drupal_basename($_FILES['files']['name'][$source][$file_number]), '.');
-  $file->uri      = $_FILES['files']['tmp_name'][$source][$file_number];
+  $file->uri = $_FILES['files']['tmp_name'][$source][$file_number];
   $file->filemime = file_get_mimetype($file->filename);
   $file->filesize = $_FILES['files']['size'][$source][$file_number];
 
@@ -281,7 +315,7 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
     // No validator was provided, so add one using the default list.
     // Build a default non-munged safe list for file_munge_filename().
     $extensions = 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp';
-    $validators['file_validate_extensions'] = array();
+    $validators['file_validate_extensions'] = [];
     $validators['file_validate_extensions'][0] = $extensions;
   }
 
@@ -303,7 +337,7 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
     // to add it here or else the file upload will fail.
     if (!empty($extensions)) {
       $validators['file_validate_extensions'][0] .= ' txt';
-      drupal_set_message(t('For security reasons, your upload has been renamed to %filename.', array('%filename' => $file->filename)));
+      drupal_set_message(t('For security reasons, your upload has been renamed to %filename.', ['%filename' => $file->filename]));
     }
   }
 
@@ -315,7 +349,7 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
   // Assert that the destination contains a valid stream.
   $destination_scheme = file_uri_scheme($destination);
   if (!$destination_scheme || !file_stream_wrapper_valid_scheme($destination_scheme)) {
-    drupal_set_message(t('The file could not be uploaded, because the destination %destination is invalid.', array('%destination' => $destination)), 'error');
+    drupal_set_message(t('The file could not be uploaded, because the destination %destination is invalid.', ['%destination' => $destination]), 'error');
     return FALSE;
   }
 
@@ -328,21 +362,24 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
   // If file_destination() returns FALSE then $replace == FILE_EXISTS_ERROR and
   // there's an existing file so we need to bail.
   if ($file->destination === FALSE) {
-    drupal_set_message(t('The file %source could not be uploaded because a file by that name already exists in the destination %directory.', array('%source' => $source, '%directory' => $destination)), 'error');
+    drupal_set_message(t('The file %source could not be uploaded because a file by that name already exists in the destination %directory.', [
+      '%source' => $source,
+      '%directory' => $destination,
+    ]), 'error');
     return FALSE;
   }
 
   // Add in our check of the the file name length.
-  $validators['file_validate_name_length'] = array();
+  $validators['file_validate_name_length'] = [];
 
   // Call the validation functions specified by this function's caller.
   $errors = file_validate($file, $validators);
 
   // Check for errors.
   if (!empty($errors)) {
-    $message = t('The specified file %name could not be uploaded.', array('%name' => $file->filename));
+    $message = t('The specified file %name could not be uploaded.', ['%name' => $file->filename]);
     if (count($errors) > 1) {
-      $message .= theme('item_list', array('items' => $errors));
+      $message .= theme('item_list', ['items' => $errors]);
     }
     else {
       $message .= ' ' . array_pop($errors);
@@ -356,8 +393,11 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
   // operations.
   $file->uri = $file->destination;
   if (!drupal_move_uploaded_file($_FILES['files']['tmp_name'][$source][$file_number], $file->uri)) {
-    form_set_error($source, t('File upload error. Could not move uploaded file.'));
-    watchdog('file', 'Upload error. Could not move uploaded file %file to destination %destination.', array('%file' => $file->filename, '%destination' => $file->uri));
+    drupal_set_message(t('File upload error. Could not move uploaded file.'), 'error');
+    watchdog('file', 'Upload error. Could not move uploaded file %file to destination %destination.', [
+      '%file' => $file->filename,
+      '%destination' => $file->uri,
+    ]);
     return FALSE;
   }
 
@@ -366,7 +406,7 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
 
   // If we are replacing an existing file re-use its database record.
   if ($replace == FILE_EXISTS_REPLACE) {
-    $existing_files = file_load_multiple(array(), array('uri' => $file->uri));
+    $existing_files = file_load_multiple([], ['uri' => $file->uri]);
     if (count($existing_files)) {
       $existing = reset($existing_files);
       $file->fid = $existing->fid;
@@ -386,14 +426,13 @@ function mfw_file_save_upload($source, $file_number, $validators = array(), $des
  * Implements hook_insert_widgets().
  */
 function multiupload_filefield_widget_insert_widgets() {
-  return array(
-    'file_mfw' => array(
+  return [
+    'file_mfw' => [
       'element_type' => 'mfw_managed_file',
       'wrapper' => '.file-widget',
-      'fields' => array(
+      'fields' => [
         'description' => 'input[name$="[description]"]',
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 }
-
