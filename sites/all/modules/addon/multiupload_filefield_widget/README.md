@@ -14,7 +14,8 @@ The core File module.
 
 ### Drupal 8+
 
-The Multiupload Filefield Widget module is in core now. No module installation needed. Yay!
+The Multiupload Filefield Widget module is in core now. 
+No module installation needed.
 It's automatically enabled with the File field module.
 
 ## INSTRUCTIONS

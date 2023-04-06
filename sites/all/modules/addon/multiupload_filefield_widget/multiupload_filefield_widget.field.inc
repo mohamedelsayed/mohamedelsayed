@@ -56,7 +56,7 @@ function multiupload_filefield_widget_field_widget_form(&$form, &$form_state, $f
     $items = $field_state['items'];
   }
 
-  // Essentially we use the mfw_managed_file type, extended with some enhancements.
+  // Using the mfw_managed_file type with enhancements.
   $element_info = element_info('mfw_managed_file');
   $element += [
     '#type' => 'mfw_managed_file',
@@ -134,14 +134,16 @@ function multiupload_filefield_widget_field_widget_settings_form($field, $instan
 /**
  * Get the upload validators for a file field.
  *
- * @param $field
+ * @param array $field
  *   A field array.
+ * @param array $instance
+ *   An instance array.
  *
- * @return
+ * @return array
  *   An array suitable for passing to file_save_upload() or the file field
  *   element's '#upload_validators' property.
  */
-function multiupload_filefield_widget_field_widget_upload_validators($field, $instance) {
+function multiupload_filefield_widget_field_widget_upload_validators(array $field, array $instance) {
   return file_field_widget_upload_validators($field, $instance);
 }
 

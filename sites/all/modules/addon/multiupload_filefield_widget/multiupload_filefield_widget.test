@@ -6,12 +6,12 @@
  */
 
 /**
- *
+ * Extend class MultiuploadFilefieldWidget.
  */
-class MFWTestCase extends DrupalWebTestCase {
+class MultiuploadFilefieldWidget extends DrupalWebTestCase {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return [
@@ -22,14 +22,14 @@ class MFWTestCase extends DrupalWebTestCase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp('multiupload_filefield_widget');
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function testElementInfo() {
     $info = module_invoke('multiupload_filefield_widget', 'element_info');
@@ -42,7 +42,7 @@ class MFWTestCase extends DrupalWebTestCase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function testWidgetInfo() {
     $info = module_invoke('multiupload_filefield_widget', 'field_widget_info');

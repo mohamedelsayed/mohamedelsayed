@@ -16,8 +16,8 @@ function multiupload_filefield_widget_element_info() {
 
   $types['mfw_managed_file'] = [
     '#input' => TRUE,
-    '#process' => ['mfw_managed_file_process'],
-    '#value_callback' => 'mfw_managed_file_value',
+    '#process' => ['multiupload_filefield_widget_mfw_managed_file_process'],
+    '#value_callback' => 'multiupload_filefield_widget_mfw_managed_file_value',
     '#element_validate' => ['file_managed_file_validate'],
     '#pre_render' => ['file_managed_file_pre_render'],
     '#theme' => 'file_managed_file',
@@ -57,7 +57,7 @@ function multiupload_filefield_widget_filefield_sources_widgets() {
  * Expands the file type to include Upload and Remove buttons, as well as
  * support for a default value.
  */
-function mfw_managed_file_process($element, &$form_state, &$form) {
+function multiupload_filefield_widget_mfw_managed_file_process($element, &$form_state, &$form) {
   $element = file_managed_file_process($element, $form_state, $form);
   $element['upload']['#attributes'] = ['multiple' => 'multiple'];
 
@@ -82,13 +82,13 @@ function mfw_managed_file_process($element, &$form_state, &$form) {
  *
  * Mostly copied from file.module.
  */
-function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
+function multiupload_filefield_widget_mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
   $fid = 0;
 
   // Find the current value of this field from the form state.
   $form_state_fid = $form_state['values'];
   foreach ($element['#parents'] as $parent) {
-    $form_state_fid = $form_state_fid[$parent] ?? 0;
+    $form_state_fid = isset($form_state_fid[$parent]) ? $form_state_fid[$parent] : 0;
   }
 
   if ($element['#extended'] && isset($form_state_fid['fid'])) {
@@ -103,10 +103,10 @@ function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
     $return = $input;
 
     $element_parent = drupal_array_get_nested_value($form_state['complete form'], array_slice($element['#parents'], 0, -1));
-    $element['#file_upload_delta_original'] = $element_parent['#file_upload_delta'] ?? 0;
+    $element['#file_upload_delta_original'] = isset($element_parent['#file_upload_delta']) ? $element_parent['#file_upload_delta'] : 0;
 
     // Uploads take priority over all other values.
-    if ($file = mfw_managed_file_save_upload($element)) {
+    if ($file = multiupload_filefield_widget_mfw_managed_file_save_upload($element)) {
       $fid = $file->fid;
     }
     else {
@@ -129,11 +129,11 @@ function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
   // If there is no input, set the default value.
   else {
     if ($element['#extended']) {
-      $default_fid = $element['#default_value']['fid'] ?? 0;
-      $return = $element['#default_value'] ?? ['fid' => 0];
+      $default_fid = isset($element['#default_value']['fid']) ? $element['#default_value']['fid'] : 0;
+      $return = isset($element['#default_value']) ? $element['#default_value'] : ['fid' => 0];
     }
     else {
-      $default_fid = $element['#default_value'] ?? 0;
+      $default_fid = isset($element['#default_value']) ? $element['#default_value'] : 0;
       $return = ['fid' => 0];
     }
 
@@ -149,19 +149,20 @@ function mfw_managed_file_value(&$element, $input = FALSE, $form_state = NULL) {
 }
 
 /**
- * Given a mfw_managed_file element, save any files that have been uploaded
- * into it.
+ * Given a mfw_managed_file element, save any files that have been uploaded.
+ *
+ * Into it.
  *
  * Mostly copied from file.module.
  *
- * @param $element
+ * @param array $element
  *   The FAPI element whose values are being saved.
  *
- * @return
+ * @return bool
  *   The file object representing the file that was saved, or FALSE if no file
  *   was saved.
  */
-function mfw_managed_file_save_upload($element) {
+function multiupload_filefield_widget_mfw_managed_file_save_upload(array $element) {
   $last_parent = array_pop($element['#parents']);
   $upload_name = implode('_', $element['#parents']) . '_' . $element['#file_upload_delta_original'];
   array_push($element['#parents'], $last_parent);
@@ -174,7 +175,7 @@ function mfw_managed_file_save_upload($element) {
       return FALSE;
     }
 
-    $destination = $element['#upload_location'] ?? NULL;
+    $destination = isset($element['#upload_location']) ? $element['#upload_location'] : NULL;
     if (isset($destination) && !file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
       watchdog('file', 'The upload directory %directory for the file field !name could not be created or is not accessible. A newly uploaded file could not be saved in this directory as a consequence, and the upload was canceled.', [
         '%directory' => $destination,
@@ -184,7 +185,7 @@ function mfw_managed_file_save_upload($element) {
       return FALSE;
     }
 
-    if (!$file = mfw_file_save_upload($upload_name, $file_number, $element['#upload_validators'], $destination)) {
+    if (!$file = multiupload_filefield_widget_mfw_file_save_upload($upload_name, $file_number, $element['#upload_validators'], $destination)) {
       watchdog('file', 'The file upload failed. %upload', ['%upload' => $upload_name]);
       drupal_set_message(t('The file %file_name in the !name field was unable to be uploaded.', [
         '!name' => $element['#title'],
@@ -210,11 +211,11 @@ function mfw_managed_file_save_upload($element) {
  *
  * Rewrite of /include/file.inc
  *
- * @param $source
+ * @param string $source
  *   A string specifying the filepath or URI of the uploaded file to save.
- * @param $file_number
+ * @param string $file_number
  *   The array key of the file to save in $_FILES['files']['name'][$source].
- * @param $validators
+ * @param array $validators
  *   An optional, associative array of callback functions used to validate the
  *   file. See file_validate() for a full discussion of the array format.
  *   If no extension validator is provided it will default to a limited safe
@@ -223,18 +224,18 @@ function mfw_managed_file_save_upload($element) {
  *   explicitly set the 'file_validate_extensions' validator to an empty array
  *   (Beware: this is not safe and should only be allowed for trusted users, if
  *   at all).
- * @param $destination
+ * @param bool $destination
  *   A string containing the URI $source should be copied to.
  *   This must be a stream wrapper URI. If this value is omitted, Drupal's
  *   temporary files scheme will be used ("temporary://").
- * @param $replace
+ * @param string $replace
  *   Replace behavior when the destination file already exists:
  *   - FILE_EXISTS_REPLACE: Replace the existing file.
  *   - FILE_EXISTS_RENAME: Append _{incrementing number} until the filename is
  *     unique.
  *   - FILE_EXISTS_ERROR: Do nothing and return FALSE.
  *
- * @return
+ * @return bool
  *   An object containing the file information if the upload succeeded, FALSE
  *   in the event of an error, or NULL if no file was uploaded. The
  *   documentation for the "File interface" group, which you can find under
@@ -244,7 +245,7 @@ function mfw_managed_file_save_upload($element) {
  *   - source: Path to the file before it is moved.
  *   - destination: Path to the file after it is moved (same as 'uri').
  */
-function mfw_file_save_upload($source, $file_number, $validators = [], $destination = FALSE, $replace = FILE_EXISTS_RENAME) {
+function multiupload_filefield_widget_mfw_file_save_upload($source, $file_number, array $validators = [], $destination = FALSE, $replace = FILE_EXISTS_RENAME) {
   global $user;
   static $upload_cache;
 
