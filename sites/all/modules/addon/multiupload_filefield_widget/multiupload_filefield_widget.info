@@ -5,8 +5,8 @@ core = 7.x
 
 dependencies[] = file
 
-; Information added by Drupal.org packaging script on 2023-04-05
-version = "7.x-1.15"
+; Information added by Drupal.org packaging script on 2023-04-08
+version = "7.x-1.16"
 core = "7.x"
 project = "multiupload_filefield_widget"
-datestamp = "1680700675"
+datestamp = "1680913880"

@@ -161,7 +161,7 @@ function mfw_field_widget_value($element, $input, &$form_state) {
   }
 
   // We depend on the mfw managed file element to handle uploads.
-  $return = mfw_managed_file_value($element, $input, $form_state);
+  $return = multiupload_filefield_widget_mfw_managed_file_value($element, $input, $form_state);
 
   // Ensure that all the required properties are returned even if empty.
   $return += [
