@@ -5,7 +5,14 @@
  * Tests for the site_verify module.
  */
 
+/**
+ * Functional tests for Site Verify module.
+ */
 class SiteVerifyFunctionalTestCase extends DrupalWebTestCase {
+
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Site verification functional tests',
@@ -14,14 +21,20 @@ class SiteVerifyFunctionalTestCase extends DrupalWebTestCase {
     );
   }
 
-  function setUp() {
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
     parent::setUp(array('site_verify'));
 
-    $user = $this->drupalCreateUser(array('administer site configuration'));
+    $user = $this->drupalCreateUser(array('administer site verify'));
     $this->drupalLogin($user);
   }
 
-  function testMetaTag() {
+  /**
+   * Linear test of module functions.
+   */
+  public function testMetaTag() {
     $this->drupalGet('admin/config/search/verifications');
     $this->assertText('No verifications available.');
     $this->clickLink('Add verification');
@@ -29,15 +42,19 @@ class SiteVerifyFunctionalTestCase extends DrupalWebTestCase {
     // Add a dummy Google meta tag.
     $edit = array('engine' => 'google');
     $this->drupalPost('admin/config/search/verifications/add', $edit, t('Next'));
-    $meta_tag = '<meta name="google-site-verification" content="' . $this->randomName() . '">';
+    $verification_code = $this->randomName();
+    $meta_tag = '<meta name="google-site-verification" content="' . $verification_code . '">';
     $edit = array('meta' => $meta_tag);
     $this->drupalPost(NULL, $edit, t('Save'));
     $this->assertText('Verification saved.');
     $this->assertText('Google');
 
     // Check if it displays on the front page.
-    $this->drupalGet('');
-    $this->assertRaw($meta_tag, 'Verification code displayed on front page.');
+    $this->drupalGet('<front>');
+    // Check for the specific metatag using xpath.
+    $xpath = $this->xpath("//meta[@name='google-site-verification']");
+    $this->assertEqual(count($xpath), 1, 'Exactly one google verification meta tag found.');
+    $this->assertEqual($xpath[0]['content'], $verification_code, 'Google verification code as specified');
 
     // Now try to delete it.
     $this->drupalGet('admin/config/search/verifications');
@@ -46,4 +63,5 @@ class SiteVerifyFunctionalTestCase extends DrupalWebTestCase {
     $this->assertText('Verification for Google has been deleted.');
     $this->assertText('No verifications available.');
   }
+
 }

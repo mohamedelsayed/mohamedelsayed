@@ -31,7 +31,7 @@ function hook_site_verify_engine_info() {
 /**
  * Alter the list of supported search engines.
  *
- * @param $engines
+ * @param array $engines
  *   An array (passed by reference) of the list of engines, keyed by engine
  *   type.
  */

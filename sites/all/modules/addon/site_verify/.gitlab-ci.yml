@@ -1,0 +1,38 @@
+################
+# GitLabCI template for Drupal projects.
+#
+# @see https://project.pages.drupalcode.org/gitlab_templates/
+################
+
+include:
+  - project: $_GITLAB_TEMPLATES_REPO
+    ref: $_GITLAB_TEMPLATES_REF
+    file:
+      - '/includes/include.drupalci.main-d7.yml'
+      - '/includes/include.drupalci.variables.yml'
+      - '/includes/include.drupalci.workflows.yml'
+
+variables:
+    # SKIP_ESLINT: '1'
+    # SKIP_CSPELL: '1'
+    # _CURL_TEMPLATES_REF: 'main'
+
+    # Set to 0 to opt out testing against the current Drupal core version.
+    OPT_IN_TEST_CURRENT: 1
+
+    # Set to '1' to opt in testing against various additional Drupal core
+    # versions relative to the current stable version of Drupal.
+    OPT_IN_TEST_PREVIOUS_MINOR: 0
+    OPT_IN_TEST_NEXT_MINOR: 0
+    OPT_IN_TEST_PREVIOUS_MAJOR: 0
+    OPT_IN_TEST_NEXT_MAJOR: 0
+
+    # Set to 1 to opt in testing against the maximum/latest supported version
+    # of PHP for the current stable version of Drupal.
+    OPT_IN_TEST_MAX_PHP: 0
+
+    # Check compatibility with next major Drupal release.
+    RUN_JOB_UPGRADE_STATUS: 0
+
+    # Run concurrent phpunit.
+    _PHPUNIT_CONCURRENT: 0

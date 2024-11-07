@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * @file
+ * Administration functions of Site Verification module.
+ */
+
+/**
+ * Admin list of verifications.
+ *
+ * @return array
+ *   A build array listing the current verifications.
+ */
 function site_verify_list() {
   $engines = site_verify_get_engines();
   $destination = drupal_get_destination();
@@ -14,7 +25,6 @@ function site_verify_list() {
   $query = db_select('site_verify');
   $query->fields('site_verify');
   $query->extend('TableSort')->orderByHeader($header);
-  //$query->extend('PagerDefault')->limit(50);
   $verifications = $query->execute();
 
   $rows = array();
@@ -50,7 +60,7 @@ function site_verify_list() {
     '#rows' => $rows,
     '#empty' => t('No verifications available. <a href="@add">Add verification</a>.', array('@add' => url('admin/config/search/verifications/add'))),
   );
-  //$build['verification_pager'] = array('#theme' => 'pager');
+
   return $build;
 }
 
@@ -116,7 +126,14 @@ function site_verify_edit_form($form, &$form_state, $record = array(), $engine =
       );
       $form['#engine'] = $record['engine'];
 
-      $form['meta'] = array(
+      // Square brackets for arrays were added in PHP 5.4. D7 Min PHP is 5.6.
+      $form['wrap_meta'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Meta tag verification'),
+        '#open' => FALSE,
+      ];
+
+      $form['wrap_meta']['meta'] = array(
         '#type' => 'textfield',
         '#title' => t('Verification META tag'),
         '#default_value' => $record['meta'],
@@ -126,15 +143,21 @@ function site_verify_edit_form($form, &$form_state, $record = array(), $engine =
         '#maxlength' => NULL,
       );
 
-      //@TODO: display errror or lock form if upload exists, but user doesn't have perm
+      // @todo Display errror or lock form if upload exists, but user doesn't
+      //   have permission to administer it.
       if (user_access('administer site verify uploads')) {
-        $form['file_upload'] = array(
+        $form['wrap_file'] = [
+          '#type' => 'fieldset',
+          '#title' => t('File verication'),
+        ];
+
+        $form['wrap_file']['file_upload'] = array(
           '#type' => 'file',
           '#title' => t('Upload an existing verification file'),
-          '#description' => t('If you have been provided with an actual file, you can simply upload the file.'),
+          '#description' => t('If you have been provided with an actual file, you can simply upload the file. The uploaded filename and contents will override the values below.'),
           '#access' => $record['engine']['file'],
         );
-        $form['file'] = array(
+        $form['wrap_file']['file'] = array(
           '#type' => 'textfield',
           '#title' => t('Verification file'),
           '#default_value' => $record['file'],
@@ -142,7 +165,7 @@ function site_verify_edit_form($form, &$form_state, $record = array(), $engine =
           '#element_validate' => $record['engine']['file_validate'],
           '#access' => $record['engine']['file'],
         );
-        $form['file_contents'] = array(
+        $form['wrap_file']['file_contents'] = array(
           '#type' => 'textarea',
           '#title' => t('Verification file contents'),
           '#default_value' => $record['file_contents'],
@@ -160,7 +183,7 @@ function site_verify_edit_form($form, &$form_state, $record = array(), $engine =
         $form['file_upload']['#disabled'] = TRUE;
       }
 
-      //@TODO: $record['engine']['file'] is always TRUE
+      // @todo $record['engine']['file'] is always TRUE.
       if ($record['engine']['file']) {
         $form['#attributes'] = array('enctype' => 'multipart/form-data');
       }
@@ -175,7 +198,7 @@ function site_verify_edit_form($form, &$form_state, $record = array(), $engine =
 
   $form['actions']['cancel'] = array(
     '#type' => 'link',
-    '#href' => isset($_GET['destination']) ? $_GET['destination'] : 'admin/config/search/verifications',
+    '#href' => $_GET['destination'] ?? 'admin/config/search/verifications',
     '#title' => t('Cancel'),
     '#weight' => 15,
   );
@@ -184,22 +207,24 @@ function site_verify_edit_form($form, &$form_state, $record = array(), $engine =
 }
 
 /**
- * Validation callback; sanitize metatag and save the uploaded file
+ * Validation callback; sanitize metatag and save the uploaded file.
  */
 function site_verify_edit_form_validate($form, &$form_state) {
   if ($form_state['storage']['step']) {
-    // validate metatag
+    // Validate metatag.
     if (isset($form_state['values']['meta']) && $form_state['values']['meta']) {
       $valid_metatag_set = FALSE;
 
       $html = $form_state['values']['meta'];
-      $dom = new DOMDocument;
+      $dom = new DOMDocument();
       $dom->loadHTML($html);
-      //@TODO: If we only care about the first metatag... why foreach?  why not [0]?
+      // Only use first meta tag given. use foreach to handle empty, one item,
+      // and multiple item arrays using the same code.
       foreach ($dom->getElementsByTagName('meta') as $tag) {
         if ($tag->getAttribute('name') && $tag->getAttribute('content')) {
           $form_state['values']['meta'] = '<meta name="' . $tag->getAttribute('name') . '" content="' . $tag->getAttribute('content') . '" />';
           $valid_metatag_set = TRUE;
+          break;
         }
       }
 
@@ -208,38 +233,56 @@ function site_verify_edit_form_validate($form, &$form_state) {
       }
     }
 
-    //
-    if (isset($form_state['values']['file']) && $form_state['values']['file']) {
-      $values = &$form_state['values'];
-      // Import the uploaded verification file.
-      $validators = array('file_validate_extensions' => array());
-      if ($file = file_save_upload('file_upload', $validators, FALSE, FILE_EXISTS_REPLACE)) {
-        $contents = @file_get_contents($file->uri);
-        file_delete($file);
-        if ($contents === FALSE) {
-          drupal_set_message(t('The verification file import failed, because the file %filename could not be read.', array('%filename' => $file->filename)), 'error');
-        }
-        else {
-          $values['file'] = $file->filename;
-          $values['file_contents'] = $contents;
-          //drupal_set_message(t('The verification file <a href="@filename">@filename</a> was successfully imported.', array('@filename' => $file->filename)));
-        }
+    // A file can be uploaded but due to protections, it will not show in the
+    // form state values. The function file_save_upload must be called to see
+    // if a file was uploaded. The file overrides manually entered contents.
+    $values = &$form_state['values'];
+    $validators = array('file_validate_extensions' => array());
+    $file = file_save_upload('file_upload', $validators, FALSE, FILE_EXISTS_REPLACE);
+    if ($file === FALSE) {
+      // An error occured processing the uploaded file. A relevant error message
+      // will have already been displayed.
+      form_set_error('file', t('Validation file upload failed.'));
+      return;
+    }
+    if ($file) {
+      // Override any manually entered values and use the contents of this file.
+      $contents = @file_get_contents($file->uri);
+      file_delete($file);
+      if ($contents === FALSE) {
+        drupal_set_message(t('The verification file import failed, because the file %filename could not be read.', array('%filename' => $file->filename)), 'error');
       }
+      else {
+        $values['file'] = $file->filename;
+        $values['file_contents'] = $contents;
+      }
+    }
 
-      // Confirm that the desired filename isn't already in use by another
-      // verification.
-      if ($values['file']) {
-        $existing_file = db_query("SELECT svid FROM {site_verify} WHERE LOWER(file) = LOWER(:file) AND svid <> :svid", array(':file' => $values['file'], ':svid' => $values['svid']))->fetchField();
-        if ($existing_file) {
-          form_set_error('file', t('The file %filename is already being used in another verification.', array('%filename' => $values['file'])));
-        }
+    // Confirm that the desired filename isn't already in use by another
+    // verification.
+    if (isset($values['file']) && $values['file']) {
+      // A query where svid is NULL returns no results.
+      $existing_file = empty($values['svid'])
+        ? db_query(
+            "SELECT svid FROM {site_verify} WHERE LOWER(file) = LOWER(:file)", array(
+              ':file' => $values['file'],
+            )
+          )->fetchField()
+        : db_query(
+            "SELECT svid FROM {site_verify} WHERE LOWER(file) = LOWER(:file) AND svid <> :svid", array(
+              ':file' => $values['file'],
+              ':svid' => $values['svid'],
+            )
+          )->fetchField();
+
+      if ($existing_file) {
+        form_set_error('file', t('The file %filename is already being used in another verification.', array('%filename' => $values['file'])));
       }
     }
     else {
       $form_state['values']['file_contents'] = NULL;
     }
   }
-
 }
 
 /**
@@ -273,7 +316,7 @@ function site_verify_edit_form_submit($form, &$form_state) {
 }
 
 /**
- * Delete form: found at admin/config/search/verifications/xxx/delete
+ * Delete form: found at admin/config/search/verifications/xxx/delete.
  */
 function site_verify_delete_form($form, $form_state, $record) {
   $form['record'] = array(
@@ -291,6 +334,9 @@ function site_verify_delete_form($form, $form_state, $record) {
   );
 }
 
+/**
+ * Submit handler for confirm verify delete form.
+ */
 function site_verify_delete_form_submit($form, &$form_state) {
   $record = $form_state['values']['record'];
   db_delete('site_verify')->condition('svid', $record['svid'])->execute();
@@ -304,7 +350,6 @@ function site_verify_delete_form_submit($form, &$form_state) {
   variable_set('menu_rebuild_needed', TRUE);
 }
 
-
 /**
  * Validate that the 'meta' property uses the correct pattern for Google.
  */
@@ -315,6 +360,9 @@ function site_verify_validate_meta_google($element, &$form_state) {
   }
 }
 
+/**
+ * Validate a google file version of validation code.
+ */
 function site_verify_validate_page_google($element, &$form_state) {
   $value = strtolower(trim($element['#value']));
   if ($value != '' && !preg_match('%\Agoogle[\da-f]+\.html\Z%', $value)) {

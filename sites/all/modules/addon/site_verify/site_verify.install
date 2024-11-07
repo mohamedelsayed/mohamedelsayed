@@ -128,3 +128,16 @@ function site_verify_import_ghs() {
   variable_del('ghs_string_verify');
   module_disable(array('ghs'));
 }
+
+/**
+ * Move deprecated Yahoo verifications to Custom engine.
+ */
+function site_verify_update_7104() {
+  // Move instead of delete to avoid data loss.
+  db_update('site_verify')
+    ->fields(array(
+      'engine' => 'custom',
+    ))
+    ->condition('engine', 'yahoo')
+    ->execute();
+}
